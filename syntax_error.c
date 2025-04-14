@@ -6,11 +6,19 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:29:19 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/13 21:44:49 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:43:00 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	skip(char quote, int *i, char *str)
+{
+	(*i)++;
+	while (str[*i] != quote)
+		(*i)++;
+	(*i)++;
+}
 
 bool	check_redirections(char *str, int i)
 {
@@ -52,6 +60,18 @@ bool	check_and(char *str, int i, int seen_command)
 			i += 2;
 			continue ; 
 		}
+		else if (str[i] == '\'')
+		{
+			seen_command = 1;
+			skip('\'', &i, str);
+			continue ;
+		}
+		else if (str[i] == '\"')
+		{
+			seen_command = 1;
+			skip('\"', &i, str);
+			continue ;
+		}
 		else if (str[i] == '&' && i != 0 && str[i - 1] == '&')
 			return (false);
 		else if (str[i] == '|' && seen_command == 0)
@@ -79,6 +99,18 @@ bool	check_pipes(char *str, int i, int seen_command)
 			i++;
 			continue ; 
 		}
+		else if (str[i] == '\'')
+		{
+			seen_command = 1;
+			skip('\'', &i, str);
+			continue ;
+		}
+		else if (str[i] == '\"')
+		{
+			seen_command = 1;
+			skip('\"', &i, str);
+			continue ;
+		}
 		else if (str[i] == '&' && str[i + 1] == '&' && seen_command == 0)
 			return (false);
 		else if (str[i] != ' ' && str[i] != '\t')
@@ -92,8 +124,10 @@ bool	check_pipes(char *str, int i, int seen_command)
 
 bool	validate_input(char *input) 
 {
+	if (input[0] == '\0')
+		return (true);
 	if (!valid_quotes(input) || !check_pipes(input, 0, 0)
-		|| !check_and(input, 0 , 0) || !check_redirections(input, 0))
+		|| !check_and(input, 0 , 0))
 	{
 		fprintf(stderr, "syntax error\n");
 		return (false);
