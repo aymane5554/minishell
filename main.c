@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/15 13:51:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:53:09 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,29 @@
 int main(void)
 {
 	int		i;
-	char	**words;
+	int		j;
+	char	**cmds;
+	char	**cmd;
 
 	while (1)
 	{
 		char *line = readline("minishell> ");
+		add_history(line);
 		if (!validate_input(line))
 			continue;
-		add_history(line);
-		words = ft_split_input(line, ' ');
+		cmds = ft_split_pipe(line, '|');
 		i = 0;
-		while (words[i])
+		while (cmds[i])
 		{
-			printf("[%s]", words[i]);
+			cmd = ft_split_input(cmds[i], ' ');
+			printf("%i:", i);
+			j = 0;
+			while (cmd[j])
+			{
+				printf("|%s|", cmd[j]);
+				j++;
+			}
+			printf("\n");
 			i++;
 		}
 		printf("\n");

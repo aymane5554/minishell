@@ -1,7 +1,7 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = #-Wall -Werror -Wextra
 MFLAGS = -lreadline -lncurses
-TSRC = syntax_error.c check_quotes.c split_input.c
+TSRC = syntax_error.c check_quotes.c split_input.c ft_split_pipe.c
 SRCS = main.c $(TSRC)
 OBJECTS = $(SRCS:%.c=%.o)
 LIBFT_SRCS = libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c \
