@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/13 17:58:05 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:42:10 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ typedef struct s_token
 
 int		valid_quotes(char	*str);
 bool	validate_input(char *input);
+char	**ft_split_input(char const *s, char c);
 
 #endif
