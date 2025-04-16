@@ -6,48 +6,59 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/16 13:57:58 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:56:48 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static	char	*ft_strindup(char *src, char c)
+static	char	*ft_strindup_quote(char *src, char c)
 {
 	int		i;
 	char	*s;
-	char	offset;
 	int		j;
 
-	offset = 1;
-	if (c == '\'' || c == '\"')
-	{
-		offset = 4;
-		src++;
-	}
+	src++;
 	i = 0;
 	while (src[i] != '\0' && src[i] != c)
 		i++;
-	s = (char *)malloc(i + offset);
+	s = (char *)malloc(i + 4);
 	if (!s)
 		return (free(s), NULL);
-	i = 0;
+	i = 1;
 	j = 0;
-	if (c == '\'' || c == '\"')
-		i = 1;
 	while (src[j] != '\0' && src[j] != c)
 	{
 		s[i] = src[j];
 		i++;
 		j++;
 	}
-	s[i] = '\0';
+	s[0] = c;
+	s[i] = c;
+	s[i + 1] = '\0';
+	return (s);
+}
+
+static	char	*ft_strindup(char *src, char c)
+{
+	int		i;
+	char	*s;
+
 	if (c == '\'' || c == '\"')
+		return (ft_strindup_quote(src, c));
+	i = 0;
+	while (src[i] != '\0' && src[i] != c)
+		i++;
+	s = (char *)malloc(i + 1);
+	if (!s)
+		return (free(s), NULL);
+	i = 0;
+	while (src[i] != '\0' && src[i] != c)
 	{
-		s[0] = c;
-		s[i] = c;
-		s[i + 1] = '\0'; 
+		s[i] = src[i];
+		i++;
 	}
+	s[i] = '\0';
 	return (s);
 }
 
@@ -69,7 +80,7 @@ static	int	word_count(char	*s, char c)
 		}
 		else if (s[arr[0]] != c && arr[1] == 0)
 		{
-			if (s[arr[0]] == '\'')
+			if (s[arr[0]] == '\'' || s[arr[0]] == '\"')
 				c = s[arr[0]];
 			arr[1] = 1;
 			arr[2]++;
@@ -107,6 +118,10 @@ static void	setvars(int arr[3], char *tmp, char *c, char idk)
 		*c = *tmp;
 	}
 }
+
+// iterators[0] : i
+// iterators[1] : words counter
+// iterators[2] : 1 found a word, 0 found a space
 
 char	**ft_split_input(char const *s, char c)
 {
