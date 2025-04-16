@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/16 15:56:48 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:18:26 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static	char	*ft_strindup_quote(char *src, char c)
 	i = 0;
 	while (src[i] != '\0' && src[i] != c)
 		i++;
-	s = (char *)malloc(i + 4);
+	s = (char *)malloc(i + 3);
 	if (!s)
 		return (free(s), NULL);
 	i = 1;
@@ -47,13 +47,13 @@ static	char	*ft_strindup(char *src, char c)
 	if (c == '\'' || c == '\"')
 		return (ft_strindup_quote(src, c));
 	i = 0;
-	while (src[i] != '\0' && src[i] != c)
+	while (src[i] != '\0' && src[i] != c && !(src[i] >= 9 && src[i] <= 13))
 		i++;
 	s = (char *)malloc(i + 1);
 	if (!s)
 		return (free(s), NULL);
 	i = 0;
-	while (src[i] != '\0' && src[i] != c)
+	while (src[i] != '\0' && src[i] != c && !(src[i] >= 9 && src[i] <= 13))
 	{
 		s[i] = src[i];
 		i++;
@@ -73,7 +73,7 @@ static	int	word_count(char	*s, char c)
 	tmp = c;
 	while (s[arr[0]])
 	{
-		if (s[arr[0]] == c)
+		if (s[arr[0]] == c || (s[arr[0]] >= 9 && s[arr[0]] <= 13))
 		{
 			arr[1] = 0;
 			c = tmp;
@@ -135,7 +135,7 @@ char	**ft_split_input(char const *s, char c)
 		return (NULL);
 	while (s[iterators[0]])
 	{
-		if (s[iterators[0]] == c)
+		if (s[iterators[0]] == c || (s[iterators[0]] >= 9 && s[iterators[0]] <= 13))
 			setvars(iterators, &tmp, &c, 1);
 		else if (s[iterators[0]] != c && iterators[2] == 0)
 		{
