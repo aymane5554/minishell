@@ -6,11 +6,63 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/16 17:18:26 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:31:36 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_strlen_plus(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c && is_whitespace(s[i + 1]))
+			break;
+		else if (s[i] == c && !is_whitespace(s[i + 1]))
+		{
+			while (s[i] && !is_whitespace(s[i]))
+				i++;
+			return (i);
+		}
+		i++;
+	}
+	return (i);
+}
+
+void	ft_strcpy_plus(char *src, char *dst, char c)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 1;
+	while (src[i])
+	{
+		if (src[i] == c && is_whitespace(src[i + 1]))
+			break;
+		else if (src[i] == c && !is_whitespace(src[i + 1]))
+		{
+			while (src[i] && !is_whitespace(src[i]))
+			{
+				dst[j] = src[i];
+				i++;
+				j++;
+			}
+			dst[0] = c;
+			dst[j] = '\0';
+			return ;
+		}
+		dst[j] = src[i];
+		j++;
+		i++;
+	}
+	dst[0] = c;
+	dst[j + 1] = '\0';
+	dst[j] = c;
+}
 
 static	char	*ft_strindup_quote(char *src, char c)
 {
@@ -20,22 +72,10 @@ static	char	*ft_strindup_quote(char *src, char c)
 
 	src++;
 	i = 0;
-	while (src[i] != '\0' && src[i] != c)
-		i++;
-	s = (char *)malloc(i + 3);
+	s = (char *)malloc(ft_strlen_plus(src, c) + 3);
 	if (!s)
 		return (free(s), NULL);
-	i = 1;
-	j = 0;
-	while (src[j] != '\0' && src[j] != c)
-	{
-		s[i] = src[j];
-		i++;
-		j++;
-	}
-	s[0] = c;
-	s[i] = c;
-	s[i + 1] = '\0';
+	ft_strcpy_plus(src, s, c);
 	return (s);
 }
 
@@ -73,10 +113,20 @@ static	int	word_count(char	*s, char c)
 	tmp = c;
 	while (s[arr[0]])
 	{
-		if (s[arr[0]] == c || (s[arr[0]] >= 9 && s[arr[0]] <= 13))
+		if (s[arr[0]] == c)
 		{
-			arr[1] = 0;
-			c = tmp;
+			if (is_whitespace(c))
+			{
+				arr[1] = 0;
+				c = tmp;
+			}
+			else if (is_quote(c) && is_whitespace(s[arr[0] + 1]))
+			{
+				arr[1] = 0;
+				c = tmp;
+			}
+			else if (is_quote(c) && !is_whitespace(s[arr[0] + 1]))
+				c = tmp;
 		}
 		else if (s[arr[0]] != c && arr[1] == 0)
 		{
@@ -135,8 +185,15 @@ char	**ft_split_input(char const *s, char c)
 		return (NULL);
 	while (s[iterators[0]])
 	{
-		if (s[iterators[0]] == c || (s[iterators[0]] >= 9 && s[iterators[0]] <= 13))
-			setvars(iterators, &tmp, &c, 1);
+		if (s[iterators[0]] == c)
+		{
+			if (is_whitespace(c))
+				setvars(iterators, &tmp, &c, 1);
+			else if (is_quote(c) && is_whitespace(s[iterators[0] + 1]))
+				setvars(iterators, &tmp, &c, 1);
+			else if (is_quote(c) && !is_whitespace(s[iterators[0] + 1]))
+				c = tmp;
+		}
 		else if (s[iterators[0]] != c && iterators[2] == 0)
 		{
 			if (s[iterators[0]] == '\'' || s[iterators[0]] == '\"')

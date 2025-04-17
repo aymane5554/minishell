@@ -14,7 +14,7 @@ LIBFT_SRCS = libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum
 			libft/ft_lstnew_bonus.c \
 			libft/ft_lstsize_bonus.c libft/ft_lstlast_bonus.c libft/ft_lstadd_front_bonus.c \
 			libft/ft_lstadd_back_bonus.c libft/ft_lstdelone_bonus.c libft/ft_lstclear_bonus.c \
-			libft/ft_lstiter_bonus.c libft/ft_lstmap_bonus.c
+			libft/ft_lstiter_bonus.c libft/ft_lstmap_bonus.c libft/is_whitespace.c
 LIBFT_OBJS= $(LIBFT_SRCS:libft/%.c=libft/%.o)
 
 NAME = minishell
