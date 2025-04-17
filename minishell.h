@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/16 14:35:00 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:20:48 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ int		valid_quotes(char	*str);
 bool	validate_input(char *input);
 char	**ft_split_input(char const *s, char c);
 char	**ft_split_pipe(char const *s, char c);
+char	*seperate_redirections(char *s);
 
 #endif

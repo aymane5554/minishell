@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/17 14:31:36 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:31:38 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,9 @@ void	ft_strcpy_plus(char *src, char *dst, char c)
 
 static	char	*ft_strindup_quote(char *src, char c)
 {
-	int		i;
 	char	*s;
-	int		j;
 
 	src++;
-	i = 0;
 	s = (char *)malloc(ft_strlen_plus(src, c) + 3);
 	if (!s)
 		return (free(s), NULL);

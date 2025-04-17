@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/16 15:32:38 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:30:46 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int main(void)
 	int		j;
 	char	**cmds;
 	char	**cmd;
+	char	*tmp;
 
 	while (1)
 	{
@@ -29,12 +30,18 @@ int main(void)
 		i = 0;
 		while (cmds[i])
 		{
+			if (ft_strchr(cmds[i], '>') || ft_strchr(cmds[i], '<'))
+			{
+				tmp = cmds[i];
+				cmds[i] = seperate_redirections(tmp);
+				free(tmp);
+			}
 			cmd = ft_split_input(cmds[i], ' ');
 			printf("%i:", i);
 			j = 0;
 			while (cmd[j])
 			{
-				printf("|%s|", cmd[j]);
+				printf("[%s]", cmd[j]);
 				j++;
 			}
 			printf("\n");
