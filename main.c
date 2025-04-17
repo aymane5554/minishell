@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/17 16:30:46 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:53:27 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int main(void)
 		i = 0;
 		while (cmds[i])
 		{
+			printf("input : %s\n", cmds[i]);
 			if (ft_strchr(cmds[i], '>') || ft_strchr(cmds[i], '<'))
 			{
 				tmp = cmds[i];

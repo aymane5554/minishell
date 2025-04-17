@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/17 16:31:38 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:53:15 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ static	char	*ft_strindup(char *src, char c)
 	if (c == '\'' || c == '\"')
 		return (ft_strindup_quote(src, c));
 	i = 0;
-	while (src[i] != '\0' && src[i] != c && !(src[i] >= 9 && src[i] <= 13))
+	while (src[i] != '\0' && !is_whitespace(src[i]))
 		i++;
 	s = (char *)malloc(i + 1);
 	if (!s)
 		return (free(s), NULL);
 	i = 0;
-	while (src[i] != '\0' && src[i] != c && !(src[i] >= 9 && src[i] <= 13))
+	while (src[i] != '\0' && !is_whitespace(src[i]))
 	{
 		s[i] = src[i];
 		i++;
@@ -110,7 +110,7 @@ static	int	word_count(char	*s, char c)
 	tmp = c;
 	while (s[arr[0]])
 	{
-		if (s[arr[0]] == c)
+		if (s[arr[0]] == c || is_whitespace(s[arr[0]]))
 		{
 			if (is_whitespace(c))
 			{
@@ -182,7 +182,7 @@ char	**ft_split_input(char const *s, char c)
 		return (NULL);
 	while (s[iterators[0]])
 	{
-		if (s[iterators[0]] == c)
+		if (s[iterators[0]] == c || is_whitespace(s[iterators[0]]))
 		{
 			if (is_whitespace(c))
 				setvars(iterators, &tmp, &c, 1);
