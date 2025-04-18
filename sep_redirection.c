@@ -64,9 +64,9 @@ static int	space_needed(char *s)
 			skip(s[i], &i, s);
 		if (s[i] == '>' || s[i] == '<')
 			c = s[i];
-		if (s[i] == c && (i != 0 && s[i - 1] != c && s[i - 1] != ' '))
+		if (s[i] == c && (i != 0 && s[i - 1] != c && !is_whitespace(s[i - 1])))
 			spaces++;
-		if (s[i] == c && (s[i + 1] != c && s[i + 1] != ' '))
+		if (s[i] == c && (s[i + 1] != c && !is_whitespace(s[i + 1])))
 			spaces++;
 		c = 0;
 		i++;
@@ -93,14 +93,14 @@ char	*seperate_redirections(char *s)
 			skip2(&i, &j, s, new);
 		if (s[i] == '>' || s[i] == '<')
 			c = s[i];
-		if (s[i] == c && (i != 0 && s[i - 1] != c && s[i - 1] != ' '))
+		if (s[i] == c && (i != 0 && s[i - 1] != c && !is_whitespace(s[i - 1])))
 		{
 			new[j] = ' ';
 			j++;
 		}
 		new[j] = s[i];
 		j++;
-		if (s[i] == c && (s[i + 1] != c && s[i + 1] != ' '))
+		if (s[i] == c && (s[i + 1] != c && !is_whitespace(s[i + 1])))
 		{
 			new[j] = ' ';
 			j++;
