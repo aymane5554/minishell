@@ -26,13 +26,13 @@
 typedef struct s_redr
 {
 	char	*file;
-	int		type; //0 out, 1 in, 3 append, 4 herdoc
+	char	type; //0 int, 1 out, 3 append, 4 herdoc
 }	t_redr;
 
 typedef struct s_cmd
 {
 	char	**cmd;
-	t_redr	redirection;
+	t_redr	*redirection;
 }	t_cmd;
 
 int		valid_quotes(char	*str);
