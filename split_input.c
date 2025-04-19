@@ -111,7 +111,7 @@ static	int	word_count(char	*s, char c)
 	tmp = c;
 	while (s[arr[0]])
 	{
-		if (s[arr[0]] == c)
+		if (s[arr[0]] == c || (c == ' ' && is_whitespace(s[arr[0]])))
 		{
 			if (is_whitespace(c))
 			{
@@ -185,7 +185,7 @@ char	**ft_split_input(char const *s, char c)
 		return (NULL);
 	while (s[iterators[0]])
 	{
-		if (s[iterators[0]] == c)
+		if (s[iterators[0]] == c || (c == ' ' && is_whitespace(s[iterators[0]])))
 		{
 			if (is_whitespace(c))
 				setvars(iterators, &tmp, &c, 1);

@@ -14,19 +14,12 @@
 
 int	check_quote(char c, int q)
 {
-	if (is_quote(c))
+	if (c == '\'' || c == '\"')
 	{
+		if (q == 1)
+			return (0);
 		if (q == 0)
-		{
-			if (c == '\'')
-				return (1);
-			else if (c == '\"')
-				return (2);
-		}
-		else if (c == '\'' && q == 1)
-			return (0);
-		else if (c == '\"' && q == 2)
-			return (0);
+			return (1);
 	}
 	return (q);
 }
