@@ -85,10 +85,28 @@ static bool	check_pipes(char *str, int i, int seen_command)
 	return (true);
 }
 
+int	check_empty_string(char *s)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
+		if (is_whitespace(s[i]))
+			count++;
+		i++;
+	}
+	if (count == i)
+		return (1);
+	return (0);
+}
+
 bool	validate_input(char *input) 
 {
-	if (input[0] == '\0')
-		return (true);
+	if (check_empty_string(input))
+		return (false);
 	if (!valid_quotes(input) || !check_pipes(input, 0, 0)
 		|| !check_redirections(input, 0))
 	{

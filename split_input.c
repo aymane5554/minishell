@@ -23,12 +23,13 @@ int	ft_strlen_plus(char *s, char c)
 			break;
 		else if (s[i] == c && !is_whitespace(s[i + 1]))
 		{
-			while (s[i] && !is_whitespace(s[i]))
+			while (!is_whitespace(s[i]))
 				i++;
 			return (i);
 		}
 		i++;
 	}
+	printf("size%i\n", i);
 	return (i);
 }
 
@@ -45,7 +46,7 @@ void	ft_strcpy_plus(char *src, char *dst, char c)
 			break;
 		else if (src[i] == c && !is_whitespace(src[i + 1]))
 		{
-			while (src[i] && !is_whitespace(src[i]))
+			while (!is_whitespace(src[i]))
 			{
 				dst[j] = src[i];
 				i++;
@@ -84,13 +85,13 @@ static	char	*ft_strindup(char *src, char c)
 	if (c == '\'' || c == '\"')
 		return (ft_strindup_quote(src, c));
 	i = 0;
-	while (src[i] != '\0' && !is_whitespace(src[i]))
+	while (!is_whitespace(src[i]))
 		i++;
 	s = (char *)malloc(i + 1);
 	if (!s)
 		return (free(s), NULL);
 	i = 0;
-	while (src[i] != '\0' && !is_whitespace(src[i]))
+	while (!is_whitespace(src[i]))
 	{
 		s[i] = src[i];
 		i++;
@@ -134,7 +135,6 @@ static	int	word_count(char	*s, char c)
 		}
 		arr[0]++;
 	}
-	printf("words:%i\n", arr[2]);
 	return (arr[2]);
 }
 
@@ -157,7 +157,9 @@ static void	setvars(int arr[3], char *tmp, char *c, char idk)
 {
 	if (idk == 0)
 	{
-		ft_bzero(arr, 12);
+		arr[0] = 0;
+		arr[1] = 0;
+		arr[2] = 0;
 		*tmp = *c;
 	}
 	else if (idk == 1)
