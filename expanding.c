@@ -6,13 +6,13 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/19 16:30:22 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:48:20 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*expand(char *str, int *i, char *res)
+static char	*exctract_dollar(char *str, int *i, char *res)
 {
 	char	*var;
 	char	*val;
@@ -39,7 +39,7 @@ static char	*expand(char *str, int *i, char *res)
 	return (ft_strjoin(res, val));
 }
 
-char	*expand_parse(char *str)
+static char	*expand_parse(char *str)
 {
 	int		i;
 	bool	in_single;
@@ -63,7 +63,7 @@ char	*expand_parse(char *str)
 			i++;
 		}
 		else if (str[i] == '$' && !in_single)
-			result = expand(str, &i, result);
+			result = exctract_dollar(str, &i, result);
 		else
 		{
 			char	temp[2] = {str[i++], 0};
@@ -71,4 +71,32 @@ char	*expand_parse(char *str)
 		}
 	}
 	return(result);
+}
+
+void	expand(t_cmd *all_cmds, int i, int z)
+{
+	char *tmp;
+
+	while(all_cmds[i].cmd)
+	{
+		z = 0;
+		while (all_cmds[i].cmd[z])
+		{
+			if (ft_strchr(all_cmds[i].cmd[z], '$'))
+				(tmp = expand_parse(all_cmds[i].cmd[z]), free(tmp));
+			z++;
+		}
+		z = 0;
+		while (all_cmds[i].redirection[z].file)
+		{
+			if (ft_strchr(all_cmds[i].redirection[z].file, '$'))
+			{
+				tmp = expand_parse(all_cmds[i].redirection[z].file);
+				free(all_cmds[i].redirection[z].file);
+				all_cmds[i].redirection[z].file = tmp;
+			}
+			z++;
+		}
+		i++;
+	}
 }

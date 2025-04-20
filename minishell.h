@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/20 11:33:34 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:48:42 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ bool	validate_input(char *input);
 char	**ft_split_input(char const *s, char c);
 char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s);
-char	*expand_parse(char *str);
+void	expand(t_cmd *all_cmds, int i, int z);
 
 #endif

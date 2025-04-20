@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/20 11:34:20 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:47:36 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ int main(void)
 	while (1)
 	{
 		line = readline("minishell> ");
-		add_history(line);
 		if (!line)
-			exit(0);
+			(printf("exit"), exit (0));
+		add_history(line);
 		if (!validate_input(line))
 		{
 			free(line);
@@ -196,53 +196,7 @@ int main(void)
 		}
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
-		// for (int j = 0; all_cmds[j].cmd; j++)
-		// {
-		// 	printf ("cmd%i: ", i);
-		// 	for (int y = 0; all_cmds[j].cmd[y]; y++)
-		// 	{
-		// 		printf("[%s]", all_cmds[j].cmd[y]);
-		// 	}
-		// 	printf("\n");
-		// 	printf("redirections: ");
-		// 	for (int y = 0; all_cmds[j].redirection[y].file; y++)
-		// 	{
-		// 		printf("[%s] type : %d", all_cmds[j].redirection[y].file, all_cmds[j].redirection[y].type);
-		// 	}
-		// 	printf("\n");
-		// }
-		i = 0;
-		while(all_cmds[i].cmd)
-		{
-			int z = 0;
-			int r = 0;
-			while (all_cmds[i].cmd[z])
-			{
-				if (ft_strchr(all_cmds[i].cmd[z], '$'))
-				{
-					tmp = expand_parse(all_cmds[i].cmd[z]);
-					printf("[%s]", tmp);
-					free(tmp);
-				}
-				else
-					printf("[%s]", all_cmds[i].cmd[z]);
-				z++;
-			}
-			printf("\nredirections\n");
-			while (all_cmds[i].redirection[r].file)
-			{
-				if (ft_strchr(all_cmds[i].redirection[r].file, '$'))
-				{
-					tmp = expand_parse(all_cmds[i].redirection[r].file);
-					free(all_cmds[i].redirection[r].file);
-					all_cmds[i].redirection[r].file = tmp;
-				}
-				printf("%s", all_cmds[i].redirection[r].file);
-				r++;
-			}
-			printf("\n");
-			i++;
-		}
+		expand(all_cmds, 0, 0);
 		freecmds(all_cmds);
 		free(cmd);
 		freedbl((void **)cmds);
