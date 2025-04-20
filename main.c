@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 int	ft_dstrlen(char **str)
 {
 	int	i;
@@ -175,6 +174,13 @@ int main(void)
 		}
 		cmds = ft_split_pipe(line, '|');
 		free(line);
+		i = 0;
+		while (cmds[i])
+		{
+			printf("[%s]", cmds[i]);
+			i++;
+		}
+		printf("\n");
 		i = ft_dstrlen(cmds) + 1;
 		all_cmds = malloc(sizeof(t_cmd) * i);
 		i = 0;

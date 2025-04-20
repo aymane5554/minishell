@@ -29,7 +29,6 @@ int	ft_strlen_plus(char *s, char c)
 		}
 		i++;
 	}
-	printf("size%i\n", i);
 	return (i);
 }
 
