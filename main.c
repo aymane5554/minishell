@@ -167,6 +167,8 @@ int main(void)
 	{
 		line = readline("minishell> ");
 		add_history(line);
+		if (!line)
+			exit(0);
 		if (!validate_input(line))
 		{
 			free(line);

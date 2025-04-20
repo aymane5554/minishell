@@ -61,7 +61,10 @@ static int	space_needed(char *s)
 	while (s[i])
 	{
 		if (is_quote(s[i]))
+		{
 			skip(s[i], &i, s);
+			continue ;
+		}
 		if (s[i] == '>' || s[i] == '<')
 			c = s[i];
 		if (s[i] == c && (i != 0 && s[i - 1] != c && !is_whitespace(s[i - 1])))
@@ -90,7 +93,10 @@ char	*seperate_redirections(char *s)
 	while (j < size)
 	{
 		if (is_quote(s[i]))
+		{
 			skip2(&i, &j, s, new);
+			continue ;
+		}
 		if (s[i] == '>' || s[i] == '<')
 			c = s[i];
 		if (s[i] == c && (i != 0 && s[i - 1] != c && !is_whitespace(s[i - 1])))
