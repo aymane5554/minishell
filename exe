@@ -1,2 +1,3 @@
 #!/bin/zsh
-valgrind --leak-check=full ./minishell
+make
+valgrind -s --leak-check=full ./minishell
