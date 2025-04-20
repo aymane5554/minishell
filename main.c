@@ -82,13 +82,13 @@ void	extract_exe_arg_from_cmd(char **cmd, char **dst)
 
 char	get_redirection_type(char *str)
 {
-	if (ft_strcmp(str, ">>"))
+	if (!ft_strcmp(str, ">>"))
 		return (2);
-	else if (ft_strcmp(str, "<<"))
+	else if (!ft_strcmp(str, "<<"))
 		return (3);
-	else if (ft_strcmp(str, ">"))
+	else if (!ft_strcmp(str, ">"))
 		return (1);
-	else if (ft_strcmp(str, "<"))
+	else if (!ft_strcmp(str, "<"))
 		return (0);
 	return (-1);
 }
@@ -186,12 +186,6 @@ int main(void)
 				free(tmp);
 			}
 			cmd = ft_split_input(cmds[i], ' ');
-			printf("cmd%i:", i);
-			for (int j = 0; cmd[j]; j++)
-			{
-				printf("[%s]", cmd[j]);
-			}
-			printf("\n");
 			all_cmds[i].cmd = malloc((exe_arg_len(cmd) + 1) * sizeof(char *));
 			all_cmds[i].redirection = malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
 			extract_exe_arg_from_cmd(cmd, all_cmds[i].cmd);
@@ -200,6 +194,21 @@ int main(void)
 		}
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
+		for (int j = 0; all_cmds[j].cmd; j++)
+		{
+			printf ("cmd%i: ", i);
+			for (int y = 0; all_cmds[j].cmd[y]; y++)
+			{
+				printf("[%s]", all_cmds[j].cmd[y]);
+			}
+			printf("\n");
+			printf("redirections: ");
+			for (int y = 0; all_cmds[j].redirection[y].file; y++)
+			{
+				printf("[%s] type : %d", all_cmds[j].redirection[y].file, all_cmds[j].redirection[y].type);
+			}
+			printf("\n");
+		}
 		freecmds(all_cmds);
 		free(cmd);
 		freedbl((void **)cmds);
