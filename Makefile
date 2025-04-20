@@ -1,8 +1,7 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
-MFLAGS = -lreadline -lncurses
-TSRC = syntax_error.c check_quotes.c split_input.c ft_split_pipe.c sep_redirection.c
-SRCS = main.c $(TSRC)
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address
+RFLAGS = -lreadline -lncurses
+SRCS = main.c syntax_error.c check_quotes.c split_input.c ft_split_pipe.c sep_redirection.c expanding.c
 OBJECTS = $(SRCS:%.c=%.o)
 LIBFT_SRCS = libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c \
             libft/ft_isascii.c libft/ft_isdigit.c libft/ft_isprint.c libft/ft_itoa.c libft/ft_memchr.c \
@@ -29,7 +28,7 @@ libft/libft.a: libft/libft.h $(LIBFT_OBJS)
 	cd libft && make all bonus && cd ..
 
 $(NAME):$(OBJECTS) libft/libft.a
-	$(CC) $(CFLAGS) $(OBJECTS) ${MFLAGS} -L libft/ -lft -o $@
+	$(CC) $(CFLAGS) $(OBJECTS) ${RFLAGS} -L libft/ -lft -o $@
 
 %.o: %.c minishell.h
 	$(CC) $(CFLAGS) -c $<  -o $@
