@@ -14,13 +14,14 @@
 
 int	check_quote(char c, int q)
 {
-	if (c == '\'' || c == '\"')
-	{
-		if (q == 1)
-			return (0);
-		if (q == 0)
-			return (1);
-	}
+	if (q == 0 && c == '\'')
+		return (1);
+	if (q == 0 && c == '\"')
+		return (2);
+	if (q == 2 && c == '\"')
+		return (0);
+	if (q == 1 && c == '\'')
+		return (0);
 	return (q);
 }
 
@@ -31,8 +32,13 @@ static	char	*ft_strindup(char *src, char c)
 	int		q;
 
 	i = 0;
-	while (src[i] != '\0' && src[i] != c)
+	while (src[i] != '\0')
+	{
+		q = check_quote(src[i], q);
+		if (src[i] == c && q == 0)
+			break ;
 		i++;
+	}
 	s = (char *)malloc(i + 1);
 	if (!s)
 	{
@@ -43,9 +49,9 @@ static	char	*ft_strindup(char *src, char c)
 	q = 0;
 	while (src[i] != '\0')
 	{
+		q = check_quote(src[i], q);
 		if (src[i] == c && q == 0)
 			break ;
-		q = check_quote(src[i], q);
 		s[i] = src[i];
 		i++;
 	}
@@ -109,17 +115,17 @@ char	**ft_split_pipe(char const *s, char c)
 	int		j;
 	char	**arr;
 	char	f;
-	int		q;
+	char	quote;
 
 	setzero(&i, &j, &f);
 	arr = (char **)malloc((word_count((char *)s, c) + 1) * sizeof(char *));
 	if (!arr)
 		return (NULL);
-	q = 0;
+	quote = 0;
 	while (s[i])
 	{
-		q = check_quote(s[i], q);
-		if (s[i] == c && q == 0)
+		quote = check_quote(s[i], quote);
+		if (s[i] == c && quote == 0)
 			f = 0;
 		else if (s[i] != c && f == 0)
 		{
