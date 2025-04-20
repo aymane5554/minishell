@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address
 RFLAGS = -lreadline -lncurses
 SRCS = main.c syntax_error.c check_quotes.c split_input.c ft_split_pipe.c sep_redirection.c expanding.c
 OBJECTS = $(SRCS:%.c=%.o)

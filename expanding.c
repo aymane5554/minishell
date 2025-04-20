@@ -97,7 +97,6 @@ void	expand(t_cmd *all_cmds, int i, int z)
 				tmp = expand_parse(all_cmds[i].cmd[z]);
 				free(all_cmds[i].cmd[z]);
 				all_cmds[i].cmd[z] = tmp;
-				printf("%s\n", all_cmds[i].cmd[z]);
 			}
 			z++;
 		}
@@ -109,7 +108,6 @@ void	expand(t_cmd *all_cmds, int i, int z)
 				tmp = expand_parse(all_cmds[i].redirection[z].file);
 				free(all_cmds[i].redirection[z].file);
 				all_cmds[i].redirection[z].file = tmp;
-				printf("%s\n", all_cmds[i].cmd[z]);
 			}
 			z++;
 		}
