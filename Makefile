@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
 RFLAGS = -lreadline -lncurses
 SRCS = main.c syntax_error.c check_quotes.c split_input.c ft_split_pipe.c sep_redirection.c expanding.c
 OBJECTS = $(SRCS:%.c=%.o)
@@ -34,10 +34,10 @@ $(NAME):$(OBJECTS) libft/libft.a
 	$(CC) $(CFLAGS) -c $<  -o $@
 
 clean:
-	rm -f $(OBJECTS) && cd libft && make clean && cd ..
+	rm -f $(OBJECTS) && cd libft && make clean && cd .. && clear
 
 fclean: clean
-	rm -f $(NAME) && cd libft && rm -f libft.a && cd ..
+	rm -f $(NAME) && cd libft && rm -f libft.a && cd .. && clear
 
 re: fclean all
 

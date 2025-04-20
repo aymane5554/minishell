@@ -134,6 +134,7 @@ static	int	word_count(char	*s, char c)
 		}
 		arr[0]++;
 	}
+	printf("%i\n", arr[2]);
 	return (arr[2]);
 }
 

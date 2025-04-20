@@ -32,6 +32,7 @@ static	char	*ft_strindup(char *src, char c)
 	int		q;
 
 	i = 0;
+	q = 0;
 	while (src[i] != '\0')
 	{
 		q = check_quote(src[i], q);

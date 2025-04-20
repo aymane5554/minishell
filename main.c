@@ -169,6 +169,11 @@ int main(void)
 		line = readline("minishell> ");
 		if (!line)
 			(printf("exit"), exit (0));
+		if (line[0] == '\0')
+		{
+			free(line);
+			continue ;
+		}
 		add_history(line);
 		if (!validate_input(line))
 		{
@@ -198,6 +203,21 @@ int main(void)
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
 		expand(all_cmds, 0, 0);
+		// for (int j = 0; all_cmds[j].cmd; j++)
+ 		// {
+ 		// 	printf ("cmd%i: ", i);
+ 		// 	for (int y = 0; all_cmds[j].cmd[y]; y++)
+ 		// 	{
+ 		// 		printf("[%s]", all_cmds[j].cmd[y]);
+ 		// 	}
+ 		// 	printf("\n");
+ 		// 	printf("redirections: ");
+ 		// 	for (int y = 0; all_cmds[j].redirection[y].file; y++)
+ 		// 	{
+ 		// 		printf("[%s] type : %d", all_cmds[j].redirection[y].file, all_cmds[j].redirection[y].type);
+ 		// 	}
+ 		// 	printf("\n");
+ 		// }
 		freecmds(all_cmds);
 		free(cmd);
 		freedbl((void **)cmds);
