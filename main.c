@@ -151,6 +151,7 @@ void freecmds(t_cmd	*all_cmds)
 		free_redirections(all_cmds[i].redirection);
 		i++;
 	}
+	free(all_cmds[i].cmd);
 	free(all_cmds);
 }
 

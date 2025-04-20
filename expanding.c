@@ -31,12 +31,24 @@ static char	*exctract_dollar(char *str, int *i, char *res)
 			(*i)++;
 		}
 		var = ft_substr(str, start, len);
-		val = getenv(var);
+		val = getenv(var); //todo: ft_getenv;
 		free(var);
 	}
-	if (!val)
-		val = ft_strdup("");
-	return (ft_strjoin(res, val));
+	var = ft_strjoin(res, val);
+	free(res);
+	return (var);
+}
+
+void push_char(char **s, char c)
+{
+	char	temp[2];
+	char	*tmp;
+
+	temp[0] = c;
+	temp[1] = '\0';
+	tmp = *s;
+	*s = ft_strjoin(*s, temp);
+	free(tmp);
 }
 
 static char	*expand_parse(char *str)
@@ -45,11 +57,12 @@ static char	*expand_parse(char *str)
 	bool	in_single;
 	bool	in_double;
 	char	*result;
+	
 
 	i = 0;
 	in_double = false;
 	in_single = false;
-	result = ft_calloc(1, 1);
+	result = ft_strdup("");
 	while (str[i])
 	{
 		if (str[i] == '\'' && !in_double)
@@ -65,10 +78,7 @@ static char	*expand_parse(char *str)
 		else if (str[i] == '$' && !in_single)
 			result = exctract_dollar(str, &i, result);
 		else
-		{
-			char	temp[2] = {str[i++], 0};
-			result = ft_strjoin(result, temp);
-		}
+			(push_char(&result, str[i]), i++);
 	}
 	return(result);
 }
@@ -83,7 +93,12 @@ void	expand(t_cmd *all_cmds, int i, int z)
 		while (all_cmds[i].cmd[z])
 		{
 			if (ft_strchr(all_cmds[i].cmd[z], '$'))
-				(tmp = expand_parse(all_cmds[i].cmd[z]), free(tmp));
+			{
+				tmp = expand_parse(all_cmds[i].cmd[z]);
+				free(all_cmds[i].cmd[z]);
+				all_cmds[i].cmd[z] = tmp;
+				printf("%s\n", all_cmds[i].cmd[z]);
+			}
 			z++;
 		}
 		z = 0;
@@ -94,6 +109,7 @@ void	expand(t_cmd *all_cmds, int i, int z)
 				tmp = expand_parse(all_cmds[i].redirection[z].file);
 				free(all_cmds[i].redirection[z].file);
 				all_cmds[i].redirection[z].file = tmp;
+				printf("%s\n", all_cmds[i].cmd[z]);
 			}
 			z++;
 		}
