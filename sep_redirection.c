@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:02:05 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/21 16:19:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/21 21:13:46 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ char	*seperate_redirections(char *s, int i, int j, char c)
 
 	size = ft_strlen(s) + space_needed(s);
 	new = malloc((size + 1) * sizeof(char));
+	if (!new)
+		return (NULL);
 	while (j < size)
 	{
 		if (is_quote(s[i]))

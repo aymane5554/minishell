@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/21 16:10:56 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/21 21:26:23 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,11 @@ void free_redirections(t_redr *arr)
 	free(arr);
 }
 
-void freecmds(t_cmd	*all_cmds)
+void	freencmds(t_cmd	*all_cmds, int n)
 {
 	int i = 0;
 
-	while (all_cmds[i].cmd)
+	while (i < n)
 	{
 		freedbl((void **)all_cmds[i].cmd);
 		free_redirections(all_cmds[i].redirection);
@@ -155,6 +155,7 @@ void freecmds(t_cmd	*all_cmds)
 	free(all_cmds[i].cmd);
 	free(all_cmds);
 }
+
 
 int main(void)
 {
@@ -182,6 +183,8 @@ int main(void)
 			continue ;
 		}
 		cmds = ft_split_pipe(line, '|');
+		if (!cmds)
+			(freedbl((void **)cmds),  perror("error\n"), exit (1));
 		free(line);
 		i = ft_dstrlen(cmds) + 1;
 		all_cmds = malloc(sizeof(t_cmd) * i);
@@ -192,9 +195,21 @@ int main(void)
 			{
 				tmp = cmds[i];
 				cmds[i] = seperate_redirections(tmp, 0, 0, 0);
+				if (!cmds[i])
+					cmds[i] = (void *)1;
+				freedbl((void **)cmds);
 				free(tmp);
+				perror("error\n");
+				exit(1);
 			}
 			cmd = ft_split_input(cmds[i], ' ');
+			if (!cmd)
+			{
+				freencmds(all_cmds, i);
+				freedbl((void **)cmds);
+				perror("error\n");
+				exit(1);
+			}
 			all_cmds[i].cmd = malloc((exe_arg_len(cmd) + 1) * sizeof(char *));
 			all_cmds[i].redirection = malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
 			extract_exe_arg_from_cmd(cmd, all_cmds[i].cmd);
@@ -205,7 +220,7 @@ int main(void)
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
 		expand(all_cmds, 0, 0, NULL);
-		freecmds(all_cmds);
+		freencmds(all_cmds, i);
 		freedbl((void **)cmds);
 	}
 	return 0;
