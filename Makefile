@@ -1,7 +1,7 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra
 RFLAGS = -lreadline -lncurses
-SRCS = main.c syntax_error.c check_quotes.c split_input.c ft_split_pipe.c sep_redirection.c expanding.c
+SRCS = main.c syntax/syntax_error.c syntax/utils.c check_quotes.c split_input.c pipe_split/ft_split_pipe.c pipe_split/utils.c sep_redirection.c expanding.c
 OBJECTS = $(SRCS:%.c=%.o)
 LIBFT_SRCS = libft/ft_atoi.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c \
             libft/ft_isascii.c libft/ft_isdigit.c libft/ft_isprint.c libft/ft_itoa.c libft/ft_memchr.c \
@@ -31,7 +31,7 @@ $(NAME):$(OBJECTS) libft/libft.a
 	$(CC) $(CFLAGS) $(OBJECTS) ${RFLAGS} -L libft/ -lft -o $@
 
 %.o: %.c minishell.h
-	$(CC) $(CFLAGS) -c $<  -o $@
+	$(CC) $(CFLAGS) -I . -c $<  -o $@
 
 clean:
 	rm -f $(OBJECTS) && cd libft && make clean && cd .. && clear

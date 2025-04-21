@@ -6,24 +6,14 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:17:34 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/16 14:39:52 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:44:14 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_quote(char c, int q)
-{
-	if (q == 0 && c == '\'')
-		return (1);
-	if (q == 0 && c == '\"')
-		return (2);
-	if (q == 2 && c == '\"')
-		return (0);
-	if (q == 1 && c == '\'')
-		return (0);
-	return (q);
-}
+int	check_quote(char c, int q);
+int	ft_strlen_pipe(char *src, char c, char q);
 
 static	char	*ft_strindup(char *src, char c)
 {
@@ -33,21 +23,9 @@ static	char	*ft_strindup(char *src, char c)
 
 	i = 0;
 	q = 0;
-	while (src[i] != '\0')
-	{
-		q = check_quote(src[i], q);
-		if (src[i] == c && q == 0)
-			break ;
-		i++;
-	}
-	s = (char *)malloc(i + 1);
+	s = (char *)malloc((ft_strlen_pipe(src, c, 0) + 1) * sizeof(char));
 	if (!s)
-	{
-		free(s);
-		return (NULL);
-	}
-	i = 0;
-	q = 0;
+		return (free(s), NULL);
 	while (src[i] != '\0')
 	{
 		q = check_quote(src[i], q);
@@ -103,11 +81,12 @@ static void	*free_all(char **arr)
 	return (NULL);
 }
 
-static void	setzero(int *i, int *j, char *f)
+static void	setzero(int *i, int *j, char f[2])
 {
 	*i = 0;
 	*j = 0;
-	*f = 0;
+	f[0] = 0;
+	f[1] = 0;
 }
 
 char	**ft_split_pipe(char const *s, char c)
@@ -115,29 +94,26 @@ char	**ft_split_pipe(char const *s, char c)
 	int		i;
 	int		j;
 	char	**arr;
-	char	f;
-	char	quote;
+	char	flags[2];
 
-	setzero(&i, &j, &f);
+	setzero(&i, &j, flags);
 	arr = (char **)malloc((word_count((char *)s, c) + 1) * sizeof(char *));
 	if (!arr)
 		return (NULL);
-	quote = 0;
 	while (s[i])
 	{
-		quote = check_quote(s[i], quote);
-		if (s[i] == c && quote == 0)
-			f = 0;
-		else if (s[i] != c && f == 0)
+		flags[0] = check_quote(s[i], flags[0]);
+		if (s[i] == c && flags[0] == 0)
+			flags[1] = 0;
+		else if (s[i] != c && flags[1] == 0)
 		{
 			arr[j] = ft_strindup((char *)(s + i), c);
 			if (arr[j] == NULL)
 				return (free_all(arr));
-			f = 1;
+			flags[1] = 1;
 			j++;
 		}
 		i++;
 	}
-	arr[j] = NULL;
-	return (arr);
+	return (arr[j] = NULL, arr);
 }

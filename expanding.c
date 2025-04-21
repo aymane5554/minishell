@@ -31,7 +31,7 @@ static char	*exctract_dollar(char *str, int *i, char *res)
 			(*i)++;
 		}
 		var = ft_substr(str, start, len);
-		val = getenv(var); //todo: ft_getenv;
+		val = getenv(var);
 		free(var);
 	}
 	var = ft_strjoin(res, val);
@@ -39,7 +39,7 @@ static char	*exctract_dollar(char *str, int *i, char *res)
 	return (var);
 }
 
-void push_char(char **s, char c)
+static void	push_char(char **s, char c)
 {
 	char	temp[2];
 	char	*tmp;
@@ -51,18 +51,22 @@ void push_char(char **s, char c)
 	free(tmp);
 }
 
+static void	init(int *i, bool *in_double, bool *in_single, char **result)
+{
+	*i = 0;
+	*in_double = false;
+	*in_single = false;
+	*result = ft_strdup("");
+}
+
 static char	*expand_parse(char *str)
 {
 	int		i;
 	bool	in_single;
 	bool	in_double;
 	char	*result;
-	
 
-	i = 0;
-	in_double = false;
-	in_single = false;
-	result = ft_strdup("");
+	init(&i, &in_double, &in_single, &result);
 	while (str[i])
 	{
 		if (str[i] == '\'' && !in_double)
@@ -80,14 +84,12 @@ static char	*expand_parse(char *str)
 		else
 			(push_char(&result, str[i]), i++);
 	}
-	return(result);
+	return (result);
 }
 
-void	expand(t_cmd *all_cmds, int i, int z)
+void	expand(t_cmd *all_cmds, int i, int z, char *tmp)
 {
-	char *tmp;
-
-	while(all_cmds[i].cmd)
+	while (all_cmds[i].cmd)
 	{
 		z = 0;
 		while (all_cmds[i].cmd[z])
@@ -95,8 +97,7 @@ void	expand(t_cmd *all_cmds, int i, int z)
 			if (ft_strchr(all_cmds[i].cmd[z], '$'))
 			{
 				tmp = expand_parse(all_cmds[i].cmd[z]);
-				free(all_cmds[i].cmd[z]);
-				all_cmds[i].cmd[z] = tmp;
+				(free(all_cmds[i].cmd[z]), all_cmds[i].cmd[z] = tmp);
 			}
 			z++;
 		}

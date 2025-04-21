@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/20 13:47:36 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:10:56 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ int main(void)
 			if (ft_strchr(cmds[i], '>') || ft_strchr(cmds[i], '<'))
 			{
 				tmp = cmds[i];
-				cmds[i] = seperate_redirections(tmp);
+				cmds[i] = seperate_redirections(tmp, 0, 0, 0);
 				free(tmp);
 			}
 			cmd = ft_split_input(cmds[i], ' ');
@@ -204,7 +204,7 @@ int main(void)
 		}
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
-		expand(all_cmds, 0, 0);
+		expand(all_cmds, 0, 0, NULL);
 		freecmds(all_cmds);
 		freedbl((void **)cmds);
 	}

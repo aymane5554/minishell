@@ -6,13 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/17 17:53:15 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:21:59 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strlen_plus(char *s, char c)
+static int	ft_strlen_plus(char *s, char c)
 {
 	int	i;
 
@@ -20,7 +20,7 @@ int	ft_strlen_plus(char *s, char c)
 	while (s[i])
 	{
 		if (s[i] == c && is_whitespace(s[i + 1]))
-			break;
+			break ;
 		else if (s[i] == c && !is_whitespace(s[i + 1]))
 		{
 			while (!is_whitespace(s[i]))
@@ -32,7 +32,7 @@ int	ft_strlen_plus(char *s, char c)
 	return (i);
 }
 
-void	ft_strcpy_plus(char *src, char *dst, char c)
+static void	ft_strcpy_plus(char *src, char *dst, char c)
 {
 	int	i;
 	int	j;
@@ -42,7 +42,7 @@ void	ft_strcpy_plus(char *src, char *dst, char c)
 	while (src[i])
 	{
 		if (src[i] == c && is_whitespace(src[i + 1]))
-			break;
+			break ;
 		else if (src[i] == c && !is_whitespace(src[i + 1]))
 		{
 			while (!is_whitespace(src[i]))
@@ -184,7 +184,8 @@ char	**ft_split_input(char const *s, char c)
 		return (NULL);
 	while (s[iterators[0]])
 	{
-		if (s[iterators[0]] == c || (c == ' ' && is_whitespace(s[iterators[0]])))
+		if (s[iterators[0]] == c
+			|| (c == ' ' && is_whitespace(s[iterators[0]])))
 		{
 			if (is_whitespace(c))
 				setvars(iterators, &tmp, &c, 1);

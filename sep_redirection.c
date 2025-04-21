@@ -6,33 +6,25 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 15:02:05 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/17 16:27:55 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:19:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-	TODO:
-		count how many redirections that are not seperated.
-		the count how many spaces needeed.
-		malloc.
-		fill.
-*/
-void skip(char quote, int *i, char *str)
+void	skip(char quote, int *i, char *str)
 {
 	(*i)++;
 	while (str[*i] != quote)
 	{
-
 		(*i)++;
 	}
 	(*i)++;
 }
 
-void skip2(int *i, int *j, char *str, char *str2)
+void	skip2(int *i, int *j, char *str, char *str2)
 {
-	char quote;
+	char	quote;
 
 	quote = str[*i];
 	str2[*j] = str[*i];
@@ -77,19 +69,20 @@ static int	space_needed(char *s)
 	return (spaces);
 }
 
-char	*seperate_redirections(char *s)
+static int	inset_space(char *new, int j)
+{
+	new[j] = ' ';
+	j++;
+	return (j);
+}
+
+char	*seperate_redirections(char *s, int i, int j, char c)
 {
 	int		size;
 	char	*new;
-	int		i;
-	int		j;
-	char	c;
 
 	size = ft_strlen(s) + space_needed(s);
 	new = malloc((size + 1) * sizeof(char));
-	i = 0;
-	j = 0;
-	c = 0; 
 	while (j < size)
 	{
 		if (is_quote(s[i]))
@@ -100,20 +93,13 @@ char	*seperate_redirections(char *s)
 		if (s[i] == '>' || s[i] == '<')
 			c = s[i];
 		if (s[i] == c && (i != 0 && s[i - 1] != c && !is_whitespace(s[i - 1])))
-		{
-			new[j] = ' ';
-			j++;
-		}
+			j = inset_space(new, j);
 		new[j] = s[i];
 		j++;
 		if (s[i] == c && (s[i + 1] != c && !is_whitespace(s[i + 1])))
-		{
-			new[j] = ' ';
-			j++;
-		}
+			j = inset_space(new, j);
 		c = 0;
 		i++;
 	}
-	new[j] = '\0';
-	return (new);
+	return (new[j] = '\0', new);
 }

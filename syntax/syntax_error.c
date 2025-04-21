@@ -6,11 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:29:19 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/17 16:20:52 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:00:18 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_empty_string(char *s);
 
 static	void	skip(char quote, int *i, char *str)
 {
@@ -20,18 +22,13 @@ static	void	skip(char quote, int *i, char *str)
 	(*i)++;
 }
 
-static bool	check_redirections(char *str, int i)
+static bool	check_redirections(char *str, int i, int count, char redire)
 {
-	int		count;
-	char	redire;
-	char	quote;
-
 	while (str[i])
 	{
-		if (str[i] == '\'' ||  str[i] == '\"')
+		if (str[i] == '\'' || str[i] == '\"')
 		{
-			quote = str[i];
-			skip(quote, &i, str);
+			skip(str[i], &i, str);
 			continue ;
 		}
 		else if (str[i] == '>' || str[i] == '<')
@@ -39,11 +36,8 @@ static bool	check_redirections(char *str, int i)
 			redire = str[i];
 			i++;
 			count = 1;
-			while (str[i] == redire)
-			{
+			while (str[i++] == redire)
 				count++;
-				i++;
-			}
 			while (is_whitespace(str[i]))
 				i++;
 			if (count > 2 || str[i] == '|' || str[i] == '>' || str[i] == '<')
@@ -57,8 +51,6 @@ static bool	check_redirections(char *str, int i)
 
 static bool	check_pipes(char *str, int i, int seen_command)
 {
-	char quote;
-
 	while (str[i])
 	{
 		if (str[i] == '|')
@@ -67,13 +59,11 @@ static bool	check_pipes(char *str, int i, int seen_command)
 				return (false);
 			seen_command = 0;
 			i++;
-			continue ; 
+			continue ;
 		}
 		else if (str[i] == '\'' || str[i] == '\"')
 		{
-			quote = str[i];
-			seen_command = 1;
-			skip(quote, &i, str);
+			(skip(str[i], &i, str), seen_command = 1);
 			continue ;
 		}
 		else if (str[i] != ' ' && str[i] != '\t')
@@ -85,34 +75,15 @@ static bool	check_pipes(char *str, int i, int seen_command)
 	return (true);
 }
 
-int	check_empty_string(char *s)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (s[i])
-	{
-		if (is_whitespace(s[i]))
-			count++;
-		i++;
-	}
-	if (count == i)
-		return (1);
-	return (0);
-}
-
-bool	validate_input(char *input) 
+bool	validate_input(char *input)
 {
 	if (check_empty_string(input))
 		return (false);
 	if (!valid_quotes(input) || !check_pipes(input, 0, 0)
-		|| !check_redirections(input, 0))
+		|| !check_redirections(input, 0, 0, 0))
 	{
 		fprintf(stderr, "syntax error\n");
 		return (false);
 	}
 	return (true);
 }
-
