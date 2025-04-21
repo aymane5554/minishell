@@ -44,9 +44,9 @@ static bool	check_redirections(char *str, int i)
 				count++;
 				i++;
 			}
-			while (str[i] == ' ' || str[i] == '\t')
+			while (is_whitespace(str[i]))
 				i++;
-			if (count > 2 || ( str[i] <= 'a' && str[i] >= 'z') || !str[i] || str[i] == '|')
+			if (count > 2 || str[i] == '|' || str[i] == '>' || str[i] == '<')
 				return (false);
 		}
 		else
