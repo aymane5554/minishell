@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/21 21:26:23 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/21 21:40:29 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,6 @@ void	freencmds(t_cmd	*all_cmds, int n)
 		free_redirections(all_cmds[i].redirection);
 		i++;
 	}
-	free(all_cmds[i].cmd);
 	free(all_cmds);
 }
 
@@ -196,22 +195,43 @@ int main(void)
 				tmp = cmds[i];
 				cmds[i] = seperate_redirections(tmp, 0, 0, 0);
 				if (!cmds[i])
-					cmds[i] = (void *)1;
-				freedbl((void **)cmds);
+				{
+					cmds[i] = tmp;
+					freencmds(all_cmds, i);
+					freedbl((void **)cmds);
+					perror("error\n");
+					exit(1);
+				}
 				free(tmp);
-				perror("error\n");
-				exit(1);
 			}
 			cmd = ft_split_input(cmds[i], ' ');
 			if (!cmd)
 			{
 				freencmds(all_cmds, i);
 				freedbl((void **)cmds);
+				freedbl((void **)cmd);
 				perror("error\n");
 				exit(1);
 			}
 			all_cmds[i].cmd = malloc((exe_arg_len(cmd) + 1) * sizeof(char *));
+			if (!all_cmds[i].cmd)
+			{
+				freencmds(all_cmds, i);
+				freedbl((void **)cmds);
+				freedbl((void **)cmd);
+				perror("error\n");
+				exit(1);
+			}
 			all_cmds[i].redirection = malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
+			if (!all_cmds[i].redirection)
+			{
+				free(all_cmds[i].cmd);
+				freencmds(all_cmds, i);
+				freedbl((void **)cmds);
+				freedbl((void **)cmd);
+				perror("error\n");
+				exit(1);
+			}
 			extract_exe_arg_from_cmd(cmd, all_cmds[i].cmd);
 			extract_redirections_from_cmd(cmd, all_cmds[i].redirection);
 			free(cmd);
