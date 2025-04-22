@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/22 17:08:30 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:19:01 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,4 @@ void	echo(char **args)
 	}
 	if (newline)
 		printf("\n");
-}
-int main(int argc, char **argv)
-{
-	echo(argv);
-	return 0;
 }
