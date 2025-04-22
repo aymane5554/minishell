@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/21 16:11:40 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:40:20 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,10 @@ char	**ft_split_input(char const *s, char c);
 char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s, int i, int j, char c);
 void	expand(t_cmd *all_cmds, int i, int z, char *tmp);
+void	sigint_handler(int sig);
+void	sigquit_handler(int sig);
+void	pwd(void);
+int		cd(char **args);
+void	echo(char **args);
 
 #endif
