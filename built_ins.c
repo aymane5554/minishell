@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/22 15:46:54 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:08:30 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,15 @@ static int	n_flag(char *str)
 {
 	int i;
 
-	i = 1;
-	if (!str || str[0] != '-')
+	i = 0;
+	if (!str || str[i] != '-')
+		return (0);
+	i++;
+	if (!str[i])
 		return (0);
 	while (str[i])
 	{
-		if (str[i] != 'n')
+		if (str[i] != 'n' && i >= 1)
 			return (0);
 		i++;
 	}
@@ -93,4 +96,9 @@ void	echo(char **args)
 	}
 	if (newline)
 		printf("\n");
+}
+int main(int argc, char **argv)
+{
+	echo(argv);
+	return 0;
 }
