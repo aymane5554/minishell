@@ -6,11 +6,43 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/22 17:19:01 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:04:58 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	argslen(char **args)
+{
+	int	i;
+	
+	i = 0;
+	while (args[i])
+		i++;
+	return (i);
+}
+void	exit(char **args)
+{
+	int i;
+	int	exit_value;
+
+	exit_value = 0;
+	i = argslen(args);
+	if (i >= 3)
+	{
+		printf("exit: too many arguments\n");
+		exit(255);
+	}
+	if (i == 2 && !isdigit(args[1]))
+	{
+		printf("exit: numeric argument required\n");
+		exit(255);
+	}
+	if (i == 1)
+		exit(exit_value);
+	exit_value = ft_atoi(args[1]);
+	exit(exit_value);
+}
 
 void	pwd(void)
 {
@@ -27,16 +59,18 @@ int	cd(char **args)
 	char	*old_pwd;
 	char	*path;
 	char	*tmp;
+	int		i;
 
-	if ((old_pwd = getcwd(NULL, 0)) == NULL)
-		return (1);
-	if (args[2])
-		return (1);
-	if (args[1] == NULL)
+	i = argslen(args);
+	if (args[i >= 3])
+		return (perror("too many arguments\n"), 1);
+	if (i == 1)
 	{
 		if ((path = ft_strdup(getenv("HOME"))) == NULL)
 		return (1);	
 	}
+	if ((old_pwd = getcwd(NULL, 0)) == NULL)
+		return (chdir(path), free(path), 0);
 	else if (ft_strcmp(args[1], ".") == 0 || ft_strcmp(args[1], "..") == 0)
 		path = args[1];
 	else if (args[1][0] == '/')
@@ -96,4 +130,9 @@ void	echo(char **args)
 	}
 	if (newline)
 		printf("\n");
+}
+int main(int argc, char **argv)
+{
+	echo(argv);
+	return 0;
 }
