@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/20 13:48:20 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:33:49 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*exctract_dollar(char *str, int *i, char *res)
+static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 {
 	char	*var;
 	char	*val;
@@ -31,11 +31,11 @@ static char	*exctract_dollar(char *str, int *i, char *res)
 			(*i)++;
 		}
 		var = ft_substr(str, start, len);
-		val = getenv(var);
+		val = ft_getenv(envs, var);
 		free(var);
 	}
 	var = ft_strjoin(res, val);
-	free(res);
+	(free(res), free(val));
 	return (var);
 }
 
@@ -59,7 +59,7 @@ static void	init(int *i, bool *in_double, bool *in_single, char **result)
 	*result = ft_strdup("");
 }
 
-static char	*expand_parse(char *str)
+static char	*expand_parse(char *str, t_env *envs)
 {
 	int		i;
 	bool	in_single;
@@ -80,15 +80,18 @@ static char	*expand_parse(char *str)
 			i++;
 		}
 		else if (str[i] == '$' && !in_single)
-			result = exctract_dollar(str, &i, result);
+			result = exctract_dollar(str, &i, result, envs);
 		else
 			(push_char(&result, str[i]), i++);
 	}
 	return (result);
 }
 
-void	expand(t_cmd *all_cmds, int i, int z, char *tmp)
+void	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 {
+	char	*tmp;
+
+	tmp = NULL;
 	while (all_cmds[i].cmd)
 	{
 		z = 0;
@@ -96,7 +99,7 @@ void	expand(t_cmd *all_cmds, int i, int z, char *tmp)
 		{
 			if (ft_strchr(all_cmds[i].cmd[z], '$'))
 			{
-				tmp = expand_parse(all_cmds[i].cmd[z]);
+				tmp = expand_parse(all_cmds[i].cmd[z], envs);
 				(free(all_cmds[i].cmd[z]), all_cmds[i].cmd[z] = tmp);
 			}
 			z++;
@@ -106,7 +109,7 @@ void	expand(t_cmd *all_cmds, int i, int z, char *tmp)
 		{
 			if (ft_strchr(all_cmds[i].redirection[z].file, '$'))
 			{
-				tmp = expand_parse(all_cmds[i].redirection[z].file);
+				tmp = expand_parse(all_cmds[i].redirection[z].file, envs);
 				free(all_cmds[i].redirection[z].file);
 				all_cmds[i].redirection[z].file = tmp;
 			}

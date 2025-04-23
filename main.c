@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/21 21:40:29 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:53:50 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	freencmds(t_cmd	*all_cmds, int n)
 }
 
 
-int main(void)
+int main(int argc, char **argv, char **env)
 {
 	int		i;
 	char	**cmds;
@@ -164,12 +164,16 @@ int main(void)
 	char	*tmp;
 	char	*line;
 	t_cmd	*all_cmds;
+	t_env	*envs;
 
+	(void)argc;
+	(void)argv;
+	envs = duplicate_env(env);
 	while (1)
 	{
 		line = readline("minishell> ");
 		if (!line)
-			(printf("exit"), exit (0));
+			(free_env(envs), printf("exit"), exit (0));
 		if (line[0] == '\0')
 		{
 			free(line);
@@ -239,7 +243,7 @@ int main(void)
 		}
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
-		expand(all_cmds, 0, 0, NULL);
+		expand(all_cmds, 0, 0, envs);
 		freencmds(all_cmds, i);
 		freedbl((void **)cmds);
 	}
