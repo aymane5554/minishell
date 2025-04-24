@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/23 14:44:43 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:02:59 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <limits.h>
 # include <stdlib.h>
 # include <stdbool.h>
 # include <readline/readline.h>
@@ -50,9 +51,10 @@ char	*seperate_redirections(char *s, int i, int j, char c);
 void	expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
-void	pwd(void);
-int		cd(char **args);
-void	echo(char **args);
+void	builtin_pwd(void);
+int		builtin_cd(char **args);
+void	builtin_echo(char **args);
+void	builtin_exit(char **args);
 t_env	*new_env(char *env);
 void	push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);
