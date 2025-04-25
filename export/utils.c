@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/23 15:55:03 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:52:21 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_env	*new_env(char *env)
 {
 	t_env	*ret;
 	char	*equal;
+	char	*plus;
 
 	ret = malloc(sizeof(t_env));
 	if (env == NULL)
@@ -26,19 +27,40 @@ t_env	*new_env(char *env)
 		return (ret);
 	}
 	equal = ft_strchr(env, '=');
+	plus = ft_strchr(env, '+');
+	if (plus)
+		equal = plus;
 	if (equal == NULL)
 		equal = ft_strchr(env, '\0');
 	ret->key = ft_substr(env, 0, equal - env);
-	ret->value = ft_substr(env, equal - env, ft_strlen(equal));
+	if (*equal == '\0')
+		ret->value = ft_substr(env, equal - env, 0);
+	else if (equal == plus)
+		ret->value = ft_substr(env, (equal - env) + 2, ft_strlen(equal + 2));
+	else
+		ret->value = ft_substr(env, (equal - env) + 1, ft_strlen(equal + 1));
 	ret->next = NULL;
 	return (ret);
 }
 
 void	push_env(t_env *head, t_env *new)
 {
-	while (head->next)
+	t_env *last;
+
+	while (head)
+	{
+		if (head->key && !ft_strcmp(head->key, new->key))
+		{
+			free(new->key);
+			free(head->value);
+			head->value = new->value;
+			free(new);
+			return ;
+		}
+		last = head;
 		head = head->next;
-	head->next = new;
+	}
+	last->next = new;
 }
 
 void	free_env(t_env *env)
@@ -47,11 +69,34 @@ void	free_env(t_env *env)
 
 	while (env)
 	{
-		printf("%s=%s\n", env->key, env->value);
 		free(env->key);
 		free(env->value);
 		last = env;
 		env = env->next;
 		free(last);
 	}
+}
+
+t_env	*duplicate_env(char **env)
+{
+	int		i;
+	t_env	*head;
+
+	i = 0;
+	head = new_env(NULL);
+	while (env[i])
+		(push_env(head, new_env(env[i])), i++);
+	return (head);
+}
+
+char	*ft_getenv(t_env *envs, char *key)
+{
+	envs = envs->next;
+	while (envs->next)
+	{
+		if (!strcmp(key, envs->key))
+			return (ft_strdup(envs->value));
+		envs = envs->next;
+	}
+	return (NULL);
 }

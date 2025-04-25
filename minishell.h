@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/24 11:02:59 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:07:53 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_env
 
 int		valid_quotes(char	*str);
 bool	validate_input(char *input);
-char	**ft_split_input(char const *s, char c);
+char	**ft_split_input(char *str);
 char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s, int i, int j, char c);
 void	expand(t_cmd *all_cmds, int i, int z, t_env *envs);
@@ -60,5 +60,8 @@ void	push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);
 t_env	*duplicate_env(char **env);
 void	free_env(t_env *env);
+int		export(t_env *env, char **cmd);
+void	execute(t_cmd *all_cmds, t_env *env);
+int		ft_dstrlen(char **str);
 
 #endif
