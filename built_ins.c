@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/25 11:30:37 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:49:45 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	builtin_exit(char **args)
 	exit(exit_value);
 }
 
-void	builtin_pwd()
+void	builtin_pwd(void)
 {
 	char	*path;
 	
@@ -71,8 +71,8 @@ void	builtin_pwd()
 	if (path)
 	{
 		printf("%s\n", path);
+		free(path);	
 	}
-	free(path);
 }
 
 int	builtin_cd(char **args)
@@ -94,11 +94,9 @@ int	builtin_cd(char **args)
 	else
 	{
 		if ((old_pwd = getcwd(NULL, 0)) == NULL)
-			return (chdir(getenv("HOME")), 0);
-		else if (ft_strcmp(args[1], ".") == 0 || ft_strcmp(args[1], "..") == 0)
-			path = args[1];
+			return (chdir("/"), 0);
 		else if (args[1][0] == '/')
-			path = ft_strjoin(old_pwd, args[1]);
+			path = ft_strdup(args[1]);
 		else
 		{
 			tmp = ft_strjoin(old_pwd, "/");
