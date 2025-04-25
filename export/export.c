@@ -6,32 +6,71 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/23 15:21:13 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:01:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*duplicate_env(char **env)
+void	display_env(t_env *env)
 {
-	int		i;
-	t_env	*head;
-
-	i = 0;
-	head = new_env(NULL);
-	while (env[i])
-		(push_env(head, new_env(env[i])), i++);
-	return (head);
+	env = env->next;
+	while (env)
+	{
+		printf("%s=\"%s\"\n", env->key, env->value);
+		env = env->next;
+	}
 }
 
-char	*ft_getenv(t_env *envs, char *key)
+void	append_env(t_env *head, t_env *new)
 {
-	envs = envs->next;
-	while (envs->next)
+	t_env	*last;
+	char	*tmp;
+
+	while (head)
 	{
-		if (!strcmp(key, envs->key))
-			return (ft_strdup(envs->value));
-		envs = envs->next;
+		if (head->key && !ft_strcmp(head->key, new->key))
+		{
+			free(new->key);
+			tmp = head->value;
+			head->value = ft_strjoin(head->value, new->value);
+			free(tmp);
+			free(new->value);
+			free(new);
+			return ;
+		}
+		last = head;
+		head = head->next;
 	}
-	return (NULL);
+	last->next = new;
+}
+
+int	export(t_env *env, char **cmd)
+{
+	int i;
+	int j;
+
+	j = 1;
+	if (ft_dstrlen(cmd) == 1)
+		return (display_env(env), 0);
+	while (cmd[j])
+	{
+		i = 1;
+		if (!isalpha(cmd[j][0]) && cmd[j][0] != '_')
+			return (perror("syntax error"), -1);
+		while (cmd[j][i] != '=' && cmd[j][i] != '\0' && cmd[j][i] != '+')
+		{
+			if (!isalnum(cmd[j][i]) && cmd[j][i] != '_')
+				return (perror("syntax error"), -1);
+			i++;
+		}
+		if (cmd[j][i] == '=' || cmd[j][i] == '\0') 
+			push_env(env, new_env(cmd[j]));
+		else if (cmd[j][i] == '+' && cmd[j][i + 1] == '=')
+			append_env(env, new_env(cmd[j]));
+		else
+			perror("syntax error");
+		j++;
+	}
+	return (0);
 }
