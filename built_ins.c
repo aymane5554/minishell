@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/24 15:03:07 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:30:37 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	builtin_exit(char **args)
 	exit(exit_value);
 }
 
-void	builtin_pwd(void)
+void	builtin_pwd()
 {
 	char	*path;
 	
@@ -71,8 +71,8 @@ void	builtin_pwd(void)
 	if (path)
 	{
 		printf("%s\n", path);
-		free(path);	
 	}
+	free(path);
 }
 
 int	builtin_cd(char **args)

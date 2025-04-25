@@ -6,11 +6,28 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/25 11:01:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/25 11:27:22 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void chpwd(t_env *env, char *new)
+{
+	char	*tmp;
+
+	env = env->next;
+	while (env)
+	{
+		if (!ft_strcmp(env->key, "PWD"))
+		{
+			tmp = env->value;
+			env->value = new;
+			free(tmp);
+		}
+		env = env->next;
+	}
+}
 
 void	display_env(t_env *env)
 {
