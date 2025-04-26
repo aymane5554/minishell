@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 16:02:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:13:02 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,17 @@ void	push_env(t_env *head, t_env *new)
 {
 	t_env *last;
 
-	if (new->empty)
-	{
-		free(new->key);
-		free(new->value);
-		free(new);
-		return ;
-	}
 	while (head)
 	{
 		if (head->key && !ft_strcmp(head->key, new->key))
 		{
+			if (new->empty)
+			{
+				free(new->key);
+				free(new->value);
+				free(new);
+				return ;
+			}
 			free(new->key);
 			free(head->value);
 			head->value = new->value;
