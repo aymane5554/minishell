@@ -6,36 +6,11 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 11:10:21 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 11:57:40 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-long	ft_atol(char *nb, int *success)
-{
-	int		i;
-	long	result;
-	int		signal;
-
-	i = 0;
-	result = 0;
-	signal = 1;
-	if (nb[i] == '-')
-		(signal = -1, i++);
-	if (!nb[i])
-		return (*success = 0, 0);
-	while (nb[i] >= '0' && nb[i] <= '9')
-	{
-		result = (result * 10) + (nb[i] - '0');
-		if (result * signal > LONG_MAX || result * signal < LONG_MIN)
-			return (*success = 0, 0);
-		i++;
-	}
-	if (nb[i])
-		return (*success = 0, 0);
-	return (result * signal);
-}
 
 int	argslen(char **args)
 {
@@ -48,14 +23,14 @@ int	argslen(char **args)
 }
 void	builtin_exit(char **args)
 {
-	int i;
-	int	exit_value;
-	int success;
+	int		i;
+	long	exit_value;
+	int		success;
 
 	exit_value = 0;
 	success = 1;
 	i = argslen(args);
-	if (i >= 3)
+	if (i >= 3 || i == 1)
 		(perror("exit: too many arguments\n"), exit(255));
 	exit_value = ft_atol(args[1], &success);
 	if (success == 0)
