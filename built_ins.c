@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/25 11:49:45 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/26 11:10:21 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	builtin_pwd(void)
 	}
 }
 
-int	builtin_cd(char **args)
+int	builtin_cd(char **args, t_env *env)
 {
 	char	*old_pwd;
 	char	*path;
@@ -96,7 +96,10 @@ int	builtin_cd(char **args)
 		if ((old_pwd = getcwd(NULL, 0)) == NULL)
 			return (chdir("/"), 0);
 		else if (args[1][0] == '/')
+		{
 			path = ft_strdup(args[1]);
+			free(old_pwd);
+		}
 		else
 		{
 			tmp = ft_strjoin(old_pwd, "/");
@@ -104,12 +107,16 @@ int	builtin_cd(char **args)
 				return (free(old_pwd), 1);
 			free(old_pwd);
 			path = ft_strjoin(tmp, args[1]);
+			free(tmp);
 			if (!path)
-				return (free(tmp), 1);
+				return (1);
 		}
 	}
 	if (chdir(path) != 0)
 		return (perror("cd"), free(path), 1);
+	chpwd(env, getcwd(NULL, 0));
+	if (i != 1)
+		free(path);
 	return (0);
 }
 

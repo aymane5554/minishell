@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/25 11:31:26 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 10:11:55 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	builtin_pwd(void);
-int		builtin_cd(char **args);
+int		builtin_cd(char **args, t_env *env);
 void	builtin_echo(char **args);
 void	builtin_exit(char **args);
 t_env	*new_env(char *env);
