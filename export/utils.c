@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 16:13:02 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:34:06 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_env	*duplicate_env(char **env)
 char	*ft_getenv(t_env *envs, char *key)
 {
 	envs = envs->next;
-	while (envs->next)
+	while (envs)
 	{
 		if (!strcmp(key, envs->key))
 			return (ft_strdup(envs->value));
