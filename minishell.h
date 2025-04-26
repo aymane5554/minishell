@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 13:21:59 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:05:46 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 # include <signal.h>
 # include <unistd.h>
 # include "libft/libft.h"
+
+extern int g_prompt_statue;
+
+# define PROMPT 0
+# define HERDOC 1
+
 
 typedef struct s_redr
 {
