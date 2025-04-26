@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 10:11:55 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:21:59 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ int		export(t_env *env, char **cmd);
 void	execute(t_cmd *all_cmds, t_env *env);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, char *new);
+void	remove_quotes_main(t_cmd *cmds);
 
 #endif

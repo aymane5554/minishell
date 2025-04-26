@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/25 10:55:36 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:46:42 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ int main(int argc, char **argv, char **env)
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
 		expand(all_cmds, 0, 0, envs);
+		remove_quotes_main(all_cmds);
 		execute(all_cmds, envs);
 		freencmds(all_cmds, i);
 		freedbl((void **)cmds);

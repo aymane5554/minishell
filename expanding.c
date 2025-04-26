@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/25 10:56:42 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:57:22 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,13 @@ static char	*expand_parse(char *str, t_env *envs)
 	{
 		if (str[i] == '\'' && !in_double)
 		{
+			push_char(&result, str[i]);
 			in_single = !in_single;
 			i++;
 		}
 		else if (str[i] == '"' && !in_single)
 		{
+			push_char(&result, str[i]);
 			in_double = !in_double;
 			i++;
 		}

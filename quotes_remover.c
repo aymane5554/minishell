@@ -6,13 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:20:40 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 11:39:03 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:40:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	size_without_quotes(char *s)
+static int	size_without_quotes(char *s)
 {
 	int		i;
 	char	quote;
@@ -20,26 +20,121 @@ int	size_without_quotes(char *s)
 
 	i = 0;
 	j = 0;
+	quote = 0;
 	while (s[i])
 	{
-		if (is_quote(s[i]))
+		if (s[i] == '\'' && quote == 0)
 		{
-			if (s[i] == '\'' && quote == 0)
-				quote = 1;
-			else if (s[i] == '\'' && quote == 1)
-				quote = 0;
-			else if (s[i] == '\"' && quote == 0)
-				quote = 2;
-			else if (s[i] == '\"' && quote == 2)
-				quote = 0;
+			quote = 1;
+			i++;
+			continue ;
+		}
+		else if (s[i] == '\'' && quote == 1)
+		{
+			quote = 0;
+			i++;
+			continue ;
+		}
+		else if (s[i] == '\"' && quote == 0)
+		{
+			quote = 2;
+			i++;
+			continue ;
+		}
+		else if (s[i] == '\"' && quote == 2)
+		{
+			quote = 0;
 			i++;
 			continue ;
 		}
 		i++;
 		j++;
 	}
+	return (j + 1);
 }
 
-void remove_quotes(t_cmd *cmds)
+static void	remove_quotes(char **cmds, char *str, int n)
 {
+	char	*new;
+	int		i;
+	int		j;
+	char	quote;
+
+	i = 0;
+	quote = 0;
+	j = 0;
+	new = malloc(size_without_quotes(str) * sizeof(char));
+	while (str[i])
+	{
+		if (str[i] == '\'' && quote == 0)
+		{
+			quote = 1;
+			i++;
+			continue ;
+		}
+		else if (str[i] == '\'' && quote == 1)
+		{
+			quote = 0;
+			i++;
+			continue ;
+		}
+		else if (str[i] == '\"' && quote == 0)
+		{
+			quote = 2;
+			i++;
+			continue ;
+		}
+		else if (str[i] == '\"' && quote == 2)
+		{
+			quote = 0;
+			i++;
+			continue ;
+		}
+		new[j] = str[i];
+		i++;
+		j++;
+	}
+	new[j] = '\0';
+	free(cmds[n]);
+	cmds[n] = new;
+}
+
+static int is_there_quote(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (is_quote(s[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	remove_quotes_main(t_cmd *cmds)
+{
+	int	c;
+	int	str;
+
+	c = 0;
+	while (cmds[c].cmd)
+	{
+		str = 0;
+		while (cmds[c].cmd[str])
+		{
+			if (is_there_quote(cmds[c].cmd[str]))
+				remove_quotes(cmds[c].cmd, cmds[c].cmd[str], str);
+			str++;
+		}
+		str = 0;
+		while (cmds[c].redirection[str].file)
+		{
+			if (is_there_quote(cmds[c].redirection[str].file))
+				remove_quotes(&(cmds[c].redirection[str].file), cmds[c].redirection[str].file, 0);
+			str++;
+		}
+		c++;
+	}
 }
