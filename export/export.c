@@ -6,11 +6,24 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 16:11:22 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:53:53 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	display_env(t_env *env)
+{
+	env = env->next;
+	while (env)
+	{
+		if (!env->empty)
+		{
+			printf("%s=%s\n", env->key, env->value);
+		}
+		env = env->next;
+	}
+}
 
 void chpwd(t_env *env, char *new)
 {
@@ -29,7 +42,7 @@ void chpwd(t_env *env, char *new)
 	}
 }
 
-void	display_env(t_env *env)
+static void	display_export(t_env *env)
 {
 	env = env->next;
 	while (env)
@@ -43,7 +56,7 @@ void	display_env(t_env *env)
 	}
 }
 
-void	append_env(t_env *head, t_env *new)
+static void	append_env(t_env *head, t_env *new)
 {
 	t_env	*last;
 	char	*tmp;
@@ -73,7 +86,7 @@ int	export(t_env *env, char **cmd)
 
 	j = 1;
 	if (ft_dstrlen(cmd) == 1)
-		return (display_env(env), 0);
+		return (display_export(env), 0);
 	while (cmd[j])
 	{
 		i = 1;
