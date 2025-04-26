@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/24 14:52:21 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:04:20 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,12 @@ t_env	*new_env(char *env)
 	if (equal == NULL)
 		equal = ft_strchr(env, '\0');
 	ret->key = ft_substr(env, 0, equal - env);
+	ret->empty = 0;
 	if (*equal == '\0')
+	{
 		ret->value = ft_substr(env, equal - env, 0);
+		ret->empty = 1;
+	}
 	else if (equal == plus)
 		ret->value = ft_substr(env, (equal - env) + 2, ft_strlen(equal + 2));
 	else

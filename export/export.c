@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/25 11:27:22 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:07:05 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ void	display_env(t_env *env)
 	env = env->next;
 	while (env)
 	{
-		printf("%s=\"%s\"\n", env->key, env->value);
+		printf("declare -x %s", env->key);
+		if (env->empty == 0)
+			printf("=\"%s\"\n", env->value);
+		else
+			printf("\n");
 		env = env->next;
 	}
 }

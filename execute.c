@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 10:16:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/26 14:25:55 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	execute(t_cmd *all_cmds, t_env *env)
 			builtin_pwd();
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "exit"))
 			builtin_exit(all_cmds[i].cmd);
+		else if (!ft_strcmp(all_cmds[i].cmd[0], "unset"))
+			unset(all_cmds[i].cmd, env);
 		/*
 		else:
 			find path and execute.
