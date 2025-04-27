@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 16:35:02 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:43:43 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@ static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 			(*i)++;
 		}
 		var = ft_substr(str, start, len);
+		if (!var)
+			return (perror("malloc"), NULL);
 		val = ft_getenv(envs, var);
 		free(var);
 	}
 	var = ft_strjoin(res, val);
-	(free(res), free(val));
+	if (!var)
+		return (perror("malloc"), free(res), free(val), NULL);
 	return (var);
 }
 
@@ -67,29 +70,44 @@ static char	*expand_parse(char *str, t_env *envs)
 	char	*result;
 
 	init(&i, &in_double, &in_single, &result);
+	if (!result)
+		return (perror("malloc"), NULL);
 	while (str[i])
 	{
 		if (str[i] == '\'' && !in_double)
 		{
 			push_char(&result, str[i]);
+			if (!result)
+				return (perror("malloc"), NULL);
 			in_single = !in_single;
 			i++;
 		}
 		else if (str[i] == '"' && !in_single)
 		{
 			push_char(&result, str[i]);
+			if (!result)
+				return (perror("malloc"), NULL);
 			in_double = !in_double;
 			i++;
 		}
 		else if (str[i] == '$' && !in_single)
+		{
 			result = exctract_dollar(str, &i, result, envs);
+			if (!result)
+				return (NULL);
+		}
 		else
-			(push_char(&result, str[i]), i++);
+		{
+			push_char(&result, str[i]);
+			if (!result)
+				return (perror("malloc"), NULL);
+			i++;
+		}
 	}
 	return (result);
 }
 
-void	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
+int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 {
 	char	*tmp;
 
@@ -102,6 +120,8 @@ void	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 			if (ft_strchr(all_cmds[i].cmd[z], '$'))
 			{
 				tmp = expand_parse(all_cmds[i].cmd[z], envs);
+				if (!tmp)
+					return (1);
 				(free(all_cmds[i].cmd[z]), all_cmds[i].cmd[z] = tmp);
 			}
 			z++;
@@ -112,6 +132,8 @@ void	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 			if (ft_strchr(all_cmds[i].redirection[z].file, '$'))
 			{
 				tmp = expand_parse(all_cmds[i].redirection[z].file, envs);
+				if (!tmp)
+					return (1);
 				free(all_cmds[i].redirection[z].file);
 				all_cmds[i].redirection[z].file = tmp;
 			}
@@ -119,4 +141,5 @@ void	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 		}
 		i++;
 	}
+	return (0);
 }

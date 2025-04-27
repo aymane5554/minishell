@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:20:40 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 13:40:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:49:28 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	size_without_quotes(char *s)
 	return (j + 1);
 }
 
-static void	remove_quotes(char **cmds, char *str, int n)
+static int	remove_quotes(char **cmds, char *str, int n)
 {
 	char	*new;
 	int		i;
@@ -64,6 +64,8 @@ static void	remove_quotes(char **cmds, char *str, int n)
 	quote = 0;
 	j = 0;
 	new = malloc(size_without_quotes(str) * sizeof(char));
+	if (!new)
+		return (1);
 	while (str[i])
 	{
 		if (str[i] == '\'' && quote == 0)
@@ -97,6 +99,7 @@ static void	remove_quotes(char **cmds, char *str, int n)
 	new[j] = '\0';
 	free(cmds[n]);
 	cmds[n] = new;
+	return (0);
 }
 
 static int is_there_quote(char *s)
@@ -113,7 +116,7 @@ static int is_there_quote(char *s)
 	return (0);
 }
 
-void	remove_quotes_main(t_cmd *cmds)
+int	remove_quotes_main(t_cmd *cmds)
 {
 	int	c;
 	int	str;
@@ -125,14 +128,20 @@ void	remove_quotes_main(t_cmd *cmds)
 		while (cmds[c].cmd[str])
 		{
 			if (is_there_quote(cmds[c].cmd[str]))
-				remove_quotes(cmds[c].cmd, cmds[c].cmd[str], str);
+			{
+				if (remove_quotes(cmds[c].cmd, cmds[c].cmd[str], str))
+					return (1);
+			}
 			str++;
 		}
 		str = 0;
 		while (cmds[c].redirection[str].file)
 		{
 			if (is_there_quote(cmds[c].redirection[str].file))
-				remove_quotes(&(cmds[c].redirection[str].file), cmds[c].redirection[str].file, 0);
+			{
+				if (remove_quotes(&(cmds[c].redirection[str].file), cmds[c].redirection[str].file, 0))
+					return (1);
+			}
 			str++;
 		}
 		c++;

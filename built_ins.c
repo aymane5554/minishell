@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 11:57:40 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:46:11 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	builtin_cd(char **args, t_env *env)
 		else if (args[1][0] == '/')
 		{
 			path = ft_strdup(args[1]);
+			if (!path)
+				return (free(old_pwd), 1);
 			free(old_pwd);
 		}
 		else

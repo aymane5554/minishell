@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 16:54:23 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:50:15 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	validate_input(char *input);
 char	**ft_split_input(char *str);
 char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s, int i, int j, char c);
-void	expand(t_cmd *all_cmds, int i, int z, t_env *envs);
+int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	builtin_pwd(void);
@@ -71,7 +71,7 @@ int		export(t_env *env, char **cmd);
 void	execute(t_cmd *all_cmds, t_env *env);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, char *new);
-void	remove_quotes_main(t_cmd *cmds);
+int		remove_quotes_main(t_cmd *cmds);
 int		unset(char **cmd, t_env *env);
 void	display_env(t_env *env);
 

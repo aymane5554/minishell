@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 14:46:24 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:50:24 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,8 +245,16 @@ int main(int argc, char **argv, char **env)
 		}
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
-		expand(all_cmds, 0, 0, envs);
-		remove_quotes_main(all_cmds);
+		if (expand(all_cmds, 0, 0, envs))
+		{
+			(freencmds(all_cmds, i), freedbl((void **)cmds));
+			continue ;
+		}
+		if (remove_quotes_main(all_cmds))
+		{
+			(freencmds(all_cmds, i), freedbl((void **)cmds));
+			continue ;
+		}
 		execute(all_cmds, envs);
 		freencmds(all_cmds, i);
 		freedbl((void **)cmds);
