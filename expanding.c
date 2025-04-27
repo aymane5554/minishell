@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/27 10:43:43 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:18:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 	var = ft_strjoin(res, val);
 	if (!var)
 		return (perror("malloc"), free(res), free(val), NULL);
+	(free(res), free(val));
 	return (var);
 }
 
