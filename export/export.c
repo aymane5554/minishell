@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/27 10:13:09 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:06:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static void	append_env(t_env *head, t_env *new)
 	t_env	*last;
 	char	*tmp;
 
+	if (!new)
+		return (perror("export error"));
 	while (head)
 	{
 		if (head->key && !ft_strcmp(head->key, new->key))
@@ -79,14 +81,14 @@ static void	append_env(t_env *head, t_env *new)
 	last->next = new;
 }
 
-int	export(t_env *env, char **cmd)
+int	export(t_env *env, t_env *exprt, char **cmd)
 {
 	int i;
 	int j;
 
 	j = 1;
 	if (ft_dstrlen(cmd) == 1)
-		return (display_export(env), 0);
+		return (display_export(exprt), 0);
 	while (cmd[j])
 	{
 		i = 1;
@@ -103,10 +105,16 @@ int	export(t_env *env, char **cmd)
 				return (perror("syntax error"), -1);
 			i++;
 		}
-		if (cmd[j][i] == '=' || cmd[j][i] == '\0') 
+		if (cmd[j][i] == '=' || cmd[j][i] == '\0')
+		{
 			push_env(env, new_env(cmd[j]));
+			push_export(exprt, new_env(cmd[j]));
+		}
 		else if (cmd[j][i] == '+' && cmd[j][i + 1] == '=')
+		{
 			append_env(env, new_env(cmd[j]));
+			append_export(exprt, new_env(cmd[j]));
+		}
 		else
 			perror("syntax error");
 		j++;

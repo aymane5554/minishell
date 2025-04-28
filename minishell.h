@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/27 10:50:15 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:04:25 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,15 @@ void	push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);
 t_env	*duplicate_env(char **env);
 void	free_env(t_env *env);
-int		export(t_env *env, char **cmd);
-void	execute(t_cmd *all_cmds, t_env *env);
+int		export(t_env *env, t_env *exprt, char **cmd);
+void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, char *new);
 int		remove_quotes_main(t_cmd *cmds);
 int		unset(char **cmd, t_env *env);
 void	display_env(t_env *env);
+t_env	*sort_lst(t_env *lst);
+void	push_export(t_env *env, t_env *new);
+void	append_export(t_env *env, t_env *new);
 
 #endif

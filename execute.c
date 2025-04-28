@@ -6,13 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 16:54:55 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:03:09 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute(t_cmd *all_cmds, t_env *env)
+void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 {
 	int	i;
 
@@ -20,7 +20,7 @@ void	execute(t_cmd *all_cmds, t_env *env)
 	while (all_cmds[i].cmd)
 	{
 		if (!ft_strcmp(all_cmds[i].cmd[0], "export"))
-			export(env, all_cmds[i].cmd);
+			export(env, exprt, all_cmds[i].cmd);
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "echo"))
 			builtin_echo(all_cmds[i].cmd);
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "cd"))

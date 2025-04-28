@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/27 10:50:24 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:03:34 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,15 +167,17 @@ int main(int argc, char **argv, char **env)
 	char	*line;
 	t_cmd	*all_cmds;
 	t_env	*envs;
+	t_env	*s_env;
 
 	(void)argc;
 	(void)argv;
 	envs = duplicate_env(env);
+	s_env = sort_lst(envs);
 	while (1)
 	{
 		line = readline("minishell> ");
 		if (!line)
-			(free_env(envs), printf("exit"), exit (0));
+			(free_env(envs), free_env(s_env), printf("exit"), exit (0));
 		if (line[0] == '\0')
 		{
 			free(line);
@@ -255,7 +257,7 @@ int main(int argc, char **argv, char **env)
 			(freencmds(all_cmds, i), freedbl((void **)cmds));
 			continue ;
 		}
-		execute(all_cmds, envs);
+		execute(all_cmds, envs, s_env);
 		freencmds(all_cmds, i);
 		freedbl((void **)cmds);
 	}
