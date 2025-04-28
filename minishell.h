@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/28 11:04:25 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:23:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <signal.h>
 # include <unistd.h>
 # include "libft/libft.h"
+# include <fcntl.h>
+# include <wait.h>
 
 
 extern int g_prompt_statue;
@@ -68,7 +70,7 @@ char	*ft_getenv(t_env *envs, char *key);
 t_env	*duplicate_env(char **env);
 void	free_env(t_env *env);
 int		export(t_env *env, t_env *exprt, char **cmd);
-void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt);
+void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, char *new);
 int		remove_quotes_main(t_cmd *cmds);
@@ -77,5 +79,7 @@ void	display_env(t_env *env);
 t_env	*sort_lst(t_env *lst);
 void	push_export(t_env *env, t_env *new);
 void	append_export(t_env *env, t_env *new);
+int		redirect(t_cmd all_cmds);
+void	freencmds(t_cmd	*all_cmds, int n);
 
 #endif
