@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 21:18:46 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/28 11:21:47 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:42:22 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	push_export(t_env *env, t_env *new)
 {
 	t_env	*last;
 
+	if (!new)
+		return (perror("export"));
 	last = env;
 	while (env)
 	{
@@ -45,6 +47,8 @@ void	append_export(t_env *env, t_env *new)
 	t_env	*last;
 	char	*tmp;
 
+	if (!new)
+		return (perror("export"));
 	last = env;
 	while (env)
 	{
@@ -54,9 +58,13 @@ void	append_export(t_env *env, t_env *new)
 				return (free(new->key), free(new->value), free(new));
 			tmp = env->value;
 			env->value = ft_strjoin(env->value, new->value);
+			if (!env->value)
+			{
+				env->value = tmp;
+				return (free(new->value), free(new->key), free(new));
+			}
 			env->empty = new->empty;
-			free(new->value);
-			(free(new->key), free(tmp), free(new));
+			(free(new->value), free(new->key), free(tmp), free(new));
 			return ;
 		}
 		if ((!env->key || ft_strcmp(env->key, new->key) < 0) && (!env->next || ft_strcmp(env->next->key, new->key) > 0))

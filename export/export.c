@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/28 11:06:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:43:24 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ static void	append_env(t_env *head, t_env *new)
 			free(new->key);
 			tmp = head->value;
 			head->value = ft_strjoin(head->value, new->value);
+			if (!head->value)
+			{
+				head->value = tmp;
+				return (free(new->value), free(new));
+			}
 			free(tmp);
 			free(new->value);
 			free(new);
