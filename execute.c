@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/28 15:24:24 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:59:04 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds)
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "echo"))
 			builtin_echo(all_cmds[i].cmd);
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "cd"))
-			builtin_cd(all_cmds[i].cmd, env);
+			builtin_cd(all_cmds[i].cmd, no_cmds);
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "pwd"))
 			builtin_pwd();
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "exit"))
-			builtin_exit(all_cmds[i].cmd);
+			builtin_exit(all_cmds[i].cmd, no_cmds);
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "unset"))
 			unset(all_cmds[i].cmd, env);
 		else if (!ft_strcmp(all_cmds[i].cmd[0], "env"))

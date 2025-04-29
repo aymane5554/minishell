@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/28 15:23:54 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:02:35 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <sys/stat.h>
 # include <stdio.h>
 # include <limits.h>
 # include <stdlib.h>
@@ -61,9 +62,9 @@ int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	builtin_pwd(void);
-int		builtin_cd(char **args, t_env *env);
+void	builtin_cd(char **args, int cmds_size);
 void	builtin_echo(char **args);
-void	builtin_exit(char **args);
+void	builtin_exit(char **args, int cmds_size);
 t_env	*new_env(char *env);
 void	push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);
