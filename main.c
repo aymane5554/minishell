@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/28 15:06:11 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:37:24 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,7 @@ int main(int argc, char **argv, char **env)
 			freencmds(all_cmds, i);
 			continue ;
 		}
-		execute(all_cmds, envs, s_env, i);
+		execute(all_cmds, envs, s_env, i, env);
 		freencmds(all_cmds, i);
 	}
 	return (0);

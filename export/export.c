@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/28 11:43:24 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:53:14 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,19 @@ int	export(t_env *env, t_env *exprt, char **cmd)
 			continue ;
 		}
 		if (!isalpha(cmd[j][0]) && cmd[j][0] != '_')
-			return (perror("syntax error"), -1);
+		{
+			perror("syntax error");
+			j++;
+			continue ;
+		}
 		while (cmd[j][i] != '=' && cmd[j][i] != '\0' && cmd[j][i] != '+')
 		{
 			if (!isalnum(cmd[j][i]) && cmd[j][i] != '_')
-				return (perror("syntax error"), -1);
+			{
+				perror("syntax error");
+				j++;
+				continue ;
+			}
 			i++;
 		}
 		if (cmd[j][i] == '=' || cmd[j][i] == '\0')

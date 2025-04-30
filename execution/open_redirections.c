@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:38:02 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/28 15:24:45 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:54:25 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,32 @@ int	write_in_file(int fd, char *lim)
 {
 	char	*line;
 
-	line = readline(">");
+	line = readline("heredoc> ");
 	while (line && ft_strcmp(line, lim))
 	{
 		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
-		line = readline(">");
+		line = readline("heredoc> ");
 	}
-	return (1);
+	free(line);
+	return (fd);
 }
 
 int	open_heredoc(char *lim)
 {
-	int		fd;
+	int		fd[2];
 	char	*filename_template;
 	int		n;
 	char	*filename;
 	char	*num;
 
-	filename_template = "/tmp/tmp_minishell_";
+	filename_template = "/tmp/.tmp_minishell_";
 	n = 0;
 	num = ft_itoa(n);
 	filename = ft_strjoin(filename_template, num);
-	while ((fd = open(filename, O_RDWR | O_CREAT)) == -1)
+	fd[0] = open(filename, O_RDWR | O_CREAT, 0777);
+	while (fd[0] == -1)
 	{
 		(free(filename), free(num));
 		n++;
@@ -82,12 +85,16 @@ int	open_heredoc(char *lim)
 		filename = ft_strjoin(filename_template, num);
 		if (!filename)
 			return (free(num), -1);
+		fd[0] = open(filename, O_RDWR | O_CREAT, 0777);
 	}
+	fd[1] = open(filename, O_RDONLY);
 	unlink(filename);
+	write_in_file(fd[0], lim);
+	close(fd[0]);
+	dup2(fd[1], 0);
+	close(fd[1]);
 	(free(filename), free(num));
-	write_in_file(fd, lim);
-	dup2(fd, 0);
-	return (fd);
+	return (fd[1]);
 }
 
 int	redirect(t_cmd all_cmds)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/29 10:02:35 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:38:25 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ft_getenv(t_env *envs, char *key);
 t_env	*duplicate_env(char **env);
 void	free_env(t_env *env);
 int		export(t_env *env, t_env *exprt, char **cmd);
-void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds);
+void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds, char **o_env);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, char *new);
 int		remove_quotes_main(t_cmd *cmds);
@@ -82,5 +82,6 @@ void	push_export(t_env *env, t_env *new);
 void	append_export(t_env *env, t_env *new);
 int		redirect(t_cmd all_cmds);
 void	freencmds(t_cmd	*all_cmds, int n);
+char	*check_commands(t_env *env, char *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/25 10:58:58 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/30 09:13:01 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,9 @@ char	**ft_split_input(char *str)
 	char	**ret;
 	int		i;
 	int		count;
-	char	q;
 	int		f;
 
 	i = 0;
-	q = 0;
 	f = 1;
 	count = 0;
 	ret = malloc((wordcount(str) + 1) * sizeof(char *));
