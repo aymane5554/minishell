@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 15:16:09 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 11:52:20 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:05:14 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ long	ft_atol(const char *ptr, int *success)
 	sign = 1;
 	total = 0;
 	last = 0;
+	if (ptr == NULL)
+		return (total);
 	pre(&ptr, &sign);
 	if (!(*ptr >= '0' && *ptr <= '9'))
 		return (*success = 0, 0);

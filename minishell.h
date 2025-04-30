@@ -6,13 +6,14 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/28 11:04:25 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:38:25 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <sys/stat.h>
 # include <stdio.h>
 # include <limits.h>
 # include <stdlib.h>
@@ -23,6 +24,8 @@
 # include <signal.h>
 # include <unistd.h>
 # include "libft/libft.h"
+# include <fcntl.h>
+# include <wait.h>
 
 
 extern int g_prompt_statue;
@@ -59,16 +62,16 @@ int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	builtin_pwd(void);
-int		builtin_cd(char **args, t_env *env);
+void	builtin_cd(char **args, int cmds_size);
 void	builtin_echo(char **args);
-void	builtin_exit(char **args);
+void	builtin_exit(char **args, int cmds_size);
 t_env	*new_env(char *env);
 void	push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);
 t_env	*duplicate_env(char **env);
 void	free_env(t_env *env);
 int		export(t_env *env, t_env *exprt, char **cmd);
-void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt);
+void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds, char **o_env);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, char *new);
 int		remove_quotes_main(t_cmd *cmds);
@@ -77,5 +80,8 @@ void	display_env(t_env *env);
 t_env	*sort_lst(t_env *lst);
 void	push_export(t_env *env, t_env *new);
 void	append_export(t_env *env, t_env *new);
+int		redirect(t_cmd all_cmds);
+void	freencmds(t_cmd	*all_cmds, int n);
+char	*check_commands(t_env *env, char *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/27 11:18:54 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:40:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 		z = 0;
 		while (all_cmds[i].redirection[z].file)
 		{
-			if (ft_strchr(all_cmds[i].redirection[z].file, '$'))
+			if (ft_strchr(all_cmds[i].redirection[z].file, '$') && all_cmds[i].redirection[z].type != 2)
 			{
 				tmp = expand_parse(all_cmds[i].redirection[z].file, envs);
 				if (!tmp)

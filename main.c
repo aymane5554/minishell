@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/28 11:03:34 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:37:24 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void	extract_exe_arg_from_cmd(char **cmd, char **dst)
 char	get_redirection_type(char *str)
 {
 	if (!ft_strcmp(str, ">>"))
-		return (free(str), 2);
-	else if (!ft_strcmp(str, "<<"))
 		return (free(str), 3);
+	else if (!ft_strcmp(str, "<<"))
+		return (free(str), 2);
 	else if (!ft_strcmp(str, ">"))
 		return (free(str), 1);
 	else if (!ft_strcmp(str, "<"))
@@ -245,21 +245,21 @@ int main(int argc, char **argv, char **env)
 			free(cmd);
 			i++;
 		}
+		freedbl((void **)cmds);
 		all_cmds[i].cmd = NULL;
 		all_cmds[i].redirection = NULL;
 		if (expand(all_cmds, 0, 0, envs))
 		{
-			(freencmds(all_cmds, i), freedbl((void **)cmds));
+			freencmds(all_cmds, i);
 			continue ;
 		}
 		if (remove_quotes_main(all_cmds))
 		{
-			(freencmds(all_cmds, i), freedbl((void **)cmds));
+			freencmds(all_cmds, i);
 			continue ;
 		}
-		execute(all_cmds, envs, s_env);
+		execute(all_cmds, envs, s_env, i, env);
 		freencmds(all_cmds, i);
-		freedbl((void **)cmds);
 	}
 	return (0);
 }
