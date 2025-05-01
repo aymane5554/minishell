@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/01 10:13:08 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/01 10:24:13 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	builtin_cd(char **args, int cmds_size)
 		return (ft_putstr_fd("too many arguments\n", 2));
 	if (i == 1)
 	{
-		path = getenv("HOME");
+		path = ft_strdup(getenv("HOME"));
 		if (!path)
 			return(ft_putstr_fd("cd: HOME is not set\n", 2));
 	}
@@ -123,14 +123,9 @@ void	builtin_cd(char **args, int cmds_size)
 	if (!S_ISDIR(info.st_mode))
 		return (ft_putstr_fd("cd: Not a directory\n", 2), free(path));
 	if (cmds_size > 1)
-	{
-		if (i != 1)
-			free(path);
-		return ;
-	}
+		return free(path);
 	chdir(path);
-	if (i != 1)
-		free(path);
+	free(path);
 	return ;
 }
 
