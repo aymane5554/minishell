@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/02 11:12:19 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:12:47 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
 void	builtin_pwd(void);
-void	builtin_cd(char **args, int cmds_size);
+void	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
 void	builtin_echo(char **args);
 void	builtin_exit(char **args, int cmds_size);
 t_env	*new_env(char *env);
@@ -73,7 +73,7 @@ void	free_env(t_env *env);
 int		export(t_env *env, t_env *exprt, char **cmd);
 void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env);
 int		ft_dstrlen(char **str);
-void	chpwd(t_env *env, char *new);
+void	chpwd(t_env *env, t_env *exprt, char *new);
 int		remove_quotes_main(t_cmd *cmds);
 int		unset(char **cmd, t_env *env);
 void	display_env(t_env *env);
@@ -83,5 +83,6 @@ void	append_export(t_env *env, t_env *new);
 int		redirect(t_cmd all_cmds, int pfd[2], int nth, int  no_cmds);
 void	freencmds(t_cmd	*all_cmds, int n);
 char	*check_commands(t_env *env, char *cmd);
+void	choldpwd(t_env *env, t_env *exprt, char *new);
 
 #endif

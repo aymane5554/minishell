@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:58:06 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/27 21:13:58 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:32:10 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ t_env	*duplicate_list(t_env *env)
 	env = env->next;
 	while (env)
 	{
+		if (!ft_strcmp(env->key, "_"))
+		{
+			env = env->next;
+			continue ;
+		}
 		curr->next = duplicate_node(env);
 		curr = curr->next;
 		env = env->next;
@@ -75,7 +80,7 @@ t_env	*sort_lst(t_env *lst)
 	new = duplicate_node(lst);
 	curr = new;
 	i = lst->next;
-	while (i)
+	while (i->next)
 	{
 		curr->next = smallest_node(duplicated);
 		curr = curr->next;
