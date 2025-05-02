@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/01 10:25:35 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:08:46 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,7 @@ int main(int argc, char **argv, char **env)
 			freencmds(all_cmds, i);
 			continue ;
 		}
-		execute(all_cmds, envs, s_env, i, env);
+		execute(all_cmds, envs, s_env, env);
 		freencmds(all_cmds, i);
 	}
 	return (0);

@@ -6,18 +6,33 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/29 13:39:12 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:46:24 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds, char **o_env)
+int	count_cmds(t_cmd *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (cmds[i].cmd)
+		i++;
+	return (i);
+}
+
+void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 {
 	int		i;
 	char	*cmd_path;
+	int		no_cmds;
+	int		p_fd[3];
 
 	i = 0;
+	no_cmds = count_cmds(all_cmds);
+	if (no_cmds != 1)
+		pipe(p_fd);
 	while (all_cmds[i].cmd)
 	{
 		if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "export"))
@@ -36,9 +51,17 @@ void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds, char **o_en
 			display_env(env);
 		else
 		{
+			if (i != 0 && i != no_cmds -1)
+			{
+				close(p_fd[1]);
+				p_fd[2] = p_fd[0];
+				pipe(p_fd);
+			}
+			else if (i == no_cmds - 1 && no_cmds != 1)
+				close(p_fd[1]);
 			if (!fork())
 			{
-				if (redirect(all_cmds[i]) == -1)
+				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 				{
 					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
 					exit(1);
@@ -62,6 +85,8 @@ void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, int no_cmds, char **o_en
 		}
 		i++;
 	}
+	if (no_cmds != 1)
+		(close(p_fd[0]), close(p_fd[1]));
 	while (wait(NULL) >= 0)
 		continue ;
 }

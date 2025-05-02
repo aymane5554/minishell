@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:38:02 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/02 10:28:04 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/02 11:49:25 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,23 @@ int	open_heredoc(char *lim)
 	return (fd[1]);
 }
 
-int	redirect(t_cmd all_cmds)
+int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 {
 	int	red;
 	int fd0;
 
 	red = 0;
 	fd0 = 0;
+	if (nth == 0 && no_cmds != 1)
+		(dup2(pfd[1], 1), close(pfd[1]));
+	else if (nth == no_cmds - 1 && no_cmds != 1)
+		fd0 = pfd[0];
+	else if (no_cmds != 1)
+	{
+		dup2(pfd[1], 1);
+		close(pfd[1]);
+		fd0 = pfd[2];
+	}
 	while (all_cmds.redirection[red].file != NULL)
 	{
 		if (all_cmds.redirection[red].type == 0)
@@ -130,7 +140,10 @@ int	redirect(t_cmd all_cmds)
 		}
 		red++;
 	}
-	dup2(fd0, 0);
-	close(fd0);
+	if (fd0 != 0)
+	{
+		dup2(fd0, 0);
+		close(fd0);
+	}
 	return (1);
 }
