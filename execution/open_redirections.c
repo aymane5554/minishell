@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 13:38:02 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/30 10:54:25 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/02 10:28:04 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	open_infile(char	*filename)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (perror("open"), -1);
-	dup2(fd, 0);
-	close(fd);
 	return (fd);
 }
 
@@ -76,7 +74,7 @@ int	open_heredoc(char *lim)
 	n = 0;
 	num = ft_itoa(n);
 	filename = ft_strjoin(filename_template, num);
-	fd[0] = open(filename, O_RDWR | O_CREAT, 0777);
+	fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL , 0777);
 	while (fd[0] == -1)
 	{
 		(free(filename), free(num));
@@ -85,14 +83,12 @@ int	open_heredoc(char *lim)
 		filename = ft_strjoin(filename_template, num);
 		if (!filename)
 			return (free(num), -1);
-		fd[0] = open(filename, O_RDWR | O_CREAT, 0777);
+		fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL, 0777);
 	}
 	fd[1] = open(filename, O_RDONLY);
 	unlink(filename);
 	write_in_file(fd[0], lim);
 	close(fd[0]);
-	dup2(fd[1], 0);
-	close(fd[1]);
 	(free(filename), free(num));
 	return (fd[1]);
 }
@@ -100,13 +96,18 @@ int	open_heredoc(char *lim)
 int	redirect(t_cmd all_cmds)
 {
 	int	red;
+	int fd0;
 
 	red = 0;
+	fd0 = 0;
 	while (all_cmds.redirection[red].file != NULL)
 	{
 		if (all_cmds.redirection[red].type == 0)
 		{
-			if (open_infile(all_cmds.redirection[red].file) == -1)
+			if (fd0 != 0 && fd0 != -1)
+				close(fd0);
+			fd0 = open_infile(all_cmds.redirection[red].file);
+			if (fd0 == -1)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 1)
@@ -116,15 +117,20 @@ int	redirect(t_cmd all_cmds)
 		}
 		else if (all_cmds.redirection[red].type == 2)
 		{
-			if (open_heredoc(all_cmds.redirection[red].file) == -1)
+			if (fd0 != 0 && fd0 != -1)
+				close(fd0);
+			fd0 = open_heredoc(all_cmds.redirection[red].file);
+			if (fd0 == -1)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 3)
 		{
-			if (open_outfile(all_cmds.redirection[red].file) == -1)
+			if (open_append_file(all_cmds.redirection[red].file) == -1)
 				return (-1);
 		}
 		red++;
 	}
+	dup2(fd0, 0);
+	close(fd0);
 	return (1);
 }
