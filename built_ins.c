@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/01 10:24:13 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:14:58 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	builtin_pwd(void)
 	}
 }
 
-void	builtin_cd(char **args, int cmds_size)
+void	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
 {
 	char		*old_pwd;
 	char		*path;
@@ -96,7 +96,9 @@ void	builtin_cd(char **args, int cmds_size)
 	{
 		if ((old_pwd = getcwd(NULL, 0)) == NULL)
 		{
+			choldpwd(env, exprt, getcwd(NULL, 0));
 			chdir("/");
+			chpwd(env, exprt, getcwd(NULL, 0));
 			return ;
 		}
 		else if (args[1][0] == '/')
@@ -124,8 +126,10 @@ void	builtin_cd(char **args, int cmds_size)
 		return (ft_putstr_fd("cd: Not a directory\n", 2), free(path));
 	if (cmds_size > 1)
 		return free(path);
+	choldpwd(env, exprt, getcwd(NULL, 0));
 	chdir(path);
 	free(path);
+	chpwd(env, exprt, getcwd(NULL, 0));
 	return ;
 }
 
