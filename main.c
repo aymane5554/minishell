@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/02 11:08:46 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:42:43 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,8 @@ int main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	envs = duplicate_env(env);
 	s_env = sort_lst(envs);
 	while (1)

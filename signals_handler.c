@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:26 by tibarike          #+#    #+#             */
-/*   Updated: 2025/04/26 14:45:48 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/02 12:44:18 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,4 @@ void	sigint_handler(int sig)
 		printf("\n");
 		exit(130);
 	}
-}
-
-void	sigquit_handler(int sig)
-{
-	(void)sig;
 }
