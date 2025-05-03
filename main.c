@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 13:24:02 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:22:45 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ int main(int argc, char **argv, char **env)
 	t_cmd	*all_cmds;
 	t_env	*envs;
 	t_env	*s_env;
+	int		status;
 
 	(void)argc;
 	(void)argv;
@@ -261,7 +262,8 @@ int main(int argc, char **argv, char **env)
 			freencmds(all_cmds, i);
 			continue ;
 		}
-		execute(all_cmds, envs, s_env, env);
+		status = execute(all_cmds, envs, s_env, env);
+		chexitstatus(status, envs, s_env);
 		freencmds(all_cmds, i);
 	}
 	return (0);

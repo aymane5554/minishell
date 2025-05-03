@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 13:43:21 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:06:50 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ int	open_heredoc(char *lim)
 		fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL, 0777);
 	}
 	fd[1] = open(filename, O_RDONLY);
+	if (fd[1] == -1)
+		return (perror("heredoc"), free(filename), free(num), -1);
 	unlink(filename);
 	write_in_file(fd[0], lim);
 	close(fd[0]);

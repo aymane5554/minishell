@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/02 14:29:10 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:11:04 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,12 @@ t_env	*duplicate_env(char **env)
 		push_env(head, new_env("SHLVL=1"));
 		push_env(head, new_env("_=/usr/bin/env"));
 		push_env(head, new_env("OLDPWD"));
+		push_env(head, new_env("?=0"));
 		return (head);
 	}
 	while (env[i])
 		(push_env(head, new_env(env[i])), i++);
+	push_env(head, new_env("?=0"));
 	return (head);
 }
 

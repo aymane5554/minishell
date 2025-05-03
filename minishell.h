@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/03 13:06:00 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:21:30 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*ft_getenv(t_env *envs, char *key);
 t_env	*duplicate_env(char **env);
 void	free_env(t_env *env);
 int		export(t_env *env, t_env *exprt, char **cmd);
-void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env);
+int		execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, t_env *exprt, char *new);
 int		remove_quotes_main(t_cmd *cmds);
@@ -87,5 +87,6 @@ char	*check_commands(t_env *env, char *cmd);
 void	choldpwd(t_env *env, t_env *exprt, char *new);
 int		open_heredoc(char *lim);
 int		write_in_file(int fd, char *lim);
+void	chexitstatus(int status, t_env *env, t_env *exprt);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 13:12:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:28:36 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,16 @@ int	here_doc(t_cmd *all_cmds)
 	return (0);
 }
 
-void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
+int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 {
 	int		i;
 	char	*cmd_path;
 	int		no_cmds;
 	int		p_fd[3];
+	int		status;
 
 	i = 0;
+	status = 0;
 	no_cmds = count_cmds(all_cmds);
 	if (no_cmds != 1)
 		pipe(p_fd);
@@ -76,6 +78,11 @@ void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 			display_env(env);
 		else
 		{
+			if (all_cmds[i].fd == -1)
+			{
+				i++;
+				continue ;
+			}
 			if (i != 0 && i != no_cmds -1)
 			{
 				close(p_fd[1]);
@@ -112,6 +119,7 @@ void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 	}
 	if (no_cmds != 1)
 		(close(p_fd[0]), close(p_fd[1]));
-	while (wait(NULL) >= 0)
+	while (wait(&status) >= 0)
 		continue ;
+	return (status % 255);
 }

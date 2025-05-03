@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/02 14:13:22 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:24:58 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,39 @@ void	display_env(t_env *env)
 	env = env->next;
 	while (env)
 	{
-		if (!env->empty)
+		if (!env->empty || ft_strcmp(env->key, "?"))
 		{
 			printf("%s=%s\n", env->key, env->value);
 		}
 		env = env->next;
+	}
+}
+
+void	chexitstatus(int status, t_env *env, t_env *exprt)
+{
+	char	*tmp;
+
+	env = env->next;
+	while (env)
+	{
+		if (!ft_strcmp(env->key, "?"))
+		{
+			tmp = env->value;
+			env->value = ft_itoa(status);
+			free(tmp);
+		}
+		env = env->next;
+	}
+	exprt = exprt->next;
+	while (exprt)
+	{
+		if (!ft_strcmp(exprt->key, "?"))
+		{
+			tmp = exprt->value;
+			exprt->value = ft_itoa(status);
+			free(tmp);
+		}
+		exprt = exprt->next;
 	}
 }
 
@@ -87,6 +115,11 @@ static void	display_export(t_env *env)
 	env = env->next;
 	while (env)
 	{
+		if (!ft_strcmp(env->key, "?"))
+		{
+			env = env->next;
+			continue ;
+		}
 		printf("declare -x %s", env->key);
 		if (env->empty == 0)
 			printf("=\"%s\"\n", env->value);
