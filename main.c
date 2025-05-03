@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/11 13:30:40 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/02 14:44:19 by tibarike         ###   ########.fr       */
+/*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
+/*   Updated: 2025/05/03 13:21:32 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ int main(int argc, char **argv, char **env)
 			}
 			extract_exe_arg_from_cmd(cmd, all_cmds[i].cmd);
 			extract_redirections_from_cmd(cmd, all_cmds[i].redirection);
+			all_cmds[i].fd = 0;
 			free(cmd);
 			i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/02 14:12:47 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 13:06:00 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_cmd
 {
 	char			**cmd;
 	struct s_redr	*redirection;
+	int				fd;
 }	t_cmd;
 
 typedef struct s_env
@@ -84,5 +85,7 @@ int		redirect(t_cmd all_cmds, int pfd[2], int nth, int  no_cmds);
 void	freencmds(t_cmd	*all_cmds, int n);
 char	*check_commands(t_env *env, char *cmd);
 void	choldpwd(t_env *env, t_env *exprt, char *new);
+int		open_heredoc(char *lim);
+int		write_in_file(int fd, char *lim);
 
 #endif

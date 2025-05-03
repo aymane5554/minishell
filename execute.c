@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/02 14:13:54 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 13:12:44 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,30 @@ int	count_cmds(t_cmd *cmds)
 	return (i);
 }
 
+int	here_doc(t_cmd *all_cmds)
+{
+	int	i;
+	int	red;
+
+	i = 0;
+	red = 0;
+	while (all_cmds[i].cmd)
+	{
+		while (all_cmds[i].redirection[red].file != NULL)
+		{
+			if (all_cmds[i].redirection[red].type == 2)
+			{
+				if (all_cmds[i].fd != 0)
+					close(all_cmds[i].fd);
+				all_cmds[i].fd = open_heredoc(all_cmds[i].redirection[red].file);
+			}
+			red++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 {
 	int		i;
@@ -33,6 +57,7 @@ void	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 	no_cmds = count_cmds(all_cmds);
 	if (no_cmds != 1)
 		pipe(p_fd);
+	here_doc(all_cmds);
 	while (all_cmds[i].cmd)
 	{
 		if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "export"))

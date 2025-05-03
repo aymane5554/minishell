@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 13:38:02 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/02 16:05:09 by ayel-arr         ###   ########.fr       */
+/*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
+/*   Updated: 2025/05/03 13:21:51 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 	int fd0;
 
 	red = 0;
-	fd0 = 0;
+	fd0 = all_cmds.fd;
 	if (nth == 0 && no_cmds != 1)
 		(dup2(pfd[1], 1), close(pfd[1]));
 	else if (nth == no_cmds - 1 && no_cmds != 1)
@@ -123,14 +123,6 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 		else if (all_cmds.redirection[red].type == 1)
 		{	
 			if (open_outfile(all_cmds.redirection[red].file) == -1)
-				return (-1);
-		}
-		else if (all_cmds.redirection[red].type == 2)
-		{
-			if (fd0 != 0 && fd0 != -1)
-				close(fd0);
-			fd0 = open_heredoc(all_cmds.redirection[red].file);
-			if (fd0 == -1)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 3)
