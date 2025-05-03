@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 14:28:36 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:01:12 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ int	count_cmds(t_cmd *cmds)
 	return (i);
 }
 
+void	close_heredocs(t_cmd *all_cmds)
+{
+	int	i;
+
+	i = 0;
+	while (all_cmds[i].cmd)
+	{
+		if (all_cmds[i].fd)
+			close(all_cmds[i].fd);
+		i++;
+	}
+}
+
 int	here_doc(t_cmd *all_cmds)
 {
 	int	i;
@@ -31,6 +44,7 @@ int	here_doc(t_cmd *all_cmds)
 	red = 0;
 	while (all_cmds[i].cmd)
 	{
+		red = 0;
 		while (all_cmds[i].redirection[red].file != NULL)
 		{
 			if (all_cmds[i].redirection[red].type == 2)
@@ -53,6 +67,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 	int		no_cmds;
 	int		p_fd[3];
 	int		status;
+	int		tmp;
 
 	i = 0;
 	status = 0;
@@ -62,35 +77,126 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 	here_doc(all_cmds);
 	while (all_cmds[i].cmd)
 	{
-		if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "export"))
-			export(env, exprt, all_cmds[i].cmd);
-		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "echo"))
-			builtin_echo(all_cmds[i].cmd);
-		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "cd"))
-			builtin_cd(all_cmds[i].cmd, no_cmds, env, exprt);
-		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "pwd"))
-			builtin_pwd();
-		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "exit"))
-			builtin_exit(all_cmds[i].cmd, no_cmds);
-		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "unset"))
-			unset(all_cmds[i].cmd, env);
-		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "env"))
-			display_env(env);
-		else
+		if (all_cmds[i].fd == -1)
 		{
-			if (all_cmds[i].fd == -1)
+			i++;
+			continue ;
+		}
+		else if (i != 0 && i != no_cmds -1)
+		{
+			close(p_fd[1]);
+			p_fd[2] = p_fd[0];
+			pipe(p_fd);
+		}
+		else if (i == no_cmds - 1 && no_cmds != 1)
+			close(p_fd[1]);
+		if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "export"))
+		{
+			if (no_cmds != 1)
+			{
+				if (!fork())
+				{
+					if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+					{
+						(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
+						exit(1);
+					}
+					export(env, exprt, all_cmds[i].cmd);
+					exit(0);
+				}
+				i++;
+				continue ;
+			}
+			tmp = dup(1);
+			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 			{
 				i++;
 				continue ;
 			}
-			if (i != 0 && i != no_cmds -1)
+			export(env, exprt, all_cmds[i].cmd);
+			dup2(tmp, 1);
+			close(tmp);
+		}
+		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "echo"))
+		{
+			if (!fork())
 			{
-				close(p_fd[1]);
-				p_fd[2] = p_fd[0];
-				pipe(p_fd);
+				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+				{
+					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
+					exit(1);
+				}
+				builtin_echo(all_cmds[i].cmd);
+				exit(0);
 			}
-			else if (i == no_cmds - 1 && no_cmds != 1)
-				close(p_fd[1]);
+			i++;
+			continue ;
+		}
+		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "cd"))
+		{
+			tmp = dup(1);
+			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+			{
+				i++;
+				continue ;
+			}
+			builtin_cd(all_cmds[i].cmd, no_cmds, env, exprt);
+			dup2(tmp, 1);
+			close(tmp);
+		}
+		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "pwd"))
+		{
+			if (!fork())
+			{
+				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+				{
+					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
+					exit(1);
+				}
+				builtin_pwd();
+				exit(0);
+			}
+			i++;
+			continue ;
+		}
+		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "exit"))
+		{
+			tmp = dup(1);
+			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+			{
+				i++;
+				continue ;
+			}
+			builtin_exit(all_cmds[i].cmd, no_cmds);
+			dup2(tmp, 1);
+			close(tmp);
+		}
+		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "unset"))
+		{
+			tmp = dup(1);
+			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+			{
+				i++;
+				continue ;
+			}
+			unset(all_cmds[i].cmd, env);
+			dup2(tmp, 1);
+			close(tmp);
+		}
+		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "env"))
+		{
+			tmp = dup(1);
+			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+			{
+				i++;
+				continue ;
+			}
+			display_env(env);
+			dup2(tmp, 1);
+			close(tmp);
+		}
+		else
+		{
 			if (!fork())
 			{
 				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
@@ -117,6 +223,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 		}
 		i++;
 	}
+	close_heredocs(all_cmds);
 	if (no_cmds != 1)
 		(close(p_fd[0]), close(p_fd[1]));
 	while (wait(&status) >= 0)

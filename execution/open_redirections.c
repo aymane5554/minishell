@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 14:06:50 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 17:32:04 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int open_outfile(char *filename)
 {
 	int	fd;
 
-	fd = open(filename, O_WRONLY | O_CREAT, 0777);
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (perror("open"), -1);
 	dup2(fd, 1);
@@ -38,7 +38,7 @@ int	open_append_file(char *filename)
 {
 	int	fd;
 
-	fd = open(filename, O_WRONLY | O_APPEND | O_CREAT);
+	fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0777);
 	if (fd == -1)
 		return (perror("open"), -1);
 	dup2(fd, 1);
@@ -104,13 +104,14 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 	fd0 = all_cmds.fd;
 	if (nth == 0 && no_cmds != 1)
 		(dup2(pfd[1], 1), close(pfd[1]));
-	else if (nth == no_cmds - 1 && no_cmds != 1)
+	else if (nth == no_cmds - 1 && no_cmds != 1 && fd0 == 0)
 		fd0 = pfd[0];
-	else if (no_cmds != 1)
+	else if (no_cmds != 1 && nth != no_cmds - 1)
 	{
 		dup2(pfd[1], 1);
 		close(pfd[1]);
-		fd0 = pfd[2];
+		if (fd0 == 0)
+			fd0 = pfd[2];
 	}
 	while (all_cmds.redirection[red].file != NULL)
 	{
