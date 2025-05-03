@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 20:01:12 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:17:29 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 
 	i = 0;
 	status = 0;
+	p_fd[2] = 0;
 	no_cmds = count_cmds(all_cmds);
 	if (no_cmds != 1)
 		pipe(p_fd);
@@ -82,9 +83,11 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 			i++;
 			continue ;
 		}
-		else if (i != 0 && i != no_cmds -1)
+		if (i != 0 && i != no_cmds -1)
 		{
 			close(p_fd[1]);
+			if (p_fd[2])
+				close(p_fd[2]);
 			p_fd[2] = p_fd[0];
 			pipe(p_fd);
 		}
@@ -226,6 +229,8 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 	close_heredocs(all_cmds);
 	if (no_cmds != 1)
 		(close(p_fd[0]), close(p_fd[1]));
+	if (p_fd[2])
+		close(p_fd[2]);
 	while (wait(&status) >= 0)
 		continue ;
 	return (status % 255);
