@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:26 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/02 12:44:18 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/02 14:43:26 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,5 @@ void	sigint_handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-	}
-	else if (g_prompt_statue == HERDOC)
-	{
-		printf("\n");
-		exit(130);
 	}
 }
