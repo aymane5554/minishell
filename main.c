@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 13:21:32 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/03 13:24:02 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,8 @@ int main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	// signal(SIGINT, sigint_handler);
-	// signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	envs = duplicate_env(env);
 	s_env = sort_lst(envs);
 	while (1)
