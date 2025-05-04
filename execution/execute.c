@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 20:17:29 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/04 17:59:26 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	here_doc(t_cmd *all_cmds)
 				if (all_cmds[i].fd != 0)
 					close(all_cmds[i].fd);
 				all_cmds[i].fd = open_heredoc(all_cmds[i].redirection[red].file);
+				if (all_cmds[i].fd == -1)
+					return (-1);
 			}
 			red++;
 		}
@@ -75,7 +77,12 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 	no_cmds = count_cmds(all_cmds);
 	if (no_cmds != 1)
 		pipe(p_fd);
-	here_doc(all_cmds);
+	if (here_doc(all_cmds) == -1)
+	{
+		close(p_fd[0]);
+		close(p_fd[1]);
+		return (-1);
+	}
 	while (all_cmds[i].cmd)
 	{
 		if (all_cmds[i].fd == -1)

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 14:22:45 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:05:07 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int g_prompt_statue = PROMPT;
 
 int	ft_dstrlen(char **str)
 {
@@ -172,8 +170,6 @@ int main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
 	envs = duplicate_env(env);
 	s_env = sort_lst(envs);
 	while (1)

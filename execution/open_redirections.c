@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 17:32:04 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:04:53 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,13 @@ int	open_heredoc(char *lim)
 	if (fd[1] == -1)
 		return (perror("heredoc"), free(filename), free(num), -1);
 	unlink(filename);
-	write_in_file(fd[0], lim);
+	if (write_in_file(fd[0], lim) == -1)
+	{
+		close(fd[1]);
+		close(fd[0]);
+		(free(filename), free(num));
+		return (-1);
+	}
 	close(fd[0]);
 	(free(filename), free(num));
 	return (fd[1]);
