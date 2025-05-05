@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 12:51:20 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:00:08 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,5 +195,5 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 		close(p_fd[2]);
 	while (wait(&status) >= 0)
 		continue ;
-	return (status % 255);
+	return (WEXITSTATUS(status));
 }
