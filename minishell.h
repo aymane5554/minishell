@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/04 18:05:32 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 12:11:03 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,10 @@ void	choldpwd(t_env *env, t_env *exprt, char *new);
 int		open_heredoc(char *lim);
 int		write_in_file(int fd, char *lim);
 void	chexitstatus(int status, t_env *env, t_env *exprt);
-
+int		execute_echo(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
+int		execute_pwd(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
+int		execute_exit(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
+int		execute_unset(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
+int		execute_env(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
+int		count_cmds(t_cmd *cmds);
 #endif

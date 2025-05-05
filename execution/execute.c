@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/04 17:59:26 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 12:09:33 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,18 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 						exit(1);
 					}
 					export(env, exprt, all_cmds[i].cmd);
+					(close(p_fd[0]), close(p_fd[1]));
 					exit(0);
 				}
 				i++;
 				continue ;
 			}
 			tmp = dup(1);
+			if (all_cmds[i].fd)
+			{
+				close(all_cmds[i].fd);
+				all_cmds[i].fd = 0;
+			}
 			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 			{
 				i++;
@@ -128,23 +134,15 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 			close(tmp);
 		}
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "echo"))
-		{
-			if (!fork())
-			{
-				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-				{
-					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-					exit(1);
-				}
-				builtin_echo(all_cmds[i].cmd);
-				exit(0);
-			}
-			i++;
-			continue ;
-		}
+			status = execute_echo(all_cmds, i, no_cmds, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "cd"))
 		{
 			tmp = dup(1);
+			if (all_cmds[i].fd)
+			{
+				close(all_cmds[i].fd);
+				all_cmds[i].fd = 0;
+			}
 			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 			{
 				i++;
@@ -155,56 +153,13 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 			close(tmp);
 		}
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "pwd"))
-		{
-			if (!fork())
-			{
-				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-				{
-					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-					exit(1);
-				}
-				builtin_pwd();
-				exit(0);
-			}
-			i++;
-			continue ;
-		}
+			status = execute_pwd(all_cmds, i, no_cmds, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "exit"))
-		{
-			tmp = dup(1);
-			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-			{
-				i++;
-				continue ;
-			}
-			builtin_exit(all_cmds[i].cmd, no_cmds);
-			dup2(tmp, 1);
-			close(tmp);
-		}
+			status = execute_exit(all_cmds, i, no_cmds, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "unset"))
-		{
-			tmp = dup(1);
-			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-			{
-				i++;
-				continue ;
-			}
-			unset(all_cmds[i].cmd, env);
-			dup2(tmp, 1);
-			close(tmp);
-		}
+			status = execute_unset(all_cmds, i, env, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "env"))
-		{
-			tmp = dup(1);
-			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-			{
-				i++;
-				continue ;
-			}
-			display_env(env);
-			dup2(tmp, 1);
-			close(tmp);
-		}
+			status = execute_env(all_cmds, i, env, p_fd);
 		else
 		{
 			if (!fork())
