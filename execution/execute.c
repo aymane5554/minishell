@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 14:00:08 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:43:51 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,9 @@ int	here_doc(t_cmd *all_cmds)
 	return (0);
 }
 
-int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
+int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 {
 	int		i;
-	char	*cmd_path;
 	int		no_cmds;
 	int		p_fd[3];
 	int		status;
@@ -78,18 +77,9 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 	if (no_cmds != 1)
 		pipe(p_fd);
 	if (here_doc(all_cmds) == -1)
-	{
-		close(p_fd[0]);
-		close(p_fd[1]);
-		return (-1);
-	}
+		return (close(p_fd[0]), close(p_fd[1]), -1);
 	while (all_cmds[i].cmd)
 	{
-		if (all_cmds[i].fd == -1)
-		{
-			i++;
-			continue ;
-		}
 		if (i != 0 && i != no_cmds -1)
 		{
 			close(p_fd[1]);
@@ -149,8 +139,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 				continue ;
 			}
 			builtin_cd(all_cmds[i].cmd, no_cmds, env, exprt);
-			dup2(tmp, 1);
-			close(tmp);
+			(dup2(tmp, 1), close(tmp));
 		}
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "pwd"))
 			status = execute_pwd(all_cmds, i, no_cmds, p_fd);
@@ -165,26 +154,11 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env)
 			if (!fork())
 			{
 				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-				{
-					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-					exit(1);
-				}
-				if (!all_cmds[i].cmd[0])
-				{
-					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-					exit(1);
-				}
-				cmd_path = check_commands(env, all_cmds[i].cmd[0]);
-				if (!cmd_path)
-				{
-					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-					exit(1);
-				}
-				execve(cmd_path, all_cmds[i].cmd, o_env);
-				perror("execve");
-				(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-				exit(1);
+					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt), exit(1));
+				execute_others(all_cmds[i], all_cmds, env, exprt);
 			}
+			if (p_fd[2])
+				(close(p_fd[2]), p_fd[2] = 0);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 11:43:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 12:16:49 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:50:04 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,3 +100,4 @@ int execute_env(t_cmd *all_cmds, int i, t_env *env, int p_fd[3])
 	close(tmp);
 	return (1);
 }
+

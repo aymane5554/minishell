@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/05 15:21:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:15:06 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_getenv(t_env *envs, char *key);
 t_env	*duplicate_env(char **env);
 void	free_env(t_env *env);
 int		export(t_env *env, t_env *exprt, char **cmd);
-int		execute(t_cmd *all_cmds, t_env *env, t_env *exprt, char **o_env);
+int		execute(t_cmd *all_cmds, t_env *env, t_env *exprt);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, t_env *exprt, char *new);
 int		remove_quotes_main(t_cmd *cmds);
@@ -92,4 +92,5 @@ int		execute_exit(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
 int		execute_unset(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
 int		execute_env(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
 int		count_cmds(t_cmd *cmds);
+int		execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt);
 #endif

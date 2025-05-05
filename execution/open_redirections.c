@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 16:38:01 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:40:32 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,14 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 	red = 0;
 	fd0 = all_cmds.fd;
 	if (nth == 0 && no_cmds != 1)
-		(dup2(pfd[1], 1), close(pfd[1]));
+		(dup2(pfd[1], 1), close(pfd[1]), close(pfd[0]));
 	else if (nth == no_cmds - 1 && no_cmds != 1 && fd0 == 0)
 		fd0 = pfd[0];
 	else if (no_cmds != 1 && nth != no_cmds - 1)
 	{
 		dup2(pfd[1], 1);
 		close(pfd[1]);
+		close(pfd[0]);
 		if (fd0 == 0)
 			fd0 = pfd[2];
 	}
