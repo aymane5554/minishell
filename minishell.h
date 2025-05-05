@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/05 13:00:10 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:21:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	freencmds(t_cmd	*all_cmds, int n);
 char	*check_commands(t_env *env, char *cmd);
 void	choldpwd(t_env *env, t_env *exprt, char *new);
 int		open_heredoc(char *lim);
-int		write_in_file(int fd, char *lim);
+int		write_in_file(int fd[2], char *lim);
 void	sigint_handler(int sig);
 void	herdoc_sigint(int sig);
 void	chexitstatus(int status, t_env *env, t_env *exprt);

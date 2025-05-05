@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 13:55:32 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:42:28 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,33 +48,35 @@ int	open_append_file(char *filename)
 	return (0);
 }
 
-int	write_in_file(int fd, char *lim)
+int	write_in_file(int fd[2], char *lim)
 {
 	char	*line;
 	int		status;
 	pid_t	pid;
 
 	pid = fork();
-	g_herdoc_signal = 1;
 	if (!pid)
 	{
+		close(fd[1]);
+		g_herdoc_signal = fd[0];
 		signal(SIGINT, herdoc_sigint);
 		signal(SIGQUIT, SIG_IGN);
 		line = readline("heredoc> ");
 		while (line && ft_strcmp(line, lim))
 		{
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
+			write(fd[0], line, ft_strlen(line));
+			write(fd[0], "\n", 1);
 			free(line);
 			line = readline("heredoc> ");
 		}
 		free(line);
+		close(fd[0]);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == -1)
 		return (-1);
-	return (fd);
+	return (fd[0]);
 }
 
 int	open_heredoc(char *lim)
@@ -104,7 +106,7 @@ int	open_heredoc(char *lim)
 	if (fd[1] == -1)
 		return (perror("heredoc"), free(filename), free(num), -1);
 	unlink(filename);
-	if (write_in_file(fd[0], lim) == -1)
+	if (write_in_file(fd, lim) == -1)
 	{
 		close(fd[1]);
 		close(fd[0]);

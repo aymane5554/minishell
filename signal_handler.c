@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:51:37 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/05 13:57:04 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:42:48 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void	herdoc_sigint(int sig)
 {
 	(void) sig;
 	printf("\n");
+	close(g_herdoc_signal);
 	exit(130);
 }
