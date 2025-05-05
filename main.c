@@ -6,11 +6,11 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/04 18:05:07 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:42:44 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell.h"	
 
 int	ft_dstrlen(char **str)
 {
@@ -172,6 +172,8 @@ int main(int argc, char **argv, char **env)
 	(void)argv;
 	envs = duplicate_env(env);
 	s_env = sort_lst(envs);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -259,6 +261,12 @@ int main(int argc, char **argv, char **env)
 			continue ;
 		}
 		status = execute(all_cmds, envs, s_env, env);
+		if (status == -1)
+		{
+			printf("\n");
+			rl_on_new_line();
+			rl_redisplay();
+		}
 		chexitstatus(status, envs, s_env);
 		freencmds(all_cmds, i);
 	}

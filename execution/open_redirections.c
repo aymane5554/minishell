@@ -6,11 +6,13 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/04 18:04:53 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:55:32 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_herdoc_signal = 0;
 
 int	open_infile(char	*filename)
 {
@@ -49,16 +51,29 @@ int	open_append_file(char *filename)
 int	write_in_file(int fd, char *lim)
 {
 	char	*line;
+	int		status;
+	pid_t	pid;
 
-	line = readline("heredoc> ");
-	while (line && ft_strcmp(line, lim))
+	pid = fork();
+	g_herdoc_signal = 1;
+	if (!pid)
 	{
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		free(line);
+		signal(SIGINT, herdoc_sigint);
+		signal(SIGQUIT, SIG_IGN);
 		line = readline("heredoc> ");
+		while (line && ft_strcmp(line, lim))
+		{
+			write(fd, line, ft_strlen(line));
+			write(fd, "\n", 1);
+			free(line);
+			line = readline("heredoc> ");
+		}
+		free(line);
+		exit(0);
 	}
-	free(line);
+	waitpid(pid, &status, 0);
+	if (WEXITSTATUS(status) == -1)
+		return (-1);
 	return (fd);
 }
 

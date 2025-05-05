@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/05 12:11:03 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:00:10 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <wait.h>
+
+extern int g_herdoc_signal;
 
 typedef struct s_redr
 {
@@ -81,6 +83,8 @@ char	*check_commands(t_env *env, char *cmd);
 void	choldpwd(t_env *env, t_env *exprt, char *new);
 int		open_heredoc(char *lim);
 int		write_in_file(int fd, char *lim);
+void	sigint_handler(int sig);
+void	herdoc_sigint(int sig);
 void	chexitstatus(int status, t_env *env, t_env *exprt);
 int		execute_echo(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
 int		execute_pwd(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
