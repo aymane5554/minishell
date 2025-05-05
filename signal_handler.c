@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:51:37 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/05 15:42:48 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:54:47 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,5 @@ void	herdoc_sigint(int sig)
 {
 	(void) sig;
 	printf("\n");
-	close(g_herdoc_signal);
 	exit(130);
 }

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 15:42:28 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:38:01 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,15 @@ int	write_in_file(int fd[2], char *lim)
 	if (!pid)
 	{
 		close(fd[1]);
-		g_herdoc_signal = fd[0];
+		dup2(fd[0], 2);
+		close(fd[0]);
 		signal(SIGINT, herdoc_sigint);
 		signal(SIGQUIT, SIG_IGN);
 		line = readline("heredoc> ");
 		while (line && ft_strcmp(line, lim))
 		{
-			write(fd[0], line, ft_strlen(line));
-			write(fd[0], "\n", 1);
+			write(2, line, ft_strlen(line));
+			write(2, "\n", 1);
 			free(line);
 			line = readline("heredoc> ");
 		}
