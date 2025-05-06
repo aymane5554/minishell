@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:51:37 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/06 12:32:14 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:42:23 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,17 @@
 void	sigint_handler(int sig)
 {
 	(void)sig;
-	if (g_herdoc_signal == 0)
+	if (g_herdoc_signal == 2)
+	{
+		close(0);
+		dup2(2, 0);
+		printf("\n");
+		// printf("%d", g_herdoc_signal);
+	}
+	else if (g_herdoc_signal == 0)
 	{
 		printf("\n");
+		// printf("%d", g_herdoc_signal);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();

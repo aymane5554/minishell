@@ -6,13 +6,11 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 12:32:39 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:43:47 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_herdoc_signal = 0;
 
 int	open_infile(char	*filename)
 {

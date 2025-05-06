@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 12:38:17 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:07:03 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 	int		p_fd[3];
 	int		status;
 	int		tmp;
+	pid_t	pid;
 
 	i = 0;
 	status = 0;
@@ -152,14 +153,21 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 			status = execute_env(all_cmds, i, env, p_fd);
 		else
 		{
-			if (!fork())
+			g_herdoc_signal = 2;
+			if (g_herdoc_signal == 2)
 			{
-				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt), exit(1));
-				execute_others(all_cmds[i], all_cmds, env, exprt);
+				pid = fork();
+				if (!pid)
+				{
+					if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+						(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt), exit(1));
+					execute_others(all_cmds[i], all_cmds, env, exprt);
+				}
+				if (p_fd[2])
+					(close(p_fd[2]), p_fd[2] = 0);
+				if (WIFSIGNALED(status))
+					return(-1);
 			}
-			if (p_fd[2])
-				(close(p_fd[2]), p_fd[2] = 0);
 		}
 		i++;
 	}

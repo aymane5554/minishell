@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/06 12:32:27 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:05:25 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ char	**ft_split_input(char *str);
 char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s, int i, int j, char c);
 int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
-void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
 void	builtin_pwd(void);
 void	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
 void	builtin_echo(char **args);
