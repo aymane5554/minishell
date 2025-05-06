@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:51:37 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/06 12:18:57 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:32:14 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	sigint_handler(int sig)
 	}
 }
 
-void	herdoc_sigint(int sig)
+void	child_sigint(int sig)
 {
 	(void) sig;
 	printf("\n");

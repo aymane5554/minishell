@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 12:20:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:32:39 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	write_in_file(int fd[2], char *lim)
 		close(fd[1]);
 		dup2(fd[0], 2);
 		close(fd[0]);
-		signal(SIGINT, herdoc_sigint);
+		signal(SIGINT, child_sigint);
 		signal(SIGQUIT, SIG_IGN);
 		line = readline("heredoc> ");
 		while (line && ft_strcmp(line, lim))
