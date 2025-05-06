@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 17:43:51 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:15:38 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 			}
 			if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 			{
+				close(tmp);
 				i++;
 				continue ;
 			}
