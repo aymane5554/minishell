@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 09:53:18 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:28:44 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ char	**envlst_to_array(t_env *env)
 	tmp = env;
 	while (env)
 	{
-		if (ft_strcmp(tmp->key, "?"))
+		if (!ft_strcmp(env->key, "?"))
 		{
-			tmp = tmp->next;
+			env = env->next;
 			continue ;
 		}
 		i++;
@@ -78,7 +78,7 @@ char	**envlst_to_array(t_env *env)
 	i = 0;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, "?"))
+		if (!ft_strcmp(tmp->key, "?"))
 		{
 			tmp = tmp->next;
 			continue ;
