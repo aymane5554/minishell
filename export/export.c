@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/03 14:24:58 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/06 19:59:38 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	display_env(t_env *env)
 	env = env->next;
 	while (env)
 	{
-		if (!env->empty || ft_strcmp(env->key, "?"))
+		if (!env->empty && ft_strcmp(env->key, "?"))
 		{
 			printf("%s=%s\n", env->key, env->value);
 		}
