@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 17:43:47 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/06 19:52:13 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	open_append_file(char *filename)
 	return (0);
 }
 
-int	write_in_file(int fd[2], char *lim)
+int	write_in_file(int fd[2], char *lim, int p_fd[3])
 {
 	char	*line;
 	int		status;
@@ -56,6 +56,10 @@ int	write_in_file(int fd[2], char *lim)
 	pid = fork();
 	if (!pid)
 	{
+		close(p_fd[0]);
+		close(p_fd[1]);
+		if (p_fd[2])
+			close(p_fd[2]);
 		close(fd[1]);
 		dup2(fd[0], 2);
 		close(fd[0]);
@@ -74,13 +78,13 @@ int	write_in_file(int fd[2], char *lim)
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
-	if (WEXITSTATUS(status) == -1)
+	if (WEXITSTATUS(status) == 130)
 		return (g_herdoc_signal = 0, -1);
 	g_herdoc_signal = 0;
 	return (fd[0]);
 }
 
-int	open_heredoc(char *lim)
+int	open_heredoc(char *lim, int p_fd[3])
 {
 	int		fd[2];
 	char	*filename_template;
@@ -107,7 +111,7 @@ int	open_heredoc(char *lim)
 	if (fd[1] == -1)
 		return (perror("heredoc"), free(filename), free(num), -1);
 	unlink(filename);
-	if (write_in_file(fd, lim) == -1)
+	if (write_in_file(fd, lim, p_fd) == -1)
 	{
 		close(fd[1]);
 		close(fd[0]);

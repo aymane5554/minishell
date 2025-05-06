@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/06 16:05:25 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/06 19:53:04 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int		redirect(t_cmd all_cmds, int pfd[2], int nth, int  no_cmds);
 void	freencmds(t_cmd	*all_cmds, int n);
 char	*check_commands(t_env *env, char *cmd);
 void	choldpwd(t_env *env, t_env *exprt, char *new);
-int		open_heredoc(char *lim);
-int		write_in_file(int fd[2], char *lim);
+int		open_heredoc(char *lim, int p_fd[3]);
+int		write_in_file(int fd[2], char *lim, int p_fd[3]);
 void	sigint_handler(int sig);
 void	child_sigint(int sig);
 void	chexitstatus(int status, t_env *env, t_env *exprt);
