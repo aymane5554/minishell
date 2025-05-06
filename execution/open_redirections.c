@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 17:40:32 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:20:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	write_in_file(int fd[2], char *lim)
 	int		status;
 	pid_t	pid;
 
+	g_herdoc_signal = 1;
 	pid = fork();
 	if (!pid)
 	{
@@ -76,7 +77,8 @@ int	write_in_file(int fd[2], char *lim)
 	}
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == -1)
-		return (-1);
+		return (g_herdoc_signal = 0, -1);
+	g_herdoc_signal = 0;
 	return (fd[0]);
 }
 

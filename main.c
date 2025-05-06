@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 17:02:08 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:17:29 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,12 +261,6 @@ int main(int argc, char **argv, char **env)
 			continue ;
 		}
 		status = execute(all_cmds, envs, s_env);
-		if (status == -1)
-		{
-			printf("\n");
-			rl_on_new_line();
-			rl_redisplay();
-		}
 		chexitstatus(status, envs, s_env);
 		freencmds(all_cmds, i);
 	}
