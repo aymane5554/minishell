@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/07 12:07:31 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:26:18 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_arg
+{
+	t_env	*env;
+	t_env	*export;
+}	t_arg;
+
 int		valid_quotes(char	*str);
 bool	validate_input(char *input);
 char	**ft_split_input(char *str);
@@ -70,7 +76,7 @@ int		execute(t_cmd *all_cmds, t_env *env, t_env *exprt);
 int		ft_dstrlen(char **str);
 void	chpwd(t_env *env, t_env *exprt, char *new);
 int		remove_quotes_main(t_cmd *cmds);
-int		unset(char **cmd, t_env *env);
+int		unset(char **cmd, t_env *env, t_env *export);
 void	display_env(t_env *env);
 t_env	*sort_lst(t_env *lst);
 void	push_export(t_env *env, t_env *new);
@@ -87,9 +93,12 @@ void	chexitstatus(int status, t_env *env, t_env *exprt);
 int		execute_echo(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
 int		execute_pwd(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
 int		execute_exit(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3]);
-int		execute_unset(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
+int		execute_unset(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3]);
 int		execute_env(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
+int		execute_cd(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3]);
+int		execute_export(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3]);
 int		count_cmds(t_cmd *cmds);
 int		execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt);
+int		execute_others_main(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3]);
 void	sigquit_handler(int sig);
 #endif

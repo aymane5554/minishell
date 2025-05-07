@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:10:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/05 12:13:53 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 13:04:10 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	remove_variable(t_env *env, char *key)
 	}
 }
 
-int	unset(char **cmd, t_env *env)
+int	unset(char **cmd, t_env *env, t_env *export)
 {
 	int	i;
 
@@ -47,6 +47,7 @@ int	unset(char **cmd, t_env *env)
 			i++;
 			continue ;
 		}
+		remove_variable(export, cmd[i]);
 		remove_variable(env, cmd[i]);
 		i++;
 	}
