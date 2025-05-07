@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 11:35:31 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:54:53 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,12 @@ void	extract_redirections_from_cmd(char **cmd, t_redr *redirections)
 		{
 			redirections[counter].file = cmd[i + 1];
 			redirections[counter].type = get_redirection_type(cmd[i]);
+			redirections[counter].expandable = 0;
+			if (redirections[counter].type == 2)
+			{
+				if (!ft_strchr(redirections[counter].file, '\'') && !ft_strchr(redirections[counter].file, '\"'))
+					redirections[counter].expandable = 1;
+			}
 			counter++;
 			i++;
 		}
