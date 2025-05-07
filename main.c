@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 09:33:13 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:35:31 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,7 @@ int main(int argc, char **argv, char **env)
 			continue ;
 		}
 		status = execute(all_cmds, envs, s_env);
+		g_herdoc_signal = 0;
 		chexitstatus(status, envs, s_env);
 		freencmds(all_cmds, i);
 	}

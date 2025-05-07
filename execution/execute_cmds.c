@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 16:48:00 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:34:37 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,5 @@ int	execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt)
 	execve(cmd_path, cmd.cmd, dblenv);
 	perror("execve");
 	(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-	exit(1);
+	exit(0);
 }

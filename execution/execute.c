@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 09:38:24 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:49:11 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,21 +157,16 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 			status = execute_env(all_cmds, i, env, p_fd);
 		else
 		{
-			g_herdoc_signal = 2;
-			if (g_herdoc_signal == 2)
+			g_herdoc_signal = 1;
+			pid = fork();
+			if (!pid)
 			{
-				pid = fork();
-				if (!pid)
-				{
-					if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-						(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt), exit(1));
-					execute_others(all_cmds[i], all_cmds, env, exprt);
-				}
-				if (p_fd[2])
-					(close(p_fd[2]), p_fd[2] = 0);
-				if (WIFSIGNALED(status))
-					return(-1);
+				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt), exit(1));
+				execute_others(all_cmds[i], all_cmds, env, exprt);
 			}
+			if (p_fd[2])
+				(close(p_fd[2]), p_fd[2] = 0);
 		}
 		i++;
 	}
@@ -182,5 +177,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 		close(p_fd[2]);
 	while (wait(&status) >= 0)
 		continue ;
+	if (WIFSIGNALED(status))
+		printf("\n");
 	return (WEXITSTATUS(status));
 }
