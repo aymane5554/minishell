@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 11:43:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 13:14:40 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:02:00 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ int execute_pwd(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3])
 
 int	execute_exit(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3])
 {
+	if (no_cmds == 1)
+	{
+		if (all_cmds[i].fd)
+		{
+			close(all_cmds[i].fd);
+			all_cmds[i].fd = 0;
+		}
+		if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
+			return (1);
+		builtin_exit(all_cmds[i].cmd, no_cmds);
+	}
 	if (!fork())
 	{
 		if (all_cmds[i].fd)

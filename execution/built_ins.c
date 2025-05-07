@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/06 12:11:31 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:58:24 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	builtin_exit(char **args, int cmds_size)
 	long	exit_value;
 	int		success;
 
-	fprintf(stderr, "%i\n", cmds_size);
 	exit_value = 0;
 	success = 1;
 	j = 0;
