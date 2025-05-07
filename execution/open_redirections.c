@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 19:52:13 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 09:37:14 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	open_append_file(char *filename)
 	return (0);
 }
 
-int	write_in_file(int fd[2], char *lim, int p_fd[3])
+int	write_in_file(int fd[2], char *lim, int p_fd[3], int no_cmds)
 {
 	char	*line;
 	int		status;
@@ -56,8 +56,8 @@ int	write_in_file(int fd[2], char *lim, int p_fd[3])
 	pid = fork();
 	if (!pid)
 	{
-		close(p_fd[0]);
-		close(p_fd[1]);
+		if (no_cmds > 1)
+			(close(p_fd[0]), close(p_fd[1]));
 		if (p_fd[2])
 			close(p_fd[2]);
 		close(fd[1]);
@@ -84,7 +84,7 @@ int	write_in_file(int fd[2], char *lim, int p_fd[3])
 	return (fd[0]);
 }
 
-int	open_heredoc(char *lim, int p_fd[3])
+int	open_heredoc(char *lim, int p_fd[3], int no_cmds)
 {
 	int		fd[2];
 	char	*filename_template;
@@ -111,7 +111,7 @@ int	open_heredoc(char *lim, int p_fd[3])
 	if (fd[1] == -1)
 		return (perror("heredoc"), free(filename), free(num), -1);
 	unlink(filename);
-	if (write_in_file(fd, lim, p_fd) == -1)
+	if (write_in_file(fd, lim, p_fd, no_cmds) == -1)
 	{
 		close(fd[1]);
 		close(fd[0]);
