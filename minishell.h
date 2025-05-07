@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/07 09:37:53 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:07:31 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,5 @@ int		execute_unset(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
 int		execute_env(t_cmd *all_cmds, int i, t_env *env, int p_fd[3]);
 int		count_cmds(t_cmd *cmds);
 int		execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt);
+void	sigquit_handler(int sig);
 #endif

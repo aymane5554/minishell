@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 11:49:11 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:10:41 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,9 +161,21 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 			pid = fork();
 			if (!pid)
 			{
+				signal(SIGQUIT, sigquit_handler);
 				if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 					(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt), exit(1));
-				execute_others(all_cmds[i], all_cmds, env, exprt);
+				if (!fork())
+					execute_others(all_cmds[i], all_cmds, env, exprt);
+				while (wait(&status) >= 0)
+					continue ;
+				if (WIFSIGNALED(status))
+				{
+					if (WTERMSIG(status) == SIGINT)
+						printf("\n");
+					else if (WTERMSIG(status) == SIGQUIT)
+						printf("Quit (core dumped)\n");
+				}
+				exit(0);
 			}
 			if (p_fd[2])
 				(close(p_fd[2]), p_fd[2] = 0);
@@ -177,7 +189,5 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 		close(p_fd[2]);
 	while (wait(&status) >= 0)
 		continue ;
-	if (WIFSIGNALED(status))
-		printf("\n");
 	return (WEXITSTATUS(status));
 }
