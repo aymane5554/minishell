@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 09:37:14 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:48:39 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,47 +46,54 @@ int	open_append_file(char *filename)
 	return (0);
 }
 
-int	write_in_file(int fd[2], char *lim, int p_fd[3], int no_cmds)
+int	write_in_file(int args[4], char *lim, int p_fd[3], t_env *env)
 {
 	char	*line;
 	int		status;
 	pid_t	pid;
+	char	*tmp;
 
 	g_herdoc_signal = 1;
 	pid = fork();
 	if (!pid)
 	{
-		if (no_cmds > 1)
+		if (args[2] > 1)
 			(close(p_fd[0]), close(p_fd[1]));
 		if (p_fd[2])
 			close(p_fd[2]);
-		close(fd[1]);
-		dup2(fd[0], 2);
-		close(fd[0]);
+		close(args[1]);
+		dup2(args[0], 2);
+		close(args[0]);
 		signal(SIGINT, child_sigint);
 		signal(SIGQUIT, SIG_IGN);
 		line = readline("heredoc> ");
 		while (line && ft_strcmp(line, lim))
 		{
+			if (args[3])
+			{
+				tmp = line;
+				line = expand_parse_heredoc(line, env);
+				free(tmp);
+			}
 			write(2, line, ft_strlen(line));
 			write(2, "\n", 1);
 			free(line);
 			line = readline("heredoc> ");
 		}
 		free(line);
-		close(fd[0]);
+		close(args[0]);
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == 130)
 		return (g_herdoc_signal = 0, -1);
 	g_herdoc_signal = 0;
-	return (fd[0]);
+	return (args[0]);
 }
 
-int	open_heredoc(char *lim, int p_fd[3], int no_cmds)
+int	open_heredoc(char *lim, int p_fd[3], int args[2], t_env *env)
 {
-	int		fd[2];
+	int		fd[4];
 	char	*filename_template;
 	int		n;
 	char	*filename;
@@ -111,7 +118,9 @@ int	open_heredoc(char *lim, int p_fd[3], int no_cmds)
 	if (fd[1] == -1)
 		return (perror("heredoc"), free(filename), free(num), -1);
 	unlink(filename);
-	if (write_in_file(fd, lim, p_fd, no_cmds) == -1)
+	fd[2] = args[0];
+	fd[3] = args[1];
+	if (write_in_file(fd, lim, p_fd, env) == -1)
 	{
 		close(fd[1]);
 		close(fd[0]);

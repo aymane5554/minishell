@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/04 16:46:22 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:22:42 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,34 @@ static char	*expand_parse(char *str, t_env *envs)
 			i++;
 		}
 		else if (str[i] == '$' && !in_single)
+		{
+			result = exctract_dollar(str, &i, result, envs);
+			if (!result)
+				return (NULL);
+		}
+		else
+		{
+			push_char(&result, str[i]);
+			if (!result)
+				return (perror("malloc"), NULL);
+			i++;
+		}
+	}
+	return (result);
+}
+
+char	*expand_parse_heredoc(char *str, t_env *envs)
+{
+	int		i;
+	char	*result;
+
+	i = 0;
+	result = ft_strdup("");
+	if (!result)
+		return (perror("malloc"), NULL);
+	while (str[i])
+	{
+		if (str[i] == '$')
 		{
 			result = exctract_dollar(str, &i, result, envs);
 			if (!result)
