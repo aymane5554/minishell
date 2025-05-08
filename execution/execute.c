@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 15:36:20 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:11:36 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,10 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 		close(p_fd[2]);
 	while (wait(&status) >= 0)
 		continue ;
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGPIPE)
+			printf("\n");
+	}
 	return (WEXITSTATUS(status));
 }
