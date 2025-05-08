@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/07 15:36:52 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/08 09:57:57 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,5 @@ int		execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt);
 int		execute_others_main(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3]);
 void	sigquit_handler(int sig);
 char	*expand_parse_heredoc(char *str, t_env *envs);
+char	**insert2darray(char **src, char **new, int i);
 #endif

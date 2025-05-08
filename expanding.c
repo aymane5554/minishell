@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/07 15:22:42 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:55:37 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,9 @@ char	*expand_parse_heredoc(char *str, t_env *envs)
 int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 {
 	char	*tmp;
+	char	**split;
+	int		len;
+	char	**ttmp;
 
 	tmp = NULL;
 	while (all_cmds[i].cmd)
@@ -161,7 +164,23 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 				tmp = expand_parse(all_cmds[i].cmd[z], envs);
 				if (!tmp)
 					return (1);
-				(free(all_cmds[i].cmd[z]), all_cmds[i].cmd[z] = tmp);
+				split = ft_split_input(tmp);
+				len = ft_dstrlen(split);
+				if (len == 1)
+				{
+					(free(all_cmds[i].cmd[z]), all_cmds[i].cmd[z] = tmp);
+					z++;
+					(free(split[0]), free(split)); 
+					continue ;
+				}
+				ttmp = insert2darray(all_cmds[i].cmd, split, z);
+				if (!ttmp)
+					return (1);
+				free(all_cmds[i].cmd);
+				free(split);
+				free(tmp);
+				all_cmds[i].cmd = ttmp;
+				z += len - 1;
 			}
 			z++;
 		}

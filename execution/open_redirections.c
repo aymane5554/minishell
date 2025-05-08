@@ -6,11 +6,29 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 15:48:39 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/08 10:11:01 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	space_separated(char *str)
+{
+	int	i;
+	int	f;
+
+	i = 0;
+	f = 0;
+	while (str[i])
+	{
+		if (!is_whitespace(str[i]))
+			f = 1;
+		else if (is_whitespace(str[i]) && !is_whitespace(str[i + 1]) && f == 1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	open_infile(char	*filename)
 {

@@ -1,0 +1,16 @@
+exe
+execution
+expanding.c
+export
+file
+insert.c
+libft
+main.c
+Makefile
+minishell.h
+pipe_split
+quotes_remover.c
+sep_redirection.c
+signal_handler.c
+split_input.c
+syntax
