@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/09 13:53:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:12:29 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,8 @@ int main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
+		exit(1);
 	envs = duplicate_env(env);
 	s_env = sort_lst(envs);
 	signal(SIGINT, sigint_handler);
