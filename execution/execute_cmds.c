@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/08 18:11:21 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:26:40 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ char	*check_commands(t_env *env, char *cmd)
 	if (ft_strchr(cmd, '/') != NULL && access(cmd, X_OK) != 0)
 		return (perror(cmd), NULL);
 	if (!(tmp = ft_getenv(env, "PATH")))
-		return (free(tmp), perror(cmd), NULL);
+	{
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		return (perror(cmd), NULL);
+	}
 	paths = ft_split(tmp, ':');
 	free(tmp);
 	i = 0;
