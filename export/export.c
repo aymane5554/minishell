@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/06 19:59:38 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:14:46 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,13 @@ int	export(t_env *env, t_env *exprt, char **cmd)
 			}
 			i++;
 		}
-		if (cmd[j][i] == '=' || cmd[j][i] == '\0')
+		if (!ft_strcmp(cmd[j], "PATH") && env->i)
+		{
+			push_env(env, new_env("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"));
+			push_export(exprt, new_env("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"));
+			env->i = 0;
+		}
+		else if (cmd[j][i] == '=' || cmd[j][i] == '\0')
 		{
 			push_env(env, new_env(cmd[j]));
 			push_export(exprt, new_env(cmd[j]));
