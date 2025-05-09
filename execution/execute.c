@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/08 18:11:36 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:07:25 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 	{
 		if (no_cmds > 1)
 			(close(p_fd[0]), close(p_fd[1]));
-		return (-1);
+		return (130);
 	}
 	while (all_cmds[i].cmd)
 	{
