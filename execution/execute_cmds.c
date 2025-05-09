@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/09 11:26:40 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:37:45 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ char	*check_commands(t_env *env, char *cmd)
 		return (perror(cmd), NULL);
 	if (!(tmp = ft_getenv(env, "PATH")))
 	{
-		if (access(cmd, X_OK) == 0)
+		if (env->i)
+			tmp = ft_strdup("/home/ayel-arr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin");
+		else if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
-		return (perror(cmd), NULL);
+		else
+			return (perror(cmd), NULL);
 	}
 	paths = ft_split(tmp, ':');
 	free(tmp);

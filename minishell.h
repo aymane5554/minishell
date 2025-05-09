@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/08 09:57:57 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:30:10 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	char			empty;
+	char			i;
 	struct s_env	*next;
 }	t_env;
 

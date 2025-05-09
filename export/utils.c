@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/09 11:11:02 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:30:34 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ t_env	*duplicate_env(char **env)
 	head = new_env(NULL);
 	if (!env[0])
 	{
+		head->i = 1;
 		tmp = getcwd(NULL, 0);
 		tmp2 = ft_strjoin("PWD=", tmp);
 		free(tmp);
@@ -151,6 +152,7 @@ t_env	*duplicate_env(char **env)
 		push_env(head, new_env("?=0"));
 		return (head);
 	}
+	head->i = 0;
 	while (env[i])
 		(push_env(head, new_env(env[i])), i++);
 	update_shlvl(head);
