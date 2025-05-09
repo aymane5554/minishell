@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/08 11:55:37 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:52:06 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,14 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 			{
 				tmp = expand_parse(all_cmds[i].redirection[z].file, envs);
 				if (!tmp)
-					return (1);
+					return (all_cmds[i].redirection[z].error = 1, 1);
+				if (check_empty_string(tmp) || space_separated(tmp))
+				{
+					all_cmds[i].redirection[z].error = 1;
+					free(tmp);
+					z++;
+					continue ;
+				}
 				free(all_cmds[i].redirection[z].file);
 				all_cmds[i].redirection[z].file = tmp;
 			}

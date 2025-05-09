@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/09 11:30:10 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:53:03 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_redr
 	char	*file;
 	char	type;
 	char	expandable;
+	char	error;
 }	t_redr;
 
 typedef struct s_cmd
@@ -105,4 +106,6 @@ int		execute_others_main(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3]);
 void	sigquit_handler(int sig);
 char	*expand_parse_heredoc(char *str, t_env *envs);
 char	**insert2darray(char **src, char **new, int i);
+int		check_empty_string(char *s);
+int		space_separated(char *str);
 #endif

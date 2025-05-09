@@ -6,13 +6,11 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:29:19 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/07 15:14:32 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:47:48 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_empty_string(char *s);
 
 static	void	skip(char quote, int *i, char *str)
 {

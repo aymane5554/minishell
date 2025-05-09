@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/08 10:11:01 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:57:33 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,24 @@ int	space_separated(char *str)
 	return (0);
 }
 
-int	open_infile(char	*filename)
+int	open_infile(char	*filename, char error)
 {
 	int	fd;
 
+	if (error)
+		return (perror("ambiguous redirect"), -1);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (perror("open"), -1);
 	return (fd);
 }
 
-int open_outfile(char *filename)
+int open_outfile(char *filename, char error)
 {
 	int	fd;
 
+	if (error)
+		return (perror("ambiguous redirect"), -1);
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (perror("open"), -1);
@@ -52,10 +56,12 @@ int open_outfile(char *filename)
 	return (0);
 }
 
-int	open_append_file(char *filename)
+int	open_append_file(char *filename, char error)
 {
 	int	fd;
 
+	if (error)
+		return (perror("ambiguous redirect"), -1);
 	fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0777);
 	if (fd == -1)
 		return (perror("open"), -1);
@@ -175,18 +181,18 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 		{
 			if (fd0 != 0 && fd0 != -1)
 				close(fd0);
-			fd0 = open_infile(all_cmds.redirection[red].file);
+			fd0 = open_infile(all_cmds.redirection[red].file, all_cmds.redirection[red].error);
 			if (fd0 == -1)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 1)
 		{	
-			if (open_outfile(all_cmds.redirection[red].file) == -1)
+			if (open_outfile(all_cmds.redirection[red].file, all_cmds.redirection[red].error) == -1)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 3)
 		{
-			if (open_append_file(all_cmds.redirection[red].file) == -1)
+			if (open_append_file(all_cmds.redirection[red].file, all_cmds.redirection[red].error) == -1)
 				return (-1);
 		}
 		red++;

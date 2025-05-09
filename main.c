@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/08 11:42:58 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:53:17 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	extract_redirections_from_cmd(char **cmd, t_redr *redirections)
 			redirections[counter].file = cmd[i + 1];
 			redirections[counter].type = get_redirection_type(cmd[i]);
 			redirections[counter].expandable = 0;
+			redirections[counter].error = 0;
 			if (redirections[counter].type == 2)
 			{
 				if (!ft_strchr(redirections[counter].file, '\'') && !ft_strchr(redirections[counter].file, '\"'))
