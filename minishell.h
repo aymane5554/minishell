@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/09 13:53:03 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/10 08:50:15 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,5 @@ char	*expand_parse_heredoc(char *str, t_env *envs);
 char	**insert2darray(char **src, char **new, int i);
 int		check_empty_string(char *s);
 int		space_separated(char *str);
+char	*get_pwd(char option);
 #endif

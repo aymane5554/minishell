@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/09 15:12:29 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/10 08:51:25 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,11 +185,12 @@ int main(int argc, char **argv, char **env)
 	s_env = sort_lst(envs);
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+	get_pwd(0);
 	while (1)
 	{
 		line = readline("minishell> ");
 		if (!line)
-			(free_env(envs), free_env(s_env), printf("exit\n"), exit (0));
+			(free_env(envs), free_env(s_env), printf("exit\n"), get_pwd(2), exit (0));
 		if (line[0] == '\0')
 		{
 			free(line);

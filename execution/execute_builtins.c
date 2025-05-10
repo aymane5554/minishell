@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 11:43:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/07 15:02:00 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/10 08:51:56 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int	execute_cd(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3])
 	if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 		return (1);
 	builtin_cd(all_cmds[i].cmd, no_cmds, arg.env, arg.export);
+	get_pwd(0);
 	(dup2(tmp, 1), close(tmp));
 	return (0);
 }

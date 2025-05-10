@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/07 14:58:24 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/10 08:52:44 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,9 @@ void	builtin_pwd(void)
 {
 	char	*path;
 	
-	path = getcwd(NULL, 0);
+	path = get_pwd(1);
 	if (path)
-	{
 		printf("%s\n", path);
-		free(path);	
-	}
 }
 
 void	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
