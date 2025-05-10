@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/09 16:07:25 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/10 09:24:30 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,17 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 		if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "export"))
 			status = execute_export(all_cmds, i, arg, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "echo"))
-			status = execute_echo(all_cmds, i, no_cmds, p_fd);
+			execute_echo(all_cmds, i, no_cmds, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "cd"))
 			status = execute_cd(all_cmds, i, arg, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "pwd"))
-			status = execute_pwd(all_cmds, i, no_cmds, p_fd);
+			execute_pwd(all_cmds, i, no_cmds, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "exit"))
 			status = execute_exit(all_cmds, i, no_cmds, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "unset"))
 			status = execute_unset(all_cmds, i, arg, p_fd);
 		else if (all_cmds[i].cmd[0] && !ft_strcmp(all_cmds[i].cmd[0], "env"))
-			status = execute_env(all_cmds, i, env, p_fd);
+			execute_env(all_cmds, i, env, p_fd);
 		else
 			execute_others_main(all_cmds, i, arg, p_fd);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/10 08:51:25 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/10 09:10:52 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ int main(int argc, char **argv, char **env)
 		exit(1);
 	envs = duplicate_env(env);
 	s_env = sort_lst(envs);
+	status = 0;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	get_pwd(0);
@@ -190,7 +191,7 @@ int main(int argc, char **argv, char **env)
 	{
 		line = readline("minishell> ");
 		if (!line)
-			(free_env(envs), free_env(s_env), printf("exit\n"), get_pwd(2), exit (0));
+			(free_env(envs), free_env(s_env), printf("exit\n"), get_pwd(2), exit(status));
 		if (line[0] == '\0')
 		{
 			free(line);
