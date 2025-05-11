@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/09 11:30:34 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/11 17:54:07 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,9 @@ t_env	*duplicate_env(char **env)
 	head->i = 0;
 	while (env[i])
 		(push_env(head, new_env(env[i])), i++);
+	if (!(tmp = ft_getenv(head, "PATH")))
+		head->i = 1;
+	free(tmp);
 	update_shlvl(head);
 	push_env(head, new_env("?=0"));
 	return (head);
