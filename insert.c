@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 09:38:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/08 11:58:06 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/11 14:53:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	**insert2darray(char **src, char **new, int i)
 	{
 		ret[ii] = src[ii];
 		ii++;
+		j++;
 	}
 	free(src[ii]);
 	ii++;
