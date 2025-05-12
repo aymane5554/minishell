@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/12 14:39:01 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:01:10 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,6 +291,7 @@ int main(int argc, char **argv, char **env)
 			freencmds(all_cmds, i);
 			continue ;
 		}
+		
 		status = execute(all_cmds, envs, s_env);
 		g_herdoc_signal = 0;
 		chexitstatus(status, envs, s_env);

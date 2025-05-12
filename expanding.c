@@ -3,14 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/12 10:25:59 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:07:25 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*push_char2(char *s, char c)
+{
+	char	temp[2];
+
+	temp[0] = c;
+	temp[1] = '\0';
+	s = ft_strjoin(s, temp);
+	return (s);
+}
+
+static char	*replace_expand_quotes(char *s)
+{
+	int		i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+			s[i] = 1;
+		if (s[i] == '\"')
+			s[i] = 2;
+		i++;
+	}
+	return (s);
+}
 
 static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 {
@@ -22,6 +48,7 @@ static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 	(*i)++;
 	val = NULL;
 	len = 0;
+	var = ft_strdup("");
 	if (str[*i] == '?')
 	{
 		val = ft_getenv(envs, "?");
@@ -40,13 +67,19 @@ static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 			len++;
 			(*i)++;
 		}
+		free(var);
 		var = ft_substr(str, start, len);
 		if (!var)
 			return (perror("malloc"), NULL);
-		val = ft_getenv(envs, var);
+		val = replace_expand_quotes(ft_getenv(envs, var));
 		free(var);
+		var = ft_strjoin(res, val);
 	}
-	var = ft_strjoin(res, val);
+	else if (!ft_isalpha(str[*i]) && str[*i] != '_')
+	{
+		free(var);
+		var = push_char2(res, '$');
+	}
 	if (!var)
 		return (perror("malloc"), free(res), free(val), NULL);
 	(free(res), free(val));
@@ -70,7 +103,7 @@ static void	init(int *i, bool *in_double, bool *in_single, char **result)
 	*i = 0;
 	*in_double = false;
 	*in_single = false;
-	*result = ft_strdup("\"");
+	*result = ft_strdup("");
 }
 
 static char	*expand_parse(char *str, t_env *envs)
@@ -115,7 +148,6 @@ static char	*expand_parse(char *str, t_env *envs)
 			i++;
 		}
 	}
-	push_char(&result, '"');
 	if (!result)
 		return (perror("malloc"), NULL);
 	return (result);

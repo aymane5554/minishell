@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 11:43:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/12 14:23:05 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:52:44 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	execute_exit(t_cmd *all_cmds, int i, int no_cmds, int p_fd[3])
 		if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
 			return (errno_to_estatus());
 		builtin_exit(all_cmds[i].cmd, no_cmds);
+		return (0);
 	}
 	if (!fork())
 	{
