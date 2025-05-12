@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/10 08:50:15 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:35:14 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s, int i, int j, char c);
 int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	builtin_pwd(void);
-void	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
+int		builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
 void	builtin_echo(char **args);
-void	builtin_exit(char **args, int cmds_size);
+int		builtin_exit(char **args, int cmds_size);
 t_env	*new_env(char *env);
 void	push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);
@@ -109,4 +109,7 @@ char	**insert2darray(char **src, char **new, int i);
 int		check_empty_string(char *s);
 int		space_separated(char *str);
 char	*get_pwd(char option);
+int		errno_to_estatus(void);
+int		get_status(t_env *env, int option);
+
 #endif

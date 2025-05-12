@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/11 14:41:39 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:05:23 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*check_commands(t_env *env, char *cmd)
 	char	*file_path;
 	char	*tmp;
 
+	if (cmd[0] == '\0')
+		return (access(cmd, X_OK), perror("\"\""), NULL);
 	if (access(cmd, X_OK) == 0 && ft_strchr(cmd, '/') != NULL)
 		return (ft_strdup(cmd));
 	if (ft_strchr(cmd, '/') != NULL && access(cmd, X_OK) != 0)
@@ -104,6 +106,15 @@ char	**envlst_to_array(t_env *env)
 	return (ret);
 }
 
+int	errno_to_estatus(void)
+{
+	if (errno == EACCES)
+		return (126);
+	else if (errno == ENOENT)
+		return (127);
+	return (1);
+}
+
 int	execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt)
 {
 	char	*cmd_path;
@@ -121,12 +132,12 @@ int	execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt)
 	if (!cmd_path)
 	{
 		(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-		exit(1);
+		exit(errno_to_estatus());
 	}
 	execve(cmd_path, cmd.cmd, dblenv);
 	perror("execve");
 	(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
-	exit(0);
+	exit(errno_to_estatus());
 }
 
 int	execute_others_main(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3])
