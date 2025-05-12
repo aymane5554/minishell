@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/09 13:52:06 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:59:37 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	init(int *i, bool *in_double, bool *in_single, char **result)
 	*i = 0;
 	*in_double = false;
 	*in_single = false;
-	*result = ft_strdup("");
+	*result = ft_strdup("\"");
 }
 
 static char	*expand_parse(char *str, t_env *envs)
@@ -115,6 +115,7 @@ static char	*expand_parse(char *str, t_env *envs)
 			i++;
 		}
 	}
+	push_char(&result, '"');
 	return (result);
 }
 
@@ -161,6 +162,7 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 		{
 			if (ft_strchr(all_cmds[i].cmd[z], '$'))
 			{
+				
 				tmp = expand_parse(all_cmds[i].cmd[z], envs);
 				if (!tmp)
 					return (1);
