@@ -22,6 +22,7 @@ LIBFT_OBJS= $(LIBFT_SRCS:libft/%.c=libft/%.o)
 NAME = minishell
 
 all: $(NAME)
+	make clean && clear
 
 libft/%.o : libft/%.c libft/libft.h
 	$(CC) $(CFLAGS) -c $< -I libft/ -o $@

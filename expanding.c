@@ -136,9 +136,25 @@ static char	*expand_parse(char *str, t_env *envs)
 		}
 		else if (str[i] == '$' && !in_single)
 		{
-			result = exctract_dollar(str, &i, result, envs);
-			if (!result)
-				return (NULL);
+			if (str[i + 1] == '\"' && !in_double)
+			{
+				i += 2;
+				while (str[i] && str[i] != '\"')
+				{
+					push_char(&result, str[i]);
+					if (!result)
+						return (perror("malloc"), NULL);
+					i++;
+				}
+				if (str[i] == '\"')
+					i++;
+			}
+			else
+			{
+				result = exctract_dollar(str, &i, result, envs);
+				if (!result)
+					return (NULL);
+			}
 		}
 		else
 		{
@@ -196,7 +212,6 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 		{
 			if (ft_strchr(all_cmds[i].cmd[z], '$'))
 			{
-				
 				tmp = expand_parse(all_cmds[i].cmd[z], envs);
 				if (!tmp)
 					return (1);
