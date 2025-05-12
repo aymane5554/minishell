@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/09 15:59:24 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:51:32 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ int	write_in_file(int args[4], char *lim, int p_fd[3], t_env *env)
 			if (args[3])
 			{
 				tmp = line;
-				line = expand_parse_heredoc(line, env);
+				if (!(line = expand_parse_heredoc(line, env)))
+					(free(tmp), close(args[0]), exit(1));
 				free(tmp);
 			}
 			write(2, line, ft_strlen(line));
@@ -111,6 +112,8 @@ int	write_in_file(int args[4], char *lim, int p_fd[3], t_env *env)
 	waitpid(pid, &status, 0);
 	if (WEXITSTATUS(status) == 130)
 		return (g_herdoc_signal = 0, -1);
+	else if (WEXITSTATUS(status) == 1)
+		return (g_herdoc_signal = 0, -2);
 	g_herdoc_signal = 0;
 	return (args[0]);
 }
@@ -125,17 +128,19 @@ int	open_heredoc(char *lim, int p_fd[3], int args[2], t_env *env)
 
 	filename_template = "/tmp/.tmp_minishell_";
 	n = 0;
-	num = ft_itoa(n);
-	filename = ft_strjoin(filename_template, num);
+	if (!(num = ft_itoa(n)))
+		return (-2);
+	if (!(filename = ft_strjoin(filename_template, num)))
+		return (free(num), -2);
 	fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL , 0777);
 	while (fd[0] == -1)
 	{
 		(free(filename), free(num));
 		n++;
-		num = ft_itoa(n);
-		filename = ft_strjoin(filename_template, num);
-		if (!filename)
-			return (free(num), -1);
+		if (!(num = ft_itoa(n)))
+			return (-2);
+		if (!(filename = ft_strjoin(filename_template, num)))
+			return (free(num), -2);
 		fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL, 0777);
 	}
 	fd[1] = open(filename, O_RDONLY);
@@ -144,12 +149,12 @@ int	open_heredoc(char *lim, int p_fd[3], int args[2], t_env *env)
 	unlink(filename);
 	fd[2] = args[0];
 	fd[3] = args[1];
-	if (write_in_file(fd, lim, p_fd, env) == -1)
+	if ((n = write_in_file(fd, lim, p_fd, env)) < 0)
 	{
 		close(fd[1]);
 		close(fd[0]);
 		(free(filename), free(num));
-		return (-1);
+		return (n);
 	}
 	close(fd[0]);
 	(free(filename), free(num));

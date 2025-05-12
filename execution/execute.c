@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/10 09:24:30 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:51:05 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int	here_doc(t_cmd *all_cmds, int p_fd[3], int no_cmds, t_env *env)
 				args[0] = no_cmds;
 				args[1] = all_cmds[i].redirection[red].expandable;
 				all_cmds[i].fd = open_heredoc(all_cmds[i].redirection[red].file, p_fd, args, env);
-				if (all_cmds[i].fd == -1)
-					return (-1);
+				if (all_cmds[i].fd < 0)
+					return (all_cmds[i].fd);
 			}
 			red++;
 		}
@@ -73,7 +73,6 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 	int		status;
 	t_arg	arg;
 
-	i = 0;
 	arg.env = env;
 	arg.export = exprt;
 	status = 0;
@@ -81,12 +80,15 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 	no_cmds = count_cmds(all_cmds);
 	if (no_cmds != 1)
 		pipe(p_fd);
-	if (here_doc(all_cmds, p_fd, no_cmds, env) == -1)
+	if ((i = here_doc(all_cmds, p_fd, no_cmds, env)) < 0)
 	{
 		if (no_cmds > 1)
 			(close(p_fd[0]), close(p_fd[1]));
-		return (130);
+		if (i == -1)
+			return (130);
+		return (1);
 	}
+	i = 0;
 	while (all_cmds[i].cmd)
 	{
 		if (i != 0 && i != no_cmds -1)
