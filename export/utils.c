@@ -121,6 +121,12 @@ void	update_shlvl(t_env *env)
 	{
 		if (!ft_strcmp(env->key, "SHLVL"))
 		{
+			if (!ft_strcmp(env->value, "999"))
+			{
+				ft_putstr_fd("warning: shell level (1000) too high, resetting to 1\n", 2);
+				(free(env->value), free(val), env->value = ft_strdup("1"));
+				return ;
+			}
 			free(env->value);
 			env->value = val;
 			return ;
