@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/12 16:07:25 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:01:43 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*replace_expand_quotes(char *s)
 	return (s);
 }
 
-static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
+static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs, char quotes)
 {
 	char	*var;
 	char	*val;
@@ -75,7 +75,7 @@ static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 		free(var);
 		var = ft_strjoin(res, val);
 	}
-	else if (!ft_isalpha(str[*i]) && str[*i] != '_')
+	else if (!ft_isalpha(str[*i]) && str[*i] != '_' && quotes)
 	{
 		free(var);
 		var = push_char2(res, '$');
@@ -136,7 +136,7 @@ static char	*expand_parse(char *str, t_env *envs)
 		}
 		else if (str[i] == '$' && !in_single)
 		{
-			result = exctract_dollar(str, &i, result, envs);
+			result = exctract_dollar(str, &i, result, envs, in_double);
 			if (!result)
 				return (NULL);
 		}
@@ -166,7 +166,7 @@ char	*expand_parse_heredoc(char *str, t_env *envs)
 	{
 		if (str[i] == '$')
 		{
-			result = exctract_dollar(str, &i, result, envs);
+			result = exctract_dollar(str, &i, result, envs, 1);
 			if (!result)
 				return (NULL);
 		}
