@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/11 17:54:07 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:58:04 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ void	update_shlvl(t_env *env)
 	{
 		if (!ft_strcmp(env->key, "SHLVL"))
 		{
+			if (!ft_strcmp(env->value, "999"))
+			{
+				ft_putstr_fd("warning: shell level (1000) too high, resetting to 1\n", 2);
+				(free(env->value), free(val), env->value = ft_strdup("1"));
+				return ;
+			}
 			free(env->value);
 			env->value = val;
 			return ;
