@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 15:35:33 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:59:46 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,8 @@ int	execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt)
 		exit(errno_to_estatus());
 	}
 	execve(cmd_path, cmd.cmd, dblenv);
-	perror("execve");
+	if (access(cmd_path, X_OK))
+		perror("execve");
 	(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
 	exit(errno_to_estatus());
 }
