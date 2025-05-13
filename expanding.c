@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 10:01:43 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:15:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static char	*replace_expand_quotes(char *s)
 {
 	int		i;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	while (s[i])
 	{
@@ -38,7 +40,7 @@ static char	*replace_expand_quotes(char *s)
 	return (s);
 }
 
-static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs, char quotes)
+static char	*exctract_dollar(char *str, int i[2], char *res, t_env *envs)
 {
 	char	*var;
 	char	*val;
@@ -75,7 +77,7 @@ static char	*exctract_dollar(char *str, int *i, char *res, t_env *envs, char quo
 		free(var);
 		var = ft_strjoin(res, val);
 	}
-	else if (!ft_isalpha(str[*i]) && str[*i] != '_' && quotes)
+	else if (!ft_isalpha(str[*i]) && str[*i] != '_' && i[1])
 	{
 		free(var);
 		var = push_char2(res, '$');
@@ -98,9 +100,9 @@ static void	push_char(char **s, char c)
 	free(tmp);
 }
 
-static void	init(int *i, bool *in_double, bool *in_single, char **result)
+static void	init(int i[2], bool *in_double, bool *in_single, char **result)
 {
-	*i = 0;
+	i[0] = 0;
 	*in_double = false;
 	*in_single = false;
 	*result = ft_strdup("");
@@ -108,44 +110,45 @@ static void	init(int *i, bool *in_double, bool *in_single, char **result)
 
 static char	*expand_parse(char *str, t_env *envs)
 {
-	int		i;
+	int		i[2];
 	bool	in_single;
 	bool	in_double;
 	char	*result;
 
-	init(&i, &in_double, &in_single, &result);
+	init(i, &in_double, &in_single, &result);
 	if (!result)
 		return (perror("malloc"), NULL);
-	while (str[i])
+	while (str[*i])
 	{
-		if (str[i] == '\'' && !in_double)
+		if (str[*i] == '\'' && !in_double)
 		{
-			push_char(&result, str[i]);
+			push_char(&result, str[*i]);
 			if (!result)
 				return (perror("malloc"), NULL);
 			in_single = !in_single;
-			i++;
+			(*i)++;
 		}
-		else if (str[i] == '"' && !in_single)
+		else if (str[*i] == '"' && !in_single)
 		{
-			push_char(&result, str[i]);
+			push_char(&result, str[*i]);
 			if (!result)
 				return (perror("malloc"), NULL);
 			in_double = !in_double;
-			i++;
+			(*i)++;
 		}
-		else if (str[i] == '$' && !in_single)
+		else if (str[*i] == '$' && !in_single)
 		{
-			result = exctract_dollar(str, &i, result, envs, in_double);
+			i[1] = in_double;
+			result = exctract_dollar(str, i, result, envs);
 			if (!result)
 				return (NULL);
 		}
 		else
 		{
-			push_char(&result, str[i]);
+			push_char(&result, str[i[0]]);
 			if (!result)
 				return (perror("malloc"), NULL);
-			i++;
+			(*i)++;
 		}
 	}
 	if (!result)
@@ -155,27 +158,28 @@ static char	*expand_parse(char *str, t_env *envs)
 
 char	*expand_parse_heredoc(char *str, t_env *envs)
 {
-	int		i;
+	int		i[2];
 	char	*result;
 
-	i = 0;
+	i[0] = 0;
 	result = ft_strdup("");
 	if (!result)
 		return (perror("malloc"), NULL);
-	while (str[i])
+	while (str[*i])
 	{
-		if (str[i] == '$')
+		if (str[*i] == '$')
 		{
-			result = exctract_dollar(str, &i, result, envs, 1);
+			i[1] = 1;
+			result = exctract_dollar(str, i, result, envs);
 			if (!result)
 				return (NULL);
 		}
 		else
 		{
-			push_char(&result, str[i]);
+			push_char(&result, str[*i]);
 			if (!result)
 				return (perror("malloc"), NULL);
-			i++;
+			(*i)++;
 		}
 	}
 	return (result);
