@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 15:27:20 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:57:44 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,7 @@ int	wordcount(char *s)
 	{
 		if (is_whitespace(s[i]) && q == 0)
 			f = 1;
-		if (s[i] == '\'' && q == 0)
-			q = 1;
-		else if (s[i] == '\'' && q == 1)
-			q = 0;
-		else if (s[i] == '\"' && q == 0)
-			q = 2;
-		else if (s[i] == '\"' && q == 2)
-			q = 0;
+		change_quotes(s[i], &q);
 		if (f == 1 && !is_whitespace(s[i]))
 		{
 			count++;
@@ -118,9 +111,8 @@ char	**ft_split_input(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if (is_whitespace(str[i]))
-			f = 1;
-		else if (f == 1 && !is_whitespace(str[i]))
+		f = is_whitespace(str[i]);
+		if (f == 1 && !is_whitespace(str[i]))
 		{
 			ret[count] = ft_strindup(str + i, &i);
 			if (!ret[count])
@@ -131,6 +123,5 @@ char	**ft_split_input(char *str)
 		}
 		i++;
 	}
-	ret[count] = NULL;
-	return (ret);
+	return (ret[count] = NULL, ret);
 }
