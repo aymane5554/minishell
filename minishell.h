@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/12 14:35:14 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:24:13 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,6 @@ int		check_empty_string(char *s);
 int		space_separated(char *str);
 char	*get_pwd(char option);
 int		errno_to_estatus(void);
-int		get_status(t_env *env, int option);
+int		get_status(t_env *env, t_env *exprt, int option);
 
 #endif

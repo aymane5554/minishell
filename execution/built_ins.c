@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/12 14:39:19 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:25:31 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	builtin_exit(char **args, int cmds_size)
 	if (cmds_size > 1)
 		return (0);
 	if (i == 1)
-		exit_value = get_status(NULL, 1);
+		exit_value = get_status(NULL, NULL, 1);
 	exit(exit_value % 256);
 }
 

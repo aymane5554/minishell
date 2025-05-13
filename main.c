@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/12 16:01:10 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:24:43 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,20 +164,29 @@ void	freencmds(t_cmd	*all_cmds, int n)
 	free(all_cmds);
 }
 
-int	get_status(t_env *env, int option)
+int	get_status(t_env *env, t_env *exprt ,int option)
 {
 	static t_env	*envv;
+	static t_env	*exp;
 	char			*tmp;
 	int				ret;
 
 	if (option == 0)
+	{
 		envv = env;
+		exp = exprt;
+	}
 	else if (option == 1)
 	{
 		tmp = ft_getenv(envv, "?");
 		ret = (int)ft_atol(tmp, &ret);
 		free(tmp);
 		return (ret);
+	}
+	else
+	{
+		tmp = ft_itoa(option);
+		chexitstatus(option, envv, exp);
 	}
 	return (0);
 }
@@ -204,7 +213,7 @@ int main(int argc, char **argv, char **env)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	get_pwd(0);
-	get_status(envs, 0);
+	get_status(envs, s_env, 0);
 	while (1)
 	{
 		line = readline("minishell> ");
