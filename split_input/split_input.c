@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 16:57:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:27:45 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,9 @@ char	**ft_split_input(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		f = is_whitespace(str[i]);
-		if (f == 1 && !is_whitespace(str[i]))
+		if (is_whitespace(str[i]))
+			f = 1;
+		else if (f == 1 && !is_whitespace(str[i]))
 		{
 			ret[count] = ft_strindup(str + i, &i);
 			if (!ret[count])
