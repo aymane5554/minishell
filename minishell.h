@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 16:52:35 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:39:37 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,7 @@ int		errno_to_estatus(void);
 int		get_status(t_env *env, t_env *exprt, int option);
 int		remove_quotes(char **cmds, char *str, int n);
 void	change_quotes(char c, int *q);
+void	freedblchar(char **dbl, int size);
+int		fill_split_string(char *s, char *ret);
 
 #endif
