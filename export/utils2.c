@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 21:18:46 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/10 08:53:01 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:49:15 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	push_export(t_env *env, t_env *new)
 			env->empty = new->empty;
 			return (free(new->key), free(new));
 		}
-		else if ((!env->key || ft_strcmp(env->key, new->key) < 0) && (!env->next || ft_strcmp(env->next->key, new->key) > 0))
+		else if ((!env->key || ft_strcmp(env->key, new->key) < 0)
+			&& (!env->next || ft_strcmp(env->next->key, new->key) > 0))
 		{
 			new->next = env->next;
 			env->next = new;
@@ -67,7 +68,8 @@ void	append_export(t_env *env, t_env *new)
 			(free(new->value), free(new->key), free(tmp), free(new));
 			return ;
 		}
-		if ((!env->key || ft_strcmp(env->key, new->key) < 0) && (!env->next || ft_strcmp(env->next->key, new->key) > 0))
+		if ((!env->key || ft_strcmp(env->key, new->key) < 0)
+			&& (!env->next || ft_strcmp(env->next->key, new->key) > 0))
 		{
 			new->next = env->next;
 			env->next = new;

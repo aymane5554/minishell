@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:58:06 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/02 14:32:10 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:44:15 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_env	*duplicate_node(t_env *node)
 {
-	t_env *new;
+	t_env	*new;
 
 	new = malloc(sizeof(t_env));
 	new->empty = node->empty;
@@ -51,7 +51,7 @@ t_env	*smallest_node(t_env *lst)
 	t_env	*ret;
 	t_env	*last;
 	t_env	*ret_last;
-	
+
 	last = lst;
 	lst = lst->next;
 	ret = lst;

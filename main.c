@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 10:24:43 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:20:06 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	g_herdoc_signal = 0;
 int	ft_dstrlen(char **str)
 {
 	int	i;
-	i = 0;
 
+	i = 0;
 	while (str[i])
 		i++;
 	return (i);
@@ -112,7 +112,8 @@ void	extract_redirections_from_cmd(char **cmd, t_redr *redirections)
 			redirections[counter].error = 0;
 			if (redirections[counter].type == 2)
 			{
-				if (!ft_strchr(redirections[counter].file, '\'') && !ft_strchr(redirections[counter].file, '\"'))
+				if (!ft_strchr(redirections[counter].file, '\'')
+					&& !ft_strchr(redirections[counter].file, '\"'))
 					redirections[counter].expandable = 1;
 			}
 			counter++;
@@ -123,7 +124,7 @@ void	extract_redirections_from_cmd(char **cmd, t_redr *redirections)
 	redirections[counter].file = NULL;
 }
 
-void freedbl(void **ptr)
+void	freedbl(void **ptr)
 {
 	int	i;
 
@@ -137,7 +138,7 @@ void freedbl(void **ptr)
 	free(ptr);
 }
 
-void free_redirections(t_redr *arr)
+void	free_redirections(t_redr *arr)
 {
 	int	i;
 
@@ -153,8 +154,9 @@ void free_redirections(t_redr *arr)
 
 void	freencmds(t_cmd	*all_cmds, int n)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (i < n)
 	{
 		freedbl((void **)all_cmds[i].cmd);
@@ -164,7 +166,7 @@ void	freencmds(t_cmd	*all_cmds, int n)
 	free(all_cmds);
 }
 
-int	get_status(t_env *env, t_env *exprt ,int option)
+int	get_status(t_env *env, t_env *exprt , int option)
 {
 	static t_env	*envv;
 	static t_env	*exp;
@@ -191,7 +193,7 @@ int	get_status(t_env *env, t_env *exprt ,int option)
 	return (0);
 }
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	int		i;
 	char	**cmds;
@@ -218,7 +220,10 @@ int main(int argc, char **argv, char **env)
 	{
 		line = readline("minishell> ");
 		if (!line)
-			(free_env(envs), free_env(s_env), printf("exit\n"), get_pwd(2), exit(status));
+		{
+			(free_env(envs), free_env(s_env));
+			(printf("exit\n"), get_pwd(2), exit(status));
+		}
 		if (line[0] == '\0')
 		{
 			free(line);
@@ -232,7 +237,7 @@ int main(int argc, char **argv, char **env)
 		}
 		cmds = ft_split_pipe(line, '|');
 		if (!cmds)
-			(freedbl((void **)cmds),  perror("error\n"), exit (1));
+			(freedbl((void **)cmds), perror("error\n"), exit (1));
 		free(line);
 		i = ft_dstrlen(cmds) + 1;
 		all_cmds = malloc(sizeof(t_cmd) * i);
@@ -271,7 +276,8 @@ int main(int argc, char **argv, char **env)
 				perror("error\n");
 				exit(1);
 			}
-			all_cmds[i].redirection = malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
+			all_cmds[i].redirection =
+				malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
 			if (!all_cmds[i].redirection)
 			{
 				free(all_cmds[i].cmd);
@@ -300,7 +306,6 @@ int main(int argc, char **argv, char **env)
 			freencmds(all_cmds, i);
 			continue ;
 		}
-		
 		status = execute(all_cmds, envs, s_env);
 		g_herdoc_signal = 0;
 		chexitstatus(status, envs, s_env);

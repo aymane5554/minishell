@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 10:25:31 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:30:49 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 int	argslen(char **args)
 {
 	int	i;
-	
+
 	i = 0;
 	while (args[i])
 		i++;
 	return (i);
 }
+
 int	builtin_exit(char **args, int cmds_size)
 {
 	int		i;
@@ -38,7 +39,8 @@ int	builtin_exit(char **args, int cmds_size)
 	{
 		while (args[1][j])
 		{
-			if (!ft_isdigit(args[1][j]) && !(j == 0 && (args[1][j] == '+' || args[1][j] == '-')))
+			if (!ft_isdigit(args[1][j])
+				&& !(j == 0 && (args[1][j] == '+' || args[1][j] == '-')))
 			{
 				ft_putstr_fd("exit: numeric argument required\n", 2);
 				if (cmds_size == 1)
@@ -54,7 +56,7 @@ int	builtin_exit(char **args, int cmds_size)
 	if (success == 0)
 	{
 		if (cmds_size > 1)
-			return(ft_putstr_fd("exit: numeric argument required\n", 2), 2);
+			return (ft_putstr_fd("exit: numeric argument required\n", 2), 2);
 		else
 			(ft_putstr_fd("exit: numeric argument required\n", 2), exit(2));
 	}
@@ -68,7 +70,7 @@ int	builtin_exit(char **args, int cmds_size)
 void	builtin_pwd(void)
 {
 	char	*path;
-	
+
 	path = get_pwd(1);
 	if (path)
 		printf("%s\n", path);
@@ -89,11 +91,12 @@ int	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
 	{
 		path = ft_getenv(env, "HOME");
 		if (!path)
-			return(ft_putstr_fd("cd: HOME is not set\n", 2), 1);
+			return (ft_putstr_fd("cd: HOME is not set\n", 2), 1);
 	}
 	else
 	{
-		if ((old_pwd = getcwd(NULL, 0)) == NULL && cmds_size == 1)
+		old_pwd = getcwd(NULL, 0);
+		if (old_pwd == NULL && cmds_size == 1)
 		{
 			choldpwd(env, exprt, getcwd(NULL, 0));
 			chdir("/");
@@ -120,7 +123,8 @@ int	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
 		}
 	}
 	if (stat(path, &info) != 0)
-		return (ft_putstr_fd("cd: No such file or directory\n", 2), free(path), 1);
+		return (ft_putstr_fd("cd: No such file or directory\n", 2),
+			free(path), 1);
 	if (!S_ISDIR(info.st_mode))
 		return (ft_putstr_fd("cd: Not a directory\n", 2), free(path), 1);
 	if (cmds_size > 1)
@@ -156,7 +160,6 @@ void	builtin_echo(char **args)
 	int	i;
 	int	newline;
 
-
 	i = 1;
 	newline = 1;
 	while (args[i] && n_flag(args[i]) == 1)
@@ -173,6 +176,5 @@ void	builtin_echo(char **args)
 	}
 	if (newline)
 		printf("\n");
-
 	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 10:15:54 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:07:50 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,6 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 		{
 			if (ft_strchr(all_cmds[i].cmd[z], '$'))
 			{
-				
 				tmp = expand_parse(all_cmds[i].cmd[z], envs);
 				if (!tmp)
 					return (1);
@@ -210,7 +209,7 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 				{
 					(free(all_cmds[i].cmd[z]), all_cmds[i].cmd[z] = tmp);
 					z++;
-					(free(split[0]), free(split)); 
+					(free(split[0]), free(split));
 					continue ;
 				}
 				ttmp = insert2darray(all_cmds[i].cmd, split, z);
@@ -227,7 +226,8 @@ int	expand(t_cmd *all_cmds, int i, int z, t_env *envs)
 		z = 0;
 		while (all_cmds[i].redirection[z].file)
 		{
-			if (ft_strchr(all_cmds[i].redirection[z].file, '$') && all_cmds[i].redirection[z].type != 2)
+			if (ft_strchr(all_cmds[i].redirection[z].file, '$')
+				&& all_cmds[i].redirection[z].type != 2)
 			{
 				tmp = expand_parse(all_cmds[i].redirection[z].file, envs);
 				if (!tmp)

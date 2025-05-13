@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/12 10:51:32 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:39:37 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	open_infile(char	*filename, char error)
 	return (fd);
 }
 
-int open_outfile(char *filename, char error)
+int	open_outfile(char *filename, char error)
 {
 	int	fd;
 
@@ -96,7 +96,8 @@ int	write_in_file(int args[4], char *lim, int p_fd[3], t_env *env)
 			if (args[3])
 			{
 				tmp = line;
-				if (!(line = expand_parse_heredoc(line, env)))
+				line = expand_parse_heredoc(line, env);
+				if (!line)
 					(free(tmp), close(args[0]), exit(1));
 				free(tmp);
 			}
@@ -128,18 +129,22 @@ int	open_heredoc(char *lim, int p_fd[3], int args[2], t_env *env)
 
 	filename_template = "/tmp/.tmp_minishell_";
 	n = 0;
-	if (!(num = ft_itoa(n)))
+	num = ft_itoa(n);
+	if (!num)
 		return (-2);
-	if (!(filename = ft_strjoin(filename_template, num)))
+	filename = ft_strjoin(filename_template, num);
+	if (!filename)
 		return (free(num), -2);
-	fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL , 0777);
+	fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL, 0777);
 	while (fd[0] == -1)
 	{
 		(free(filename), free(num));
 		n++;
-		if (!(num = ft_itoa(n)))
+		num = ft_itoa(n);
+		if (!num)
 			return (-2);
-		if (!(filename = ft_strjoin(filename_template, num)))
+		filename = ft_strjoin(filename_template, num);
+		if (!filename)
 			return (free(num), -2);
 		fd[0] = open(filename, O_RDWR | O_CREAT | O_EXCL, 0777);
 	}
@@ -149,7 +154,8 @@ int	open_heredoc(char *lim, int p_fd[3], int args[2], t_env *env)
 	unlink(filename);
 	fd[2] = args[0];
 	fd[3] = args[1];
-	if ((n = write_in_file(fd, lim, p_fd, env)) < 0)
+	n = write_in_file(fd, lim, p_fd, env);
+	if (n < 0)
 	{
 		close(fd[1]);
 		close(fd[0]);
@@ -164,7 +170,7 @@ int	open_heredoc(char *lim, int p_fd[3], int args[2], t_env *env)
 int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 {
 	int	red;
-	int fd0;
+	int	fd0;
 
 	red = 0;
 	fd0 = all_cmds.fd;
@@ -186,18 +192,21 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 		{
 			if (fd0 != 0 && fd0 != -1)
 				close(fd0);
-			fd0 = open_infile(all_cmds.redirection[red].file, all_cmds.redirection[red].error);
+			fd0 = open_infile(all_cmds.redirection[red].file,
+					all_cmds.redirection[red].error);
 			if (fd0 == -1)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 1)
 		{	
-			if (open_outfile(all_cmds.redirection[red].file, all_cmds.redirection[red].error) == -1)
+			if (open_outfile(all_cmds.redirection[red].file,
+					all_cmds.redirection[red].error) == -1)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 3)
 		{
-			if (open_append_file(all_cmds.redirection[red].file, all_cmds.redirection[red].error) == -1)
+			if (open_append_file(all_cmds.redirection[red].file,
+					all_cmds.redirection[red].error) == -1)
 				return (-1);
 		}
 		red++;

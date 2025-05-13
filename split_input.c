@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:02:31 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/08 11:37:56 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:27:20 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ char	*ft_strindup(char *s, int *i)
 int	wordcount(char *s)
 {
 	int	i;
-	int q;
-	int count;
+	int	q;
+	int	count;
 	int	f;
 
 	i = 0;
@@ -124,7 +124,7 @@ char	**ft_split_input(char *str)
 		{
 			ret[count] = ft_strindup(str + i, &i);
 			if (!ret[count])
-				return (freedbl(ret, count) , NULL);
+				return (freedbl(ret, count), NULL);
 			count++;
 			f = 0;
 			continue ;

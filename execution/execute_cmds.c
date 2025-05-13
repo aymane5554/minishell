@@ -6,13 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 11:45:49 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:35:33 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void free_dbl_ptr(char **ptr, int i)
+static void	free_dbl_ptr(char **ptr, int i)
 {
 	while (ptr[i])
 	{
@@ -48,11 +48,12 @@ char	*check_commands(t_env *env, char *cmd)
 		return (ft_strdup(cmd));
 	if (ft_strchr(cmd, '/') && (access(cmd, X_OK) || check_dir(cmd)))
 		return (perror(cmd), NULL);
-	if (!(tmp = ft_getenv(env, "PATH")))
+	tmp = ft_getenv(env, "PATH");
+	if (!tmp)
 	{
 		if (env->i)
 			tmp = ft_strdup("/usr/local/sbin:/usr/local/bin"
-				":/usr/sbin:/usr/bin:/sbin:/bin");
+					":/usr/sbin:/usr/bin:/sbin:/bin");
 		else if (access(cmd, X_OK) == 0 && !check_dir(cmd))
 			return (ft_strdup(cmd));
 		else
@@ -159,7 +160,7 @@ int	execute_others_main(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3])
 	int		no_cmds;
 	pid_t	pid;
 	int		status;
-	
+
 	no_cmds = count_cmds(all_cmds);
 	g_herdoc_signal = 1;
 	pid = fork();
@@ -167,7 +168,8 @@ int	execute_others_main(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3])
 	{
 		signal(SIGQUIT, sigquit_handler);
 		if (redirect(all_cmds[i], p_fd, i, no_cmds) == -1)
-			(freencmds(all_cmds, no_cmds), free_env(arg.env), free_env(arg.export), exit(1));
+			(freencmds(all_cmds, no_cmds), free_env(arg.env),
+				free_env(arg.export), exit(1));
 		if (!fork())
 			execute_others(all_cmds[i], all_cmds, arg.env, arg.export);
 		wait(&status);

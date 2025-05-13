@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 10:24:13 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:16:30 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <fcntl.h>
 # include <wait.h>
 
-extern int g_herdoc_signal;
+extern int	g_herdoc_signal;
 
 typedef struct s_redr
 {
@@ -84,7 +84,7 @@ void	display_env(t_env *env);
 t_env	*sort_lst(t_env *lst);
 void	push_export(t_env *env, t_env *new);
 void	append_export(t_env *env, t_env *new);
-int		redirect(t_cmd all_cmds, int pfd[2], int nth, int  no_cmds);
+int		redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds);
 void	freencmds(t_cmd	*all_cmds, int n);
 char	*check_commands(t_env *env, char *cmd);
 void	choldpwd(t_env *env, t_env *exprt, char *new);

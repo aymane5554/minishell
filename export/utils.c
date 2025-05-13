@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 13:58:04 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:48:39 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_env	*new_env(char *env)
 
 void	push_env(t_env *head, t_env *new)
 {
-	t_env *last;
+	t_env	*last;
 
 	if (!new)
 		return (perror("export error"));
@@ -123,7 +123,8 @@ void	update_shlvl(t_env *env)
 		{
 			if (!ft_strcmp(env->value, "999"))
 			{
-				ft_putstr_fd("warning: shell level (1000) too high, resetting to 1\n", 2);
+				ft_putstr_fd("warning: shell level (1000)"
+					" too high, resetting to 1\n", 2);
 				(free(env->value), free(val), env->value = ft_strdup("1"));
 				return ;
 			}
@@ -161,7 +162,8 @@ t_env	*duplicate_env(char **env)
 	head->i = 0;
 	while (env[i])
 		(push_env(head, new_env(env[i])), i++);
-	if (!(tmp = ft_getenv(head, "PATH")))
+	tmp = ft_getenv(head, "PATH");
+	if (!tmp)
 		head->i = 1;
 	free(tmp);
 	update_shlvl(head);
