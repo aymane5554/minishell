@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/12 14:05:23 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:45:49 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ static void free_dbl_ptr(char **ptr, int i)
 	free(ptr);
 }
 
+int	check_dir(char *path)
+{
+	struct stat	info;
+
+	stat(path, &info);
+	if (S_ISDIR(info.st_mode))
+	{
+		errno = EACCES;
+		return (1);
+	}
+	return (0);
+}
+
 char	*check_commands(t_env *env, char *cmd)
 {
 	int		i;
@@ -31,15 +44,16 @@ char	*check_commands(t_env *env, char *cmd)
 
 	if (cmd[0] == '\0')
 		return (access(cmd, X_OK), perror("\"\""), NULL);
-	if (access(cmd, X_OK) == 0 && ft_strchr(cmd, '/') != NULL)
+	if (!access(cmd, X_OK) && ft_strchr(cmd, '/') && !check_dir(cmd))
 		return (ft_strdup(cmd));
-	if (ft_strchr(cmd, '/') != NULL && access(cmd, X_OK) != 0)
+	if (ft_strchr(cmd, '/') && (access(cmd, X_OK) || check_dir(cmd)))
 		return (perror(cmd), NULL);
 	if (!(tmp = ft_getenv(env, "PATH")))
 	{
 		if (env->i)
-			tmp = ft_strdup("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
-		else if (access(cmd, X_OK) == 0)
+			tmp = ft_strdup("/usr/local/sbin:/usr/local/bin"
+				":/usr/sbin:/usr/bin:/sbin:/bin");
+		else if (access(cmd, X_OK) == 0 && !check_dir(cmd))
 			return (ft_strdup(cmd));
 		else
 			return (perror(cmd), NULL);
@@ -53,7 +67,7 @@ char	*check_commands(t_env *env, char *cmd)
 		free(paths[i]);
 		file_path = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (access(file_path, X_OK) == 0)
+		if (access(file_path, X_OK) == 0 && !check_dir(file_path))
 			return (free_dbl_ptr(paths, i + 1), file_path);
 		free(file_path);
 		i++;
