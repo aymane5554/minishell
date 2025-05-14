@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/14 14:47:28 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:49:07 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ int	write_in_file(int args[4], char *lim, int p_fd[3], t_arg *arg)
 		}
 		free(line);
 		close(args[0]);
+		(freencmds(arg->all_cmds, args[2]), free_env(arg->env),
+			free_env(arg->export));
 		exit(0);
 	}
 	waitpid(pid, &status, 0);
@@ -155,16 +157,11 @@ int	open_heredoc(char *lim, int p_fd[3], int args[2], t_arg *arg)
 	unlink(filename);
 	fd[2] = args[0];
 	fd[3] = args[1];
+	(free(filename), free(num));
 	n = write_in_file(fd, lim, p_fd, arg);
 	if (n < 0)
-	{
-		close(fd[1]);
-		close(fd[0]);
-		(free(filename), free(num));
-		return (n);
-	}
+		return (close(fd[1]), close(fd[0]), n);
 	close(fd[0]);
-	(free(filename), free(num));
 	return (fd[1]);
 }
 
@@ -199,16 +196,24 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 				return (-1);
 		}
 		else if (all_cmds.redirection[red].type == 1)
-		{	
+		{
 			if (open_outfile(all_cmds.redirection[red].file,
 					all_cmds.redirection[red].error) == -1)
+			{
+				if (fd0 != 0 && fd0 != -1)
+					close(fd0);
 				return (-1);
+			}
 		}
 		else if (all_cmds.redirection[red].type == 3)
 		{
 			if (open_append_file(all_cmds.redirection[red].file,
 					all_cmds.redirection[red].error) == -1)
+			{
+				if (fd0 != 0 && fd0 != -1)
+					close(fd0);
 				return (-1);
+			}
 		}
 		red++;
 	}

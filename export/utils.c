@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/14 11:50:56 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:27:20 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int	update_shlvl(t_env *env)
 		}
 		env = env->next;
 	}
+	free(val);
 	return (0);
 }
 

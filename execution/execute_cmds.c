@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/14 14:27:47 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:43:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,19 @@ int	errno_to_estatus(void)
 	return (1);
 }
 
+static void	close_heredocs2(t_cmd *all_cmds)
+{
+	int	i;
+
+	i = 0;
+	while (all_cmds[i].cmd)
+	{
+		if (all_cmds[i].fd)
+			close(all_cmds[i].fd);
+		i++;
+	}
+}
+
 int	execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt)
 {
 	char	*cmd_path;
@@ -140,18 +153,21 @@ int	execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt)
 	dblenv = envlst_to_array(env);
 	if (!cmd.cmd[0] || !dblenv)
 	{
+		close_heredocs2(all_cmds);
 		(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
 		exit(1);
 	}
 	cmd_path = check_commands(env, cmd.cmd[0]);
 	if (!cmd_path)
 	{
+		close_heredocs2(all_cmds);
 		(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
 		exit(errno_to_estatus());
 	}
 	execve(cmd_path, cmd.cmd, dblenv);
 	if (access(cmd_path, X_OK))
 		perror("execve");
+	close_heredocs2(all_cmds);
 	(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
 	exit(errno_to_estatus());
 }
@@ -169,8 +185,10 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 	{
 		signal(SIGQUIT, sigquit_handler);
 		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
-			(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
+		{
+			(close_heredocs(arg), freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
 				free_env(arg->export), exit(1));
+		}
 		if (!fork())
 			execute_others(arg->all_cmds[i], arg->all_cmds, arg->env, arg->export);
 		wait(&status);
@@ -183,6 +201,7 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 		}
 		if (arg->all_cmds[i].fd)
 			close(arg->all_cmds[i].fd);
+		close_heredocs(arg);
 		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
 			free_env(arg->export));
 		exit(WEXITSTATUS(status));
