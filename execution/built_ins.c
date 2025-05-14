@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 15:30:49 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:11:49 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,11 @@ int	argslen(char **args)
 	return (i);
 }
 
-int	builtin_exit(char **args, int cmds_size)
+static int	builtin_exit_error(char **args, int cmds_size, int i)
 {
-	int		i;
-	int		j;
-	long	exit_value;
-	int		success;
+	int	j;
 
-	exit_value = 0;
-	success = 1;
 	j = 0;
-	i = argslen(args);
 	if (cmds_size == 1)
 		ft_putstr_fd("exit\n", 2);
 	if (i >= 2)
@@ -52,6 +46,22 @@ int	builtin_exit(char **args, int cmds_size)
 	}
 	if (i > 2)
 		return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
+	return (0);
+}
+
+int	builtin_exit(char **args, int cmds_size)
+{
+	int		i;
+	int		j;
+	long	exit_value;
+	int		success;
+
+	exit_value = 0;
+	success = 1;
+	i = argslen(args);
+	j = builtin_exit_error(args, cmds_size, i);
+	if (j != 0)
+		return (j);
 	exit_value = ft_atol(args[1], &success);
 	if (success == 0)
 	{
