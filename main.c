@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 15:20:06 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:03:36 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,10 +186,7 @@ int	get_status(t_env *env, t_env *exprt , int option)
 		return (ret);
 	}
 	else
-	{
-		tmp = ft_itoa(option);
 		chexitstatus(option, envv, exp);
-	}
 	return (0);
 }
 
@@ -210,7 +207,11 @@ int	main(int argc, char **argv, char **env)
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 		exit(1);
 	envs = duplicate_env(env);
+	if (!envs)
+		return (perror("env"), 1);
 	s_env = sort_lst(envs);
+	if (!s_env)
+		return (free_env(envs), 1);
 	status = 0;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
@@ -221,6 +222,7 @@ int	main(int argc, char **argv, char **env)
 		line = readline("minishell> ");
 		if (!line)
 		{
+			status = get_status(NULL, NULL, 1);
 			(free_env(envs), free_env(s_env));
 			(printf("exit\n"), get_pwd(2), exit(status));
 		}
