@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/14 12:03:36 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:06:33 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void	freencmds(t_cmd	*all_cmds, int n)
 	free(all_cmds);
 }
 
-int	get_status(t_env *env, t_env *exprt , int option)
+int	get_status(t_env *env, t_env *exprt, int option)
 {
 	static t_env	*envv;
 	static t_env	*exp;
@@ -278,8 +278,8 @@ int	main(int argc, char **argv, char **env)
 				perror("error\n");
 				exit(1);
 			}
-			all_cmds[i].redirection =
-				malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
+			all_cmds[i].redirection
+				= malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
 			if (!all_cmds[i].redirection)
 			{
 				free(all_cmds[i].cmd);

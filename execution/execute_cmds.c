@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 20:59:46 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:12:43 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,14 @@ int	execute_others_main(t_cmd *all_cmds, int i, t_arg arg, int p_fd[3])
 			else if (WTERMSIG(status) == SIGQUIT)
 				(printf("Quit (core dumped)\n"), exit(131));
 		}
+		if (all_cmds[i].fd)
+			close(all_cmds[i].fd);
+		(freencmds(all_cmds, no_cmds), free_env(arg.env),
+			free_env(arg.export));
 		exit(WEXITSTATUS(status));
 	}
+	if (all_cmds[i].fd)
+			close(all_cmds[i].fd);
 	if (p_fd[2])
 		(close(p_fd[2]), p_fd[2] = 0);
 	return (0);
