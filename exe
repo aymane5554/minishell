@@ -1,0 +1,2 @@
+#!/bin/zsh
+make && valgrind -s --trace-children=yes --show-leak-kinds=all --track-fds=yes ./minishell
