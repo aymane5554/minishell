@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/14 14:46:54 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:43:37 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int		execute_env(t_arg *arg, int i, int p_fd[3]);
 int		execute_cd(t_arg *arg, int i, int p_fd[3]);
 int		execute_export(t_arg *arg, int i, int p_fd[3]);
 int		count_cmds(t_cmd *cmds);
-int		execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt);
 int		execute_others_main(t_arg *arg, int i, int p_fd[3]);
 void	sigquit_handler(int sig);
 char	*expand_parse_heredoc(char *str, t_env *envs);

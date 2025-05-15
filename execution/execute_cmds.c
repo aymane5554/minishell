@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/14 15:43:54 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 10:52:48 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,45 +130,45 @@ int	errno_to_estatus(void)
 	return (1);
 }
 
-static void	close_heredocs2(t_cmd *all_cmds)
+static void	close_heredocs3(t_cmd *all_cmds, int cmd)
 {
 	int	i;
 
 	i = 0;
 	while (all_cmds[i].cmd)
 	{
+		if (i == cmd)
+		{
+			i++;
+			continue;
+		}
 		if (all_cmds[i].fd)
 			close(all_cmds[i].fd);
 		i++;
 	}
 }
 
-int	execute_others(t_cmd cmd, t_cmd *all_cmds, t_env *env, t_env *exprt)
+int	execute_others(t_arg *arg, int i, int no_cmds)
 {
 	char	*cmd_path;
-	int		no_cmds;
 	char	**dblenv;
 
-	no_cmds = count_cmds(all_cmds);
-	dblenv = envlst_to_array(env);
-	if (!cmd.cmd[0] || !dblenv)
+	dblenv = envlst_to_array(arg->env);
+	if (!arg->all_cmds[i].cmd[0] || !dblenv)
 	{
-		close_heredocs2(all_cmds);
-		(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
+		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env), free_env(arg->export));
 		exit(1);
 	}
-	cmd_path = check_commands(env, cmd.cmd[0]);
+	cmd_path = check_commands(arg->env, arg->all_cmds[i].cmd[0]);
 	if (!cmd_path)
 	{
-		close_heredocs2(all_cmds);
-		(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
+		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env), free_env(arg->export));
 		exit(errno_to_estatus());
 	}
-	execve(cmd_path, cmd.cmd, dblenv);
+	execve(cmd_path, arg->all_cmds[i].cmd, dblenv);
 	if (access(cmd_path, X_OK))
 		perror("execve");
-	close_heredocs2(all_cmds);
-	(freencmds(all_cmds, no_cmds), free_env(env), free_env(exprt));
+	(freencmds(arg->all_cmds, no_cmds), free_env(arg->env), free_env(arg->export));
 	exit(errno_to_estatus());
 }
 
@@ -184,13 +184,14 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 	if (!pid)
 	{
 		signal(SIGQUIT, sigquit_handler);
+		close_heredocs3(arg->all_cmds, i);
 		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 		{
-			(close_heredocs(arg), freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
+			(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
 				free_env(arg->export), exit(1));
 		}
 		if (!fork())
-			execute_others(arg->all_cmds[i], arg->all_cmds, arg->env, arg->export);
+			execute_others(arg, i, no_cmds);
 		wait(&status);
 		if (WIFSIGNALED(status))
 		{
@@ -199,9 +200,6 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 			else if (WTERMSIG(status) == SIGQUIT)
 				(printf("Quit (core dumped)\n"), exit(131));
 		}
-		if (arg->all_cmds[i].fd)
-			close(arg->all_cmds[i].fd);
-		close_heredocs(arg);
 		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
 			free_env(arg->export));
 		exit(WEXITSTATUS(status));
