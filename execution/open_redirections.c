@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/15 11:05:28 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:43:41 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 	{
 		if (all_cmds.redirection[red].type == 0)
 		{
-			if (fd0 != 0 && fd0 != -1)
+			if (fd0 != 0)
 				close(fd0);
 			fd0 = open_infile(all_cmds.redirection[red].file,
 					all_cmds.redirection[red].error);
@@ -207,7 +207,7 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 			if (open_outfile(all_cmds.redirection[red].file,
 					all_cmds.redirection[red].error) == -1)
 			{
-				if (fd0 != 0 && fd0 != -1)
+				if (fd0 != 0)
 					close(fd0);
 				return (-1);
 			}
@@ -217,7 +217,7 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 			if (open_append_file(all_cmds.redirection[red].file,
 					all_cmds.redirection[red].error) == -1)
 			{
-				if (fd0 != 0 && fd0 != -1)
+				if (fd0 != 0)
 					close(fd0);
 				return (-1);
 			}

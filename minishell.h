@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/15 11:49:52 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:43:04 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,10 @@ void	freedblchar(char **dbl, int size);
 int		fill_split_string(char *s, char *ret);
 void	close_heredocs(t_arg *arg);
 void	close_heredocs3(t_cmd *all_cmds, int cmd);
+int		pre_execution(t_arg *arg, int *no_cmds, int p_fd[3]);
+int		pipe_shit(int i, int no_cmds, int p_fd[3]);
+int		execute_builtins(t_arg *arg, int i, int *status, int p_fd[3]);
+int		here_doc(t_arg *arg, int p_fd[3], int no_cmds);
+void	execution_epilogue(int no_cmds, int p_fd[3], int *status);
 
 #endif

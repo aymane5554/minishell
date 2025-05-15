@@ -4,7 +4,7 @@ RFLAGS = -lreadline -lncurses
 SRCS = main.c syntax/syntax_error.c syntax/utils.c syntax/check_quotes.c split_input/split_input.c split_input/utils.c \
 		pipe_split/ft_split_pipe.c pipe_split/utils.c sep_redirection.c expanding.c \
 		export/export.c export/utils.c remove_quotes/quotes_remover.c remove_quotes/utils.c \
-		export/unset.c export/sortenv.c export/utils2.c \
+		export/unset.c export/sortenv.c export/utils2.c execution/utils.c \
 		execution/open_redirections.c execution/execute_cmds.c execution/built_ins.c execution/execute.c \
 		execution/execute_builtins.c signal_handler.c insert.c
 OBJECTS = $(SRCS:%.c=%.o)

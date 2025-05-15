@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/14 10:46:54 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:54:25 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*exctract_dollar(char *str, int i[2], char *res, t_env *envs)
 	(*i)++;
 	val = NULL;
 	len = 0;
-	var = ft_strdup("");
+	var = NULL;
 	if (str[*i] == '?')
 	{
 		val = ft_getenv(envs, "?");
@@ -69,7 +69,6 @@ static char	*exctract_dollar(char *str, int i[2], char *res, t_env *envs)
 			len++;
 			(*i)++;
 		}
-		free(var);
 		var = ft_substr(str, start, len);
 		if (!var)
 			return (perror("malloc"), NULL);
@@ -78,10 +77,7 @@ static char	*exctract_dollar(char *str, int i[2], char *res, t_env *envs)
 		var = ft_strjoin(res, val);
 	}
 	else if (!ft_isalpha(str[*i]) && str[*i] != '_' && i[1])
-	{
-		free(var);
 		var = push_char2(res, '$');
-	}
 	if (!var)
 		return (perror("malloc"), free(res), free(val), NULL);
 	(free(res), free(val));
