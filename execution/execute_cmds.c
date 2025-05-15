@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/15 10:52:48 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:22:51 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	errno_to_estatus(void)
 	return (1);
 }
 
-static void	close_heredocs3(t_cmd *all_cmds, int cmd)
+void	close_heredocs3(t_cmd *all_cmds, int cmd)
 {
 	int	i;
 
@@ -165,10 +165,11 @@ int	execute_others(t_arg *arg, int i, int no_cmds)
 		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env), free_env(arg->export));
 		exit(errno_to_estatus());
 	}
+	(free_env(arg->env), free_env(arg->export));
 	execve(cmd_path, arg->all_cmds[i].cmd, dblenv);
 	if (access(cmd_path, X_OK))
 		perror("execve");
-	(freencmds(arg->all_cmds, no_cmds), free_env(arg->env), free_env(arg->export));
+	(freencmds(arg->all_cmds, no_cmds), free_dbl_ptr(dblenv, 0));
 	exit(errno_to_estatus());
 }
 
@@ -183,6 +184,7 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 	pid = fork();
 	if (!pid)
 	{
+		get_pwd(2);
 		signal(SIGQUIT, sigquit_handler);
 		close_heredocs3(arg->all_cmds, i);
 		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
@@ -193,6 +195,8 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 		if (!fork())
 			execute_others(arg, i, no_cmds);
 		wait(&status);
+		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
+			free_env(arg->export));
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGINT)
@@ -200,8 +204,6 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 			else if (WTERMSIG(status) == SIGQUIT)
 				(printf("Quit (core dumped)\n"), exit(131));
 		}
-		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
-			free_env(arg->export));
 		exit(WEXITSTATUS(status));
 	}
 	if (arg->all_cmds[i].fd)

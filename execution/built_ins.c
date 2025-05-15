@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 08:37:41 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 15:30:49 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:49:50 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ int	argslen(char **args)
 	return (i);
 }
 
-int	builtin_exit(char **args, int cmds_size)
+int	builtin_exit(t_arg *arg, int cmds_size, int n)
 {
 	int		i;
 	int		j;
 	long	exit_value;
 	int		success;
+	char	**args;
 
 	exit_value = 0;
+	args = arg->all_cmds[n].cmd;
 	success = 1;
 	j = 0;
 	i = argslen(args);
@@ -64,6 +66,8 @@ int	builtin_exit(char **args, int cmds_size)
 		return (0);
 	if (i == 1)
 		exit_value = get_status(NULL, NULL, 1);
+	(freencmds(arg->all_cmds, cmds_size), free_env(arg->env),
+		free_env(arg->export));
 	exit(exit_value % 256);
 }
 

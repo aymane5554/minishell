@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/14 12:06:33 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:19:21 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,7 @@ int	main(int argc, char **argv, char **env)
 					cmds[i] = tmp;
 					freencmds(all_cmds, i);
 					freedbl((void **)cmds);
+					get_pwd(2);
 					perror("error\n");
 					exit(1);
 				}
@@ -266,6 +267,7 @@ int	main(int argc, char **argv, char **env)
 				freencmds(all_cmds, i);
 				freedbl((void **)cmds);
 				freedbl((void **)cmd);
+				get_pwd(2);
 				perror("error\n");
 				exit(1);
 			}
@@ -275,6 +277,7 @@ int	main(int argc, char **argv, char **env)
 				freencmds(all_cmds, i);
 				freedbl((void **)cmds);
 				freedbl((void **)cmd);
+				get_pwd(2);
 				perror("error\n");
 				exit(1);
 			}
@@ -286,6 +289,7 @@ int	main(int argc, char **argv, char **env)
 				freencmds(all_cmds, i);
 				freedbl((void **)cmds);
 				freedbl((void **)cmd);
+				get_pwd(2);
 				perror("error\n");
 				exit(1);
 			}

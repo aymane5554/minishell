@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/15 10:43:37 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:49:52 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
 void	builtin_pwd(void);
 int		builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
 void	builtin_echo(char **args);
-int		builtin_exit(char **args, int cmds_size);
+int		builtin_exit(t_arg *arg, int cmds_size, int n);
 t_env	*new_env(char *env);
 t_env	*push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);
@@ -115,5 +115,6 @@ void	change_quotes(char c, int *q);
 void	freedblchar(char **dbl, int size);
 int		fill_split_string(char *s, char *ret);
 void	close_heredocs(t_arg *arg);
+void	close_heredocs3(t_cmd *all_cmds, int cmd);
 
 #endif
