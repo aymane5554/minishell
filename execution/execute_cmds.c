@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/15 11:22:51 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:20:05 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,5 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 	}
 	if (arg->all_cmds[i].fd)
 			close(arg->all_cmds[i].fd);
-	if (p_fd[2])
-		(close(p_fd[2]), p_fd[2] = 0);
 	return (0);
 }
