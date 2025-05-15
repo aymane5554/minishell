@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/15 10:56:39 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/15 11:05:28 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,8 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 		close(pfd[0]);
 		if (fd0 == 0)
 			fd0 = pfd[2];
+		else
+			close(pfd[2]);
 	}
 	while (all_cmds.redirection[red].file != NULL)
 	{
