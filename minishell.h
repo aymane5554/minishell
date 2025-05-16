@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/15 14:43:04 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:47:39 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@
 # include <wait.h>
 
 extern int	g_herdoc_signal;
+
+typedef struct s_vars
+{
+	int		i;
+	bool	dquotes;
+	bool	squotes;
+	char	*res;
+}	t_vars;
 
 typedef struct s_redr
 {
@@ -66,6 +74,9 @@ char	**ft_split_input(char *str);
 char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s, int i, int j, char c);
 int		expand(t_cmd *all_cmds, int i, int z, t_env *envs);
+char	*expand_parse(char *str, t_env *envs);
+char	*exctract_dollar(char *str, int *i, char *res, t_env *envs);
+void	push_char(char **s, char c);
 void	builtin_pwd(void);
 int		builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
 void	builtin_echo(char **args);
@@ -121,5 +132,6 @@ int		pipe_shit(int i, int no_cmds, int p_fd[3]);
 int		execute_builtins(t_arg *arg, int i, int *status, int p_fd[3]);
 int		here_doc(t_arg *arg, int p_fd[3], int no_cmds);
 void	execution_epilogue(int no_cmds, int p_fd[3], int *status);
+char	*push_char2(char *s, char c);
 
 #endif
