@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_dollar.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:38:24 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 17:03:51 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:02:34 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*replace_expand_quotes(char *s)
 	return (s);
 }
 
-static char	*question_mark(t_env *envs, char *res, int *i)
+char	*question_mark(t_env *envs, char *res, int *i)
 {
 	char	*val;
 	char	*var;
@@ -87,8 +87,6 @@ char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 	char	*var;
 
 	var = NULL;
-	if (str[*i] == '?')
-		return (question_mark(envs, res, i));
 	if (ft_isalpha(str[*i]) || str[*i] == '_')
 		var = normal_var(str, i, res, envs);
 	if (!var)

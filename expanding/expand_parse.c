@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_parse.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:38:16 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 17:03:34 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:18:50 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,25 @@ static int	pshandchng(char c, t_vars *vars, bool *flag, int ch)
 	return (0);
 }
 
-static int	expand_dollar(char *str, t_vars *vars, t_env *envs)
+static int	expand_dollar(char *str, t_vars *vars, t_env *envs, char *tmp)
 {
-	char	*tmp;
-
 	vars->i++;
-	if (ft_isalpha(str[vars->i]) || str[vars->i] == '_')
+	if (str[vars->i] == '?')
+	{
+		vars->res = question_mark(envs, vars->res, &vars->i);
+		if (!vars->res)
+			return (1);
+		return (0);
+	}
+	else if (ft_isalpha(str[vars->i]) || str[vars->i] == '_')
 	{
 		vars->res = exctract_dollar(str, &vars->i, vars->res, envs);
 		if (!vars->res)
 			return (1);
 	}
-	else if (!ft_isalpha(str[vars->i]) && str[vars->i] != '_' && vars->dquotes)
+	else if (str[vars->i] == '\"' && !vars->dquotes)
+		return (0);
+	else if (!ft_isalpha(str[vars->i]) && str[vars->i] != '_')
 	{
 		tmp = vars->res;
 		vars->res = push_char2(vars->res, '$');
@@ -69,7 +76,7 @@ static int	expandparse_loop(char *str, t_env *envs, t_vars *vars)
 		}
 		else if (str[vars->i] == '$' && !vars->squotes)
 		{
-			if (expand_dollar(str, vars, envs) == 1)
+			if (expand_dollar(str, vars, envs, NULL) == 1)
 				return (1);
 		}
 		else

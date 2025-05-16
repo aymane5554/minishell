@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 16:47:39 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:45:29 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,6 @@ int		execute_builtins(t_arg *arg, int i, int *status, int p_fd[3]);
 int		here_doc(t_arg *arg, int p_fd[3], int no_cmds);
 void	execution_epilogue(int no_cmds, int p_fd[3], int *status);
 char	*push_char2(char *s, char c);
+char	*question_mark(t_env *envs, char *res, int *i);
 
 #endif
