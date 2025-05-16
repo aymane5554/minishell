@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:01:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/15 14:48:11 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:58:14 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ int	execute_builtins(t_arg *arg, int i, int *status, int p_fd[3])
 		return (*status = execute_export(arg, i, p_fd), 1);
 	else if (arg->all_cmds[i].cmd[0]
 		&& !ft_strcmp(arg->all_cmds[i].cmd[0], "echo"))
-		return (execute_echo(arg, i, no_cmds, p_fd), 1);
+		return (*status = execute_echo(arg, i, no_cmds, p_fd), 1);
 	else if (arg->all_cmds[i].cmd[0]
 		&& !ft_strcmp(arg->all_cmds[i].cmd[0], "cd"))
 		return (*status = execute_cd(arg, i, p_fd), 1);
 	else if (arg->all_cmds[i].cmd[0]
 		&& !ft_strcmp(arg->all_cmds[i].cmd[0], "pwd"))
-		return (execute_pwd(arg, i, no_cmds, p_fd), 1);
+		return (*status = execute_pwd(arg, i, no_cmds, p_fd), 1);
 	else if (arg->all_cmds[i].cmd[0]
 		&& !ft_strcmp(arg->all_cmds[i].cmd[0], "exit"))
 		return (*status = execute_exit(arg, i, no_cmds, p_fd), 1);
@@ -73,7 +73,7 @@ int	execute_builtins(t_arg *arg, int i, int *status, int p_fd[3])
 		return (*status = execute_unset(arg, i, p_fd), 1);
 	else if (arg->all_cmds[i].cmd[0]
 		&& !ft_strcmp(arg->all_cmds[i].cmd[0], "env"))
-		return (execute_env(arg, i, p_fd), 1);
+		return (*status = execute_env(arg, i, p_fd), 1);
 	return (0);
 }
 
@@ -83,7 +83,8 @@ void	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 		(close(p_fd[0]), close(p_fd[1]));
 	if (p_fd[2])
 		close(p_fd[2]);
-	while (wait(status) >= 0)
+	waitpid((pid_t)*status, status, 0);
+	while (wait(NULL) >= 0)
 		continue ;
 	if (WIFSIGNALED(*status))
 	{

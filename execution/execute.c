@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/15 14:47:12 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/16 10:55:40 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 		if (execute_builtins(&arg, i, &status, p_fd))
 			;
 		else
-			execute_others_main(&arg, i, p_fd);
+			status = execute_others_main(&arg, i, p_fd);
 		if (p_fd[2])
 			(close(p_fd[2]), p_fd[2] = 0);
 		i++;
