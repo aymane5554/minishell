@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 15:45:49 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:06:00 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 	char	**split;
 	int		len;
 
-	if (!(tmp = expand_parse(all_cmds[i].cmd[*z], envs)))
+	tmp = expand_parse(all_cmds[i].cmd[*z], envs);
+	if (!(tmp))
 		return (1);
 	split = ft_split_input(tmp);
 	len = ft_dstrlen(split);
@@ -28,14 +29,12 @@ static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 		(free(all_cmds[i].cmd[*z]), all_cmds[i].cmd[*z] = tmp);
 		(*z)++;
 		(free(split[0]), free(split));
-		return (2) ;
+		return (2);
 	}
 	ttmp = insert2darray(all_cmds[i].cmd, split, *z);
 	if (!ttmp)
 		return (free(split), free(tmp), 1);
-	free(all_cmds[i].cmd);
-	free(split);
-	free(tmp);
+	(free(all_cmds[i].cmd), free(split), free(tmp));
 	all_cmds[i].cmd = ttmp;
 	*z += len - 1;
 	return (0);
@@ -72,7 +71,7 @@ static int	file_dollar_loop(t_cmd *all_cmds, int *z, int i, t_env *envs)
 		{
 			success = file_dollar(all_cmds, z, i, envs);
 			if (success == 2)
-				continue;
+				continue ;
 			else if (success == 1)
 				return (1);
 		}

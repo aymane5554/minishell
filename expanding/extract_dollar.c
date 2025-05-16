@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:38:24 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 16:55:36 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:03:51 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*question_mark(t_env *envs, char *res, int *i)
 	return (var);
 }
 
-static char *normal_var(char *str, int *i, char *res, t_env *envs)
+static char	*normal_var(char *str, int *i, char *res, t_env *envs)
 {
 	int		start;
 	int		len;

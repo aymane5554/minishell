@@ -6,7 +6,7 @@
 /*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:38:16 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 16:58:09 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:03:34 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ static int	pshandchng(char c, t_vars *vars, bool *flag, int ch)
 {
 	push_char(&vars->res, c);
 	if (!vars->res)
-	return (perror("malloc"), 1);
+		return (perror("malloc"), 1);
 	if (ch)
 		*flag = !*flag;
 	vars->i++;
-	return(0);
+	return (0);
 }
 
 static int	expand_dollar(char *str, t_vars *vars, t_env *envs)
@@ -78,17 +78,17 @@ static int	expandparse_loop(char *str, t_env *envs, t_vars *vars)
 				return (1);
 		}
 	}
-    return (0);
+	return (0);
 }
 
 char	*expand_parse(char *str, t_env *envs)
 {
-	t_vars vars;
+	t_vars	vars;
 
 	init(&vars);
 	if (!vars.res)
 		return (perror("malloc"), NULL);
 	if (expandparse_loop(str, envs, &vars))
-        return (NULL);
+		return (NULL);
 	return (vars.res);
 }
