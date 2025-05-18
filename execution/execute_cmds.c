@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 12:59:24 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:51:03 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,17 +192,18 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 			(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
 				free_env(arg->export), exit(1));
 		}
-		if (!fork())
+		pid = fork();
+		if (!pid)
 			execute_others(arg, i, no_cmds);
-		wait(&status);
+		waitpid(pid, &status, 0);
 		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env),
 			free_env(arg->export));
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGINT)
-				(printf("\n"), exit(130));
+				(ft_putstr_fd("\n", 1), exit(130));
 			else if (WTERMSIG(status) == SIGQUIT)
-				(printf("Quit (core dumped)\n"), exit(131));
+				(ft_putstr_fd("Quit (core dumped)\n", 1), exit(131));
 		}
 		exit(WEXITSTATUS(status));
 	}

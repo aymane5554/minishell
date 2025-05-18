@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:01:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/16 10:58:14 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:57:10 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,26 @@ int	execute_builtins(t_arg *arg, int i, int *status, int p_fd[3])
 
 void	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 {
+	int	tmp;
+	int	printed;
+
+	printed = 0;
 	if (no_cmds != 1)
 		(close(p_fd[0]), close(p_fd[1]));
 	if (p_fd[2])
 		close(p_fd[2]);
 	waitpid((pid_t)*status, status, 0);
-	while (wait(NULL) >= 0)
-		continue ;
 	if (WIFSIGNALED(*status))
 	{
 		if (WTERMSIG(*status) == SIGPIPE)
 			printf("\n");
+	}
+	while (wait(&tmp) >= 0)
+	{
+		if (WIFSIGNALED(tmp) && !printed)
+		{
+			if (WTERMSIG(tmp) == SIGPIPE)
+				(printf("\n"), printed = 1);
+		}
 	}
 }
