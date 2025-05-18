@@ -5,9 +5,13 @@ SRCS = main.c main_utils/main_utils.c main_utils/main_utils2.c syntax/syntax_err
 		pipe_split/ft_split_pipe.c pipe_split/utils.c sep_redirection.c expanding/expanding.c \
 		expanding/expand_parse.c expanding/expand_utils.c expanding/extract_dollar.c \
 		export/export.c export/utils.c remove_quotes/quotes_remover.c remove_quotes/utils.c \
-		export/unset.c export/sortenv.c export/utils2.c execution/utils.c \
-		execution/open_redirections.c execution/execute_cmds.c execution/execute.c \
-		execution/execute_builtins.c signal_handler.c insert.c  execution/built_ins/builtin_cd.c execution/built_ins/builtin_exit.c \
+		export/chenv.c export/unset.c export/sortenv.c export/utils2.c execution/utils.c \
+		execution/open_redirections/open_redirections.c  execution/open_redirections/utils.c execution/open_redirections/utils2.c \
+		execution/execute_cmds/execute_cmds.c execution/execute_cmds/utils.c \
+		execution/execute_cmds/env_lst_to_arr.c execution/execute_cmds/check_cmds.c execution/execute.c \
+		execution/execute_builtins/execute_builtins.c execution/execute_builtins/execute_builtins2.c execution/execute_builtins/utils.c \
+		signal_handler.c insert.c \
+		execution/built_ins/builtin_cd.c execution/built_ins/builtin_exit.c \
 		execution/built_ins/builtin_echo.c execution/built_ins/builtin_pwd.c
 OBJECTS = $(SRCS:%.c=%.o)
 LIBFT_SRCS = libft/ft_atol.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c \

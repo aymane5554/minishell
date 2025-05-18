@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/13 15:41:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:45:22 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,98 +22,6 @@ void	display_env(t_env *env)
 			printf("%s=%s\n", env->key, env->value);
 		}
 		env = env->next;
-	}
-}
-
-void	chexitstatus(int status, t_env *env, t_env *exprt)
-{
-	char	*tmp;
-
-	env = env->next;
-	while (env)
-	{
-		if (!ft_strcmp(env->key, "?"))
-		{
-			tmp = env->value;
-			env->value = ft_itoa(status);
-			env->empty = 0;
-			free(tmp);
-		}
-		env = env->next;
-	}
-	exprt = exprt->next;
-	while (exprt)
-	{
-		if (!ft_strcmp(exprt->key, "?"))
-		{
-			tmp = exprt->value;
-			exprt->value = ft_itoa(status);
-			exprt->empty = 0;
-			free(tmp);
-		}
-		exprt = exprt->next;
-	}
-}
-
-void	choldpwd(t_env *env, t_env *exprt, char *new)
-{
-	char	*tmp;
-
-	env = env->next;
-	while (env)
-	{
-		if (!ft_strcmp(env->key, "OLDPWD"))
-		{
-			tmp = env->value;
-			env->value = new;
-			env->empty = 0;
-			free(tmp);
-			break ;
-		}
-		env = env->next;
-	}
-	exprt = exprt->next;
-	while (exprt)
-	{
-		if (!ft_strcmp(exprt->key, "OLDPWD"))
-		{
-			tmp = exprt->value;
-			exprt->value = ft_strdup(new);
-			exprt->empty = 0;
-			free(tmp);
-			break ;
-		}
-		exprt = exprt->next;
-	}
-}
-
-void	chpwd(t_env *env, t_env *exprt, char *new)
-{
-	char	*tmp;
-
-	env = env->next;
-	while (env)
-	{
-		if (!ft_strcmp(env->key, "PWD"))
-		{
-			tmp = env->value;
-			env->value = new;
-			free(tmp);
-			break ;
-		}
-		env = env->next;
-	}
-	exprt = exprt->next;
-	while (exprt)
-	{
-		if (!ft_strcmp(exprt->key, "PWD"))
-		{
-			tmp = exprt->value;
-			exprt->value = ft_strdup(new);
-			free(tmp);
-			break ;
-		}
-		exprt = exprt->next;
 	}
 }
 

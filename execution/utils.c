@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:01:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 14:57:10 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:19:23 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,14 @@ void	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 		(close(p_fd[0]), close(p_fd[1]));
 	if (p_fd[2])
 		close(p_fd[2]);
-	waitpid((pid_t)*status, status, 0);
-	if (WIFSIGNALED(*status))
+	if (*status && *status != -1)
 	{
-		if (WTERMSIG(*status) == SIGPIPE)
-			printf("\n");
+		waitpid((pid_t)(*status), status, 0);
+		if (WIFSIGNALED(*status))
+		{
+			if (WTERMSIG(*status) == SIGPIPE)
+				printf("\n");
+		}
 	}
 	while (wait(&tmp) >= 0)
 	{
