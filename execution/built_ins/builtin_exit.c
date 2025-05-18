@@ -69,7 +69,7 @@ int	builtin_exit(t_arg *arg, int cmds_size, int n, int i)
 	}
 	if (i == 1)
 		exit_value = get_status(NULL, NULL, 1);
-	(freencmds(arg->all_cmds, cmds_size), free_env(arg->env), 
+	(freencmds(arg->all_cmds, cmds_size), free_env(arg->env),
 		free_env(arg->export));
 	exit(exit_value % 256);
 }

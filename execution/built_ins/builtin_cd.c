@@ -25,14 +25,14 @@ static int	init_oldpwd(char **old_pwd, int cmds_size, t_env *env, t_env *exprt)
 	return (1);
 }
 
-static int		is_absolute(char **args, char **path, char *old_pwd)
+static int	is_absolute(char **args, char **path, char *old_pwd)
 {
 	char	*tmp;
 
 	if (args[1][0] == '/')
 	{
 		free(old_pwd);
-		*path =  ft_strdup(args[1]);
+		*path = ft_strdup(args[1]);
 		if (!*path)
 			return (1);
 		return (0);
@@ -48,12 +48,13 @@ static int		is_absolute(char **args, char **path, char *old_pwd)
 	return (0);
 }
 
-static int	change_directory(char *path, int cmds_size, t_env *env, t_env *exprt)
+static int	change_dir(char *path, int cmds_size, t_env *env, t_env *exprt)
 {
 	struct stat	info;
 
 	if (stat(path, &info) != 0)
-		return (ft_putstr_fd("cd: No such file or directory\n", 2), free(path), 1);
+		return (ft_putstr_fd("cd: No such file or directory\n", 2),
+			free(path), 1);
 	if (!S_ISDIR(info.st_mode))
 		return (ft_putstr_fd("cd: Not a directory\n", 2), free(path), 1);
 	if (cmds_size > 1)
@@ -84,8 +85,8 @@ int	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
 			return (0);
 		if (is_absolute(args, &path, old_pwd) != 0)
 			return (1);
-		}
-	if (change_directory(path, cmds_size, env, exprt) != 0)
+	}
+	if (change_dir(path, cmds_size, env, exprt) != 0)
 		return (1);
 	return (0);
 }
