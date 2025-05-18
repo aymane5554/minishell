@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:38:24 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 18:02:34 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:38:40 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*replace_expand_quotes(char *s)
 	int		i;
 
 	if (!s)
-		return (NULL);
+		return (ft_strdup(""));
 	i = 0;
 	while (s[i])
 	{
