@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:26:18 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/18 11:32:24 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/18 20:35:06 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,14 @@ int	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
 	char		*old_pwd;
 	char		*path;
 
-	if (args[2])
-		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	if (!args[1])
 	{
 		path = ft_getenv(env, "HOME");
 		if (!path)
 			return (ft_putstr_fd("cd: HOME is not set\n", 2), 1);
 	}
+	else if (args[2])
+		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	else
 	{
 		if (init_oldpwd(&old_pwd, cmds_size, env, exprt) == 0)
