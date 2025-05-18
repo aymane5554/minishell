@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtins.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 11:43:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/16 10:42:00 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:48:05 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	execute_exit(t_arg *arg, int i, int no_cmds, int p_fd[3])
 		}
 		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 			return (errno_to_estatus());
-		builtin_exit(arg, no_cmds, i);
+		builtin_exit(arg, no_cmds, i, 0);
 		return (0);
 	}
 	pid = fork();
@@ -93,7 +93,7 @@ int	execute_exit(t_arg *arg, int i, int no_cmds, int p_fd[3])
 				free_env(arg->export));
 			exit(errno_to_estatus());
 		}
-		builtin_exit(arg, no_cmds, i);
+		builtin_exit(arg, no_cmds, i, 0);
 		exit(0);
 	}
 	if (arg->all_cmds[i].fd)

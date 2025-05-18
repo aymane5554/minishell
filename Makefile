@@ -1,13 +1,14 @@
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 RFLAGS = -lreadline -lncurses
-SRCS = main.c syntax/syntax_error.c syntax/utils.c syntax/check_quotes.c split_input/split_input.c split_input/utils.c \
+SRCS = main.c main_utils/main_utils.c main_utils/main_utils2.c syntax/syntax_error.c syntax/utils.c syntax/check_quotes.c split_input/split_input.c split_input/utils.c \
 		pipe_split/ft_split_pipe.c pipe_split/utils.c sep_redirection.c expanding/expanding.c \
 		expanding/expand_parse.c expanding/expand_utils.c expanding/extract_dollar.c \
 		export/export.c export/utils.c remove_quotes/quotes_remover.c remove_quotes/utils.c \
 		export/unset.c export/sortenv.c export/utils2.c execution/utils.c \
-		execution/open_redirections.c execution/execute_cmds.c execution/built_ins.c execution/execute.c \
-		execution/execute_builtins.c signal_handler.c insert.c
+		execution/open_redirections.c execution/execute_cmds.c execution/execute.c \
+		execution/execute_builtins.c signal_handler.c insert.c  execution/built_ins/builtin_cd.c execution/built_ins/builtin_exit.c \
+		execution/built_ins/builtin_echo.c execution/built_ins/builtin_pwd.c
 OBJECTS = $(SRCS:%.c=%.o)
 LIBFT_SRCS = libft/ft_atol.c libft/ft_bzero.c libft/ft_calloc.c libft/ft_isalnum.c libft/ft_isalpha.c \
             libft/ft_isascii.c libft/ft_isdigit.c libft/ft_isprint.c libft/ft_itoa.c libft/ft_memchr.c \
