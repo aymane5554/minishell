@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:44:41 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 20:39:17 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 20:58:47 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	chpwd(t_env *env, t_env *exprt, char *new)
 		{
 			(free(env->value), env->value = new);
 			env->empty = 0;
-			break ;
 		}
 		env = env->next;
 	}
@@ -115,8 +114,7 @@ void	chpwd(t_env *env, t_env *exprt, char *new)
 			if (!tmp)
 				break ;
 			(free(exprt->value), exprt->value = tmp);
-			env->empty = 0;
-			break ;
+			exprt->empty = 0;
 		}
 		exprt = exprt->next;
 	}

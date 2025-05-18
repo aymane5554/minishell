@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/14 15:27:20 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 20:47:13 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_env	*new_env(char *env)
 	ret = malloc(sizeof(t_env));
 	if (!ret)
 		return (NULL);
+	ret->next = NULL;
 	if (env == NULL)
 	{
 		ret->key = NULL;
@@ -57,7 +58,6 @@ t_env	*new_env(char *env)
 		if (!(ret->value))
 			return (free(ret), NULL);
 	}
-	ret->next = NULL;
 	return (ret);
 }
 
