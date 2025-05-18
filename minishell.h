@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 17:45:29 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/18 12:39:25 by tibarike         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ typedef struct s_arg
 	t_env	*export;
 }	t_arg;
 
+void	freedbl(void **ptr);
+void	extract_redirections_from_cmd(char **cmd, t_redr *redirections);
+int		exe_arg_len(char **cmd);
+int		redirections_len(char **cmd);
+void	extract_exe_arg_from_cmd(char **cmd, char **dst);
+char	get_redirection_type(char *str);
 int		valid_quotes(char	*str);
 bool	validate_input(char *input);
 char	**ft_split_input(char *str);
@@ -80,7 +86,7 @@ void	push_char(char **s, char c);
 void	builtin_pwd(void);
 int		builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
 void	builtin_echo(char **args);
-int		builtin_exit(t_arg *arg, int cmds_size, int n);
+int		builtin_exit(t_arg *arg, int cmds_size, int n, int i);
 t_env	*new_env(char *env);
 t_env	*push_env(t_env *head, t_env *new);
 char	*ft_getenv(t_env *envs, char *key);

@@ -1,0 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/18 11:26:23 by tibarike          #+#    #+#             */
+/*   Updated: 2025/05/18 12:49:45 by tibarike         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	argslen(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	return (i);
+}
+
+void	builtin_exit_helper(char **args, int cmds_size)
+{
+	int	j;
+	int	i;
+
+	i = argslen(args);
+	j = 0;
+	if (cmds_size == 1)
+		ft_putstr_fd("exit\n", 2);
+	if (i >= 2)
+	{
+		while (args[1][j])
+		{
+			if (!ft_isdigit(args[1][j])
+				&& !(j == 0 && (args[1][j] == '+' || args[1][j] == '-')))
+			{
+				ft_putstr_fd("exit: numeric argument required\n", 2);
+				exit(2);
+			}
+			j++;
+		}
+	}
+}
+
+int	builtin_exit(t_arg *arg, int cmds_size, int n, int i)
+{
+	long	exit_value;
+	int		success;
+	char	**args;
+
+	exit_value = 0;
+	args = arg->all_cmds[n].cmd;
+	success = 1;
+	i = argslen(args);
+	builtin_exit_helper(args, cmds_size);
+	if (i > 2)
+		return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
+	exit_value = ft_atol(args[1], &success);
+	if (success == 0)
+	{
+		if (cmds_size > 1)
+			return (ft_putstr_fd("exit: numeric argument required\n", 2), 2);
+		else
+			(ft_putstr_fd("exit: numeric argument required\n", 2), exit(2));
+	}
+	if (i == 1)
+		exit_value = get_status(NULL, NULL, 1);
+	(freencmds(arg->all_cmds, cmds_size), free_env(arg->env), 
+		free_env(arg->export));
+	exit(exit_value % 256);
+}
