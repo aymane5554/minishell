@@ -24,24 +24,20 @@ int	argslen(char **args)
 
 void	builtin_exit_helper(char **args, int cmds_size)
 {
-	int	j;
-	int	i;
+	int		i;
+	int		success;
 
 	i = argslen(args);
-	j = 0;
+	success = 1;
 	if (cmds_size == 1)
 		ft_putstr_fd("exit\n", 2);
 	if (i >= 2)
 	{
-		while (args[1][j])
+		ft_atol(args[1], &success);
+		if (!success)
 		{
-			if (!ft_isdigit(args[1][j])
-				&& !(j == 0 && (args[1][j] == '+' || args[1][j] == '-')))
-			{
-				ft_putstr_fd("exit: numeric argument required\n", 2);
-				exit(2);
-			}
-			j++;
+			ft_putstr_fd("exit: numeric argument required\n", 2);
+			exit(2);
 		}
 	}
 }

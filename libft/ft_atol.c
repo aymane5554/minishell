@@ -51,7 +51,5 @@ long	ft_atol(const char *ptr, int *success)
 		last = total;
 		ptr++;
 	}
-	if (*ptr != '\0')
-		return (*success = 0, 0);
 	return (total * sign);
 }

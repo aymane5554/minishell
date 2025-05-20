@@ -29,7 +29,6 @@ char	**get_cmds(t_env *envs, t_env *s_env)
 		(free_env(envs), free_env(s_env));
 		(printf("exit\n"), get_pwd(2), exit(status));
 	}
-	add_history(line);
 	if (!validate_input(line))
 		return (free(line), NULL);
 	cmds = ft_split_pipe(line, '|');

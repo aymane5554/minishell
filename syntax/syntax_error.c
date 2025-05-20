@@ -76,6 +76,9 @@ static bool	check_pipes(char *str, int i, int seen_command)
 
 bool	validate_input(char *input)
 {
+	if (!input[0])
+		return (false);
+	add_history(input);
 	if (check_empty_string(input))
 		return (false);
 	if (!valid_quotes(input) || !check_pipes(input, 0, 0)
