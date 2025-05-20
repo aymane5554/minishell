@@ -6,24 +6,11 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 17:45:22 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 09:57:59 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	display_env(t_env *env)
-{
-	env = env->next;
-	while (env)
-	{
-		if (!env->empty && ft_strcmp(env->key, "?"))
-		{
-			printf("%s=%s\n", env->key, env->value);
-		}
-		env = env->next;
-	}
-}
 
 static void	display_export(t_env *env)
 {
@@ -63,15 +50,48 @@ static void	append_env(t_env *head, t_env *new)
 				head->value = tmp;
 				return (free(new->value), free(new));
 			}
-			free(tmp);
-			free(new->value);
-			free(new);
+			(free(tmp), free(new->value), free(new));
 			return ;
 		}
 		last = head;
 		head = head->next;
 	}
 	last->next = new;
+}
+
+static int	check_export_syntax(char	**cmd, int *j, int *i)
+{
+	if (cmd[*j][0] == '\0')
+	{
+		(*j)++;
+		return (1);
+	}
+	if (!isalpha(cmd[*j][0]) && cmd[*j][0] != '_')
+	{
+		perror("syntax error");
+		(*j)++;
+		return (1);
+	}
+	while (cmd[*j][*i] != '=' && cmd[*j][*i] != '\0' && cmd[*j][*i] != '+')
+	{
+		if (!isalnum(cmd[*j][*i]) && cmd[*j][*i] != '_')
+		{
+			perror("syntax error");
+			(*j)++;
+			return (1);
+		}
+		(*i)++;
+	}
+	return (0);
+}
+
+void	push_path(t_env *env, t_env *exprt)
+{
+	push_env(env, new_env("PATH=/usr/local/sbin:/usr/local/bin"
+			":/usr/sbin:/usr/bin:/sbin:/bin"));
+	push_export(exprt, new_env("PATH=/usr/local/sbin:/usr/local/bin"
+			":/usr/sbin:/usr/bin:/sbin:/bin"));
+	env->i = 0;
 }
 
 int	export(t_env *env, t_env *exprt, char **cmd)
@@ -85,45 +105,16 @@ int	export(t_env *env, t_env *exprt, char **cmd)
 	while (cmd[j])
 	{
 		i = 1;
-		if (cmd[j][0] == '\0')
-		{
-			j++;
+		if (check_export_syntax(cmd, &j, &i))
 			continue ;
-		}
-		if (!isalpha(cmd[j][0]) && cmd[j][0] != '_')
-		{
-			perror("syntax error");
-			j++;
-			continue ;
-		}
-		while (cmd[j][i] != '=' && cmd[j][i] != '\0' && cmd[j][i] != '+')
-		{
-			if (!isalnum(cmd[j][i]) && cmd[j][i] != '_')
-			{
-				perror("syntax error");
-				j++;
-				continue ;
-			}
-			i++;
-		}
 		if (!ft_strcmp(cmd[j], "PATH") && env->i)
-		{
-			push_env(env, new_env("PATH=/usr/local/sbin:/usr/local/bin"
-					":/usr/sbin:/usr/bin:/sbin:/bin"));
-			push_export(exprt, new_env("PATH=/usr/local/sbin:/usr/local/bin"
-					":/usr/sbin:/usr/bin:/sbin:/bin"));
-			env->i = 0;
-		}
+			push_path(env, exprt);
 		else if (cmd[j][i] == '=' || cmd[j][i] == '\0')
-		{
-			push_env(env, new_env(cmd[j]));
-			push_export(exprt, new_env(cmd[j]));
-		}
+			(push_env(env, new_env(cmd[j])),
+				push_export(exprt, new_env(cmd[j])));
 		else if (cmd[j][i] == '+' && cmd[j][i + 1] == '=')
-		{
-			append_env(env, new_env(cmd[j]));
-			append_export(exprt, new_env(cmd[j]));
-		}
+			(append_env(env, new_env(cmd[j])),
+				append_export(exprt, new_env(cmd[j])));
 		else
 			perror("syntax error");
 		j++;
