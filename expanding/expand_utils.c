@@ -24,6 +24,53 @@ void	push_char(char **s, char c)
 	free(tmp);
 }
 
+static char	*ft_getenv2(t_env *envs, char *key)
+{
+	char	*tmp;
+
+	envs = envs->next;
+	while (envs)
+	{
+		if (!strcmp(key, envs->key))
+		{
+			tmp = ft_strdup(envs->value);
+			if (!tmp)
+				return (NULL);
+			return (tmp);
+		}
+		envs = envs->next;
+	}
+	return (ft_strdup(""));
+}
+
+static char	*expand_heredoc(char *str, int *i, char *res, t_env *envs)
+{
+	int		start;
+	int		len;
+	char	*val;
+	char	*var;
+
+	start = *i;
+	len = 0;
+	while (ft_isalnum(str[*i]) || str[*i] == '_')
+	{
+		len++;
+		(*i)++;
+	}
+	var = ft_substr(str, start, len);
+	if (!var)
+		return (perror("malloc"), NULL);
+	val = ft_getenv2(envs, var);
+	if (!val)
+		return (free(var), NULL);
+	replace_expand_quotes1(val);
+	free(var);
+	var = ft_strjoin(res, val);
+	free(val);
+	free(res);
+	return (var);
+}
+
 char	*expand_parse_heredoc(char *str, t_env *envs)
 {
 	int		i;
@@ -38,7 +85,7 @@ char	*expand_parse_heredoc(char *str, t_env *envs)
 		if (str[i] == '$')
 		{
 			i++;
-			result = exctract_dollar(str, &i, result, envs);
+			result = expand_heredoc(str, &i, result, envs);
 			if (!result)
 				return (NULL);
 		}
