@@ -78,7 +78,7 @@ bool	validate_input(char *input)
 {
 	if (!input[0])
 		return (false);
-	add_history(input);
+	add_history(input	);
 	if (check_empty_string(input))
 		return (false);
 	if (!valid_quotes(input) || !check_pipes(input, 0, 0)

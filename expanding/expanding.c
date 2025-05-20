@@ -26,9 +26,9 @@ static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 	len = ft_dstrlen(split);
 	if (len == 1)
 	{
-		(free(all_cmds[i].cmd[*z]), all_cmds[i].cmd[*z] = tmp);
+		(free(all_cmds[i].cmd[*z]), all_cmds[i].cmd[*z] = split[0]);
 		(*z)++;
-		(free(split[0]), free(split));
+		(free(tmp), free(split));
 		return (2);
 	}
 	ttmp = insert2darray(all_cmds[i].cmd, split, *z);
