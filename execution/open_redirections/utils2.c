@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:26:17 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 17:03:00 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:37:32 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	write_in_file_child(char *lim, int args[4], t_arg *arg)
 	line = readline("heredoc> ");
 	while (line && ft_strcmp(line, lim))
 	{
-		if (args[3])
+		if (args[3] && ft_strchr(line, '$'))
 		{
 			tmp = line;
 			line = expand_parse_heredoc(line, arg->env);

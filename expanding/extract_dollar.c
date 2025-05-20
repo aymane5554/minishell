@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:38:24 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/18 12:38:40 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:44:39 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static char	*normal_var(char *str, int *i, char *res, t_env *envs)
 	val = replace_expand_quotes(ft_getenv(envs, var));
 	if (!val)
 		return (free(var), NULL);
+	replace_expand_quotes1(val);
 	free(var);
 	var = ft_strjoin(res, val);
 	free(val);

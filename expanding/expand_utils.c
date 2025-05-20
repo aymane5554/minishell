@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:39:06 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 15:39:31 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:41:44 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*expand_parse_heredoc(char *str, t_env *envs)
 		if (str[*i] == '$')
 		{
 			i[1] = 1;
+			(*i)++;
 			result = exctract_dollar(str, i, result, envs);
 			if (!result)
 				return (NULL);
