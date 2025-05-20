@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibarike <tibarike@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/16 17:06:00 by tibarike         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:23:31 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 	tmp = expand_parse(all_cmds[i].cmd[*z], envs);
 	if (!(tmp))
 		return (1);
-	split = ft_split_input(tmp);
+	split = ft_split(tmp, ' ');
 	len = ft_dstrlen(split);
 	if (len == 1)
 	{
