@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:39:06 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/20 17:41:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:48:06 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,28 @@ void	push_char(char **s, char c)
 
 char	*expand_parse_heredoc(char *str, t_env *envs)
 {
-	int		i[2];
+	int		i;
 	char	*result;
 
-	i[0] = 0;
+	i = 0;
 	result = ft_strdup("");
 	if (!result)
 		return (perror("malloc"), NULL);
-	while (str[*i])
+	while (str[i])
 	{
-		if (str[*i] == '$')
+		if (str[i] == '$')
 		{
-			i[1] = 1;
-			(*i)++;
-			result = exctract_dollar(str, i, result, envs);
+			i++;
+			result = exctract_dollar(str, &i, result, envs);
 			if (!result)
 				return (NULL);
 		}
 		else
 		{
-			push_char(&result, str[*i]);
+			push_char(&result, str[i]);
 			if (!result)
 				return (perror("malloc"), NULL);
-			(*i)++;
+			i++;
 		}
 	}
 	return (result);
