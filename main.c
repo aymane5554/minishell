@@ -6,13 +6,15 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/20 15:05:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:33:31 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_herdoc_signal = 0;
+
+int	get_t_cmd_arr(char	**cmds, int i, t_cmd *all_cmds);
 
 char	**get_cmds(t_env *envs, t_env *s_env)
 {
@@ -63,49 +65,56 @@ int	redirections(char	**cmds, int i, t_cmd *all_cmds)
 	return (0);
 }
 
-void	fail(char	**cmds, char **cmd, int i, t_cmd *all_cmds)
+int	fill_all_cmds(char	**cmds, t_env *envs, t_env *s_env, t_cmd *all_cmds)
 {
-	free(cmd);
-	freencmds(all_cmds, i);
+	int	i;
+
+	i = 0;
+	while (cmds[i])
+	{
+		if (redirections(cmds, i, all_cmds))
+			(free_env(envs), free_env(s_env), exit(1));
+		if (get_t_cmd_arr(cmds, i, all_cmds))
+			(free_env(envs), free_env(s_env), exit(1));
+		i++;
+	}
 	freedbl((void **)cmds);
-	freedbl((void **)cmd);
-	get_pwd(2);
-	perror("error\n");
+	all_cmds[i].cmd = NULL;
+	all_cmds[i].redirection = NULL;
+	return (i);
 }
 
-int	get_t_cmd_arr(char	**cmds, int i, t_cmd *all_cmds)
+void	main_loop(t_env *envs, t_env *s_env)
 {
-	char	**cmd;
+	char	**cmds;
+	t_cmd	*all_cmds;
+	int		status;
+	int		i;
 
-	cmd = ft_split_input(cmds[i]);
-	if (!cmd)
-		return (fail(cmds, cmd, i, all_cmds), 1);
-	all_cmds[i].cmd = malloc((exe_arg_len(cmd) + 1) * sizeof(char *));
-	if (!all_cmds[i].cmd)
-		return (fail(cmds, cmd, i, all_cmds), 1);
-	all_cmds[i].redirection
-		= malloc((redirections_len(cmd) + 1) * sizeof(t_redr));
-	if (!all_cmds[i].redirection)
+	while (1)
 	{
-		freedbl((void **)all_cmds[i].cmd);
-		return (fail(cmds, cmd, i, all_cmds), 1);
+		cmds = get_cmds(envs, s_env);
+		if (!cmds)
+			continue ;
+		all_cmds = malloc(sizeof(t_cmd) * (ft_dstrlen(cmds) + 1));
+		if (!all_cmds)
+			(freedbl((void **)cmds), exit(1));
+		i = fill_all_cmds(cmds, envs, s_env, all_cmds);
+		if (expand(all_cmds, 0, 0, envs) || remove_quotes_main(all_cmds))
+			(freencmds(all_cmds, i), free_env(envs), free_env(s_env), exit(1));
+		status = execute(all_cmds, envs, s_env);
+		g_herdoc_signal = 0;
+		(chexitstatus(status, envs, s_env), freencmds(all_cmds, i));
 	}
-	extract_exe_arg_from_cmd(cmd, all_cmds[i].cmd);
-	extract_redirections_from_cmd(cmd, all_cmds[i].redirection);
-	all_cmds[i].fd = 0;
-	free(cmd);
-	return (0);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	int		i;
-	char	**cmds;
-	t_cmd	*all_cmds;
 	t_env	*envs;
 	t_env	*s_env;
 
 	(void)argv;
+	(void)argc;
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 		exit(1);
 	envs = duplicate_env(env);
@@ -120,32 +129,7 @@ int	main(int argc, char **argv, char **env)
 	get_status(envs, s_env, 0);
 	while (1)
 	{
-		cmds = get_cmds(envs, s_env);
-		if (!cmds)
-			continue ;
-		i = ft_dstrlen(cmds) + 1;
-		all_cmds = malloc(sizeof(t_cmd) * i);
-		i = 0;
-		while (cmds[i])
-		{
-			if (redirections(cmds, i, all_cmds))
-				(free_env(envs), free_env(s_env), exit(1));
-			if (get_t_cmd_arr(cmds, i, all_cmds))
-				(free_env(envs), free_env(s_env), exit(1));
-			i++;
-		}
-		freedbl((void **)cmds);
-		all_cmds[i].cmd = NULL;
-		all_cmds[i].redirection = NULL;
-		if (expand(all_cmds, 0, 0, envs) || remove_quotes_main(all_cmds))
-		{
-			freencmds(all_cmds, i);
-			continue ;
-		}
-		argc = execute(all_cmds, envs, s_env);
-		g_herdoc_signal = 0;
-		chexitstatus(argc, envs, s_env);
-		freencmds(all_cmds, i);
+		main_loop(envs, s_env);
 	}
 	return (0);
 }

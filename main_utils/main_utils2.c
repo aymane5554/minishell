@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:18:43 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/20 14:33:41 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:34:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	freencmds(t_cmd	*all_cmds, int n)
 	int	i;
 
 	i = 0;
+	if (!all_cmds)
+		return ;
 	while (i < n)
 	{
 		freedbl((void **)all_cmds[i].cmd);
