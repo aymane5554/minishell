@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:18:43 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/18 12:59:50 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:33:41 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	freedbl(void **ptr)
 	int	i;
 
 	i = 0;
+	if (!ptr)
+		return ;
 	while (ptr[i])
 	{
 		free(ptr[i]);

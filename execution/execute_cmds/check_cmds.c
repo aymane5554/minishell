@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 15:23:44 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 15:27:37 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:53:11 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ char	*check_commands(t_env *env, char *cmd)
 	}
 	paths = ft_split(tmp, ':');
 	free(tmp);
+	if (!paths)
+		return (NULL);
 	return (check_commands_loop(paths, cmd));
 }
