@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/20 15:39:32 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:00:50 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ static int	init(int nth, int no_cmds, int pfd[2], int *fd0)
 	return (0);
 }
 
-int	call_red_functions(int red, t_cmd all_cmds, int fd0)
+int	call_red_functions(int red, t_cmd all_cmds, int *fd0)
 {
 	if (all_cmds.redirection[red].type == 0)
 	{
-		check_0_fd(fd0);
-		fd0 = open_infile(all_cmds.redirection[red].file,
+		check_0_fd(*fd0);
+		*fd0 = open_infile(all_cmds.redirection[red].file,
 				all_cmds.redirection[red].error);
-		if (fd0 == -1)
+		if (*fd0 == -1)
 			return (-1);
 	}
 	else if (all_cmds.redirection[red].type == 1)
@@ -107,7 +107,7 @@ int	call_red_functions(int red, t_cmd all_cmds, int fd0)
 		if (open_outfile(all_cmds.redirection[red].file,
 				all_cmds.redirection[red].error) == -1)
 		{
-			return (check_0_fd(fd0), -1);
+			return (check_0_fd(*fd0), -1);
 		}
 	}
 	else if (all_cmds.redirection[red].type == 3)
@@ -115,7 +115,7 @@ int	call_red_functions(int red, t_cmd all_cmds, int fd0)
 		if (open_append_file(all_cmds.redirection[red].file,
 				all_cmds.redirection[red].error) == -1)
 		{
-			return (check_0_fd(fd0), -1);
+			return (check_0_fd(*fd0), -1);
 		}
 	}
 	return (0);
@@ -132,7 +132,7 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 		return (-1);
 	while (all_cmds.redirection[red].file != NULL)
 	{
-		if (call_red_functions(red, all_cmds, fd0))
+		if (call_red_functions(red, all_cmds, &fd0))
 			return (-1);
 		red++;
 	}
