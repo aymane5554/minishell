@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:26:18 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/18 20:35:06 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:04:48 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ static int	change_dir(char *path, int cmds_size, t_env *env, t_env *exprt)
 			free(path), 1);
 	if (!S_ISDIR(info.st_mode))
 		return (ft_putstr_fd("cd: Not a directory\n", 2), free(path), 1);
-	if (cmds_size > 1)
-		return (free(path), 0);
 	choldpwd(env, exprt, getcwd(NULL, 0));
 	chdir(path);
 	free(path);
