@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:01:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 14:42:32 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:44:06 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	wait_processes(int printed)
 
 int	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 {
-	int	tmp;
 	int	printed;
 
 	printed = 0;
