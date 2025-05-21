@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 15:39:06 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/20 17:48:06 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:43:45 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,40 @@ static char	*expand_heredoc(char *str, int *i, char *res, t_env *envs)
 	}
 	var = ft_substr(str, start, len);
 	if (!var)
-		return (perror("malloc"), NULL);
+		return (free(res), perror("malloc"), NULL);
 	val = ft_getenv2(envs, var);
 	if (!val)
-		return (free(var), NULL);
-	replace_expand_quotes1(val);
-	free(var);
+		return (free(res), free(var), NULL);
+	(replace_expand_quotes1(val), free(var));
 	var = ft_strjoin(res, val);
-	free(val);
-	free(res);
-	return (var);
+	return (free(val), free(res), var);
+}
+
+static char	*expand_dollar_heredoc(char *str, char *res, t_env *envs, int *i)
+{
+	char	*tmp;
+
+	if (str[*i] == '?')
+	{
+		res = question_mark(envs, res, i);
+		if (res)
+			return (NULL);
+	}
+	else if (ft_isalpha(str[*i]) || str[*i] == '_')
+	{
+		res = expand_heredoc(str, i, res, envs);
+		if (!res)
+			return (NULL);
+	}
+	else if (!ft_isalpha(str[*i]) && str[*i] != '_')
+	{
+		tmp = res;
+		res = push_char2(res, '$');
+		free(tmp);
+		if (!res)
+			return (NULL);
+	}
+	return (res);
 }
 
 char	*expand_parse_heredoc(char *str, t_env *envs)
@@ -85,7 +109,7 @@ char	*expand_parse_heredoc(char *str, t_env *envs)
 		if (str[i] == '$')
 		{
 			i++;
-			result = expand_heredoc(str, &i, result, envs);
+			result = expand_dollar_heredoc(str, result, envs, &i);
 			if (!result)
 				return (NULL);
 		}
