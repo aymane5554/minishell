@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 11:43:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 17:33:12 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:18:15 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ int	execute_exit(t_arg *arg, int i, int no_cmds, int p_fd[3])
 		}
 		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 			return (errno_to_estatus());
-		builtin_exit(arg, no_cmds, i, 0);
-		return (0);
+		return (builtin_exit(arg, no_cmds, i, 0) * -1);
 	}
 	pid = execute_exit_pipe(arg, i, no_cmds, p_fd);
 	if (arg->all_cmds[i].fd)
