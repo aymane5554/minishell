@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:27:21 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/16 10:55:40 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:26:20 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,5 @@ int	execute(t_cmd *all_cmds, t_env *env, t_env *exprt)
 			(close(p_fd[2]), p_fd[2] = 0);
 		i++;
 	}
-	return (execution_epilogue(no_cmds, p_fd, &status), WEXITSTATUS(status));
+	return (execution_epilogue(no_cmds, p_fd, &status));
 }

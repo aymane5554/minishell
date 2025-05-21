@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/21 12:10:46 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:25:30 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int		pre_execution(t_arg *arg, int *no_cmds, int p_fd[3]);
 int		pipe_shit(int i, int no_cmds, int p_fd[3]);
 int		execute_builtins(t_arg *arg, int i, int *status, int p_fd[3]);
 int		here_doc(t_arg *arg, int p_fd[3], int no_cmds);
-void	execution_epilogue(int no_cmds, int p_fd[3], int *status);
+int		execution_epilogue(int no_cmds, int p_fd[3], int *status);
 char	*push_char2(char *s, char c);
 char	*question_mark(t_env *envs, char *res, int *i);
 char	**envlst_to_array(t_env *env);

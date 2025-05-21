@@ -6,31 +6,57 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:32:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 17:35:07 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:36:13 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static pid_t	execute_pipe_cd(t_arg *arg, int no_cmds, int p_fd[3], int i)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (!pid)
+	{
+		(get_pwd(2), close_heredocs3(arg->all_cmds, i));
+		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
+		{
+			(freencmds(arg->all_cmds, no_cmds), free_env(arg->env));
+			(free_env(arg->export), exit(errno_to_estatus()));
+		}
+		builtin_cd(arg->all_cmds[i].cmd, no_cmds, arg->env, arg->export);
+		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env));
+		(free_env(arg->export), exit(0));
+	}
+	return (pid);
+}
+
 int	execute_cd(t_arg *arg, int i, int p_fd[3])
 {
-	int	tmp;
-	int	no_cmds;
-	int	status;
+	int		tmp;
+	int		no_cmds;
+	int		status;
+	pid_t	pid;
 
 	no_cmds = count_cmds(arg->all_cmds);
+	if (no_cmds != 1)
+	{
+		pid = execute_pipe_cd(arg, no_cmds, p_fd, i);
+		if (pid == -1)
+			perror("cd");
+		if (i == no_cmds -1)
+			return (pid);
+		return (0);
+	}
 	tmp = dup(1);
 	if (arg->all_cmds[i].fd)
-	{
-		close(arg->all_cmds[i].fd);
-		arg->all_cmds[i].fd = 0;
-	}
+		(close(arg->all_cmds[i].fd), arg->all_cmds[i].fd = 0);
 	if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 		return (errno_to_estatus());
 	status = builtin_cd(arg->all_cmds[i].cmd, no_cmds, arg->env, arg->export);
-	get_pwd(0);
-	(dup2(tmp, 1), close(tmp));
-	return (status);
+	(get_pwd(0), dup2(tmp, 1), close(tmp));
+	return (status * -1);
 }
 
 int	execute_export(t_arg *arg, int i, int p_fd[3])
@@ -57,5 +83,5 @@ int	execute_export(t_arg *arg, int i, int p_fd[3])
 	if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 		return (close(tmp), errno_to_estatus());
 	export(arg->env, arg->export, arg->all_cmds[i].cmd);
-	return (dup2(tmp, 1), close(tmp));
+	return (dup2(tmp, 1), close(tmp), 0);
 }
