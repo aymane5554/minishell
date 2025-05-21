@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 09:40:28 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:50:48 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ static int	execute_others(t_arg *arg, int i, int no_cmds)
 	}
 	(free_env(arg->env), free_env(arg->export));
 	execve(cmd_path, arg->all_cmds[i].cmd, dblenv);
-	if (access(cmd_path, X_OK))
-		perror("execve");
 	(freencmds(arg->all_cmds, no_cmds), freedbl((void **)dblenv));
-	exit(errno_to_estatus());
+	if (access(cmd_path, X_OK))
+		(perror("execve"), free(cmd_path), exit(errno_to_estatus()));
+	free(cmd_path);
+	exit(0);
 }
 
 static void	free_all_(t_arg *arg, int no_cmds)
