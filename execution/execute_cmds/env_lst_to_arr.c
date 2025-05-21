@@ -6,11 +6,22 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 15:24:55 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 15:43:44 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:33:45 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	empty_var(char **ret, int *i, t_env *tmp)
+{
+	if (tmp->empty)
+	{
+		ret[*i] = tmp->key;
+		(*i)++;
+		return (1);
+	}
+	return (0);
+}
 
 static char	**fill_env_arr(char	**ret, t_env *tmp)
 {
@@ -25,6 +36,8 @@ static char	**fill_env_arr(char	**ret, t_env *tmp)
 			tmp = tmp->next;
 			continue ;
 		}
+		if (empty_var)
+			continue ;
 		ttmp = ft_strjoin(tmp->key, "=");
 		if (!ttmp)
 			return (perror("malloc"), NULL);
