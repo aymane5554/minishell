@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/20 17:44:11 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:10:46 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,4 +155,5 @@ int		execute_exit_pipe(t_arg *arg, int i, int no_cmds, int p_fd[3]);
 int		execute_unset_pipe(t_arg *arg, int i, int p_fd[3], int no_cmds);
 int		execute_export_pipe(t_arg *arg, int i, int p_fd[3], int no_cmds);
 void	replace_expand_quotes1(char *s);
+void	chpwd2(t_env *exprt, char *new);
 #endif

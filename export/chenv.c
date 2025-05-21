@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:44:41 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 20:58:47 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:14:46 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ void	chexitstatus(int status, t_env *env, t_env *exprt)
 void	choldpwd2(t_env	*exprt, char *new)
 {
 	char	*tmp;
+	t_env	*ttmp;
 
+	ttmp = exprt;
 	exprt = exprt->next;
 	while (exprt)
 	{
@@ -65,17 +67,27 @@ void	choldpwd2(t_env	*exprt, char *new)
 			tmp = ft_strdup(new);
 			if (!tmp)
 				break ;
-			free(exprt->value);
-			exprt->value = tmp;
+			(free(exprt->value), exprt->value = tmp);
 			exprt->empty = 0;
 			break ;
 		}
 		exprt = exprt->next;
 	}
+	if (!exprt)
+	{
+		tmp = ft_strjoin("OLDPWD=", new);
+		if (!tmp)
+			return ;
+		(push_env(ttmp, new_env(tmp)), free(tmp), free(new));
+	}
 }
 
 void	choldpwd(t_env *env, t_env *exprt, char *new)
 {
+	t_env	*tmp;
+	char	*ttmp;
+
+	tmp = env;
 	env = env->next;
 	while (env)
 	{
@@ -88,13 +100,23 @@ void	choldpwd(t_env *env, t_env *exprt, char *new)
 		}
 		env = env->next;
 	}
+	if (!env)
+	{
+		ttmp = ft_strjoin("OLDPWD=", new);
+		if (!ttmp)
+			return (free(new));
+		push_env(tmp, new_env(ttmp));
+		free(ttmp);
+	}
 	choldpwd2(exprt, new);
 }
 
 void	chpwd(t_env *env, t_env *exprt, char *new)
 {
 	char	*tmp;
+	t_env	*ttmp;
 
+	ttmp = env;
 	env = env->next;
 	while (env)
 	{
@@ -102,20 +124,16 @@ void	chpwd(t_env *env, t_env *exprt, char *new)
 		{
 			(free(env->value), env->value = new);
 			env->empty = 0;
+			break ;
 		}
 		env = env->next;
 	}
-	exprt = exprt->next;
-	while (exprt)
+	if (!env)
 	{
-		if (!ft_strcmp(exprt->key, "PWD"))
-		{
-			tmp = ft_strdup(new);
-			if (!tmp)
-				break ;
-			(free(exprt->value), exprt->value = tmp);
-			exprt->empty = 0;
-		}
-		exprt = exprt->next;
+		tmp = ft_strjoin("PWD=", new);
+		if (!tmp)
+			return (free(new));
+		(push_env(ttmp, new_env(tmp)), free(tmp));
 	}
+	chpwd2(exprt, new);
 }
