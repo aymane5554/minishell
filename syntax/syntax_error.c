@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:29:19 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/13 15:49:45 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:29:21 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ bool	validate_input(char *input)
 {
 	if (!input[0])
 		return (false);
-	add_history(input	);
+	add_history(input);
 	if (check_empty_string(input))
 		return (false);
 	if (!valid_quotes(input) || !check_pipes(input, 0, 0)
