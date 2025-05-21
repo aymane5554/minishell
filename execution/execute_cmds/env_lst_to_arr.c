@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 15:24:55 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 11:33:45 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:35:35 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	**fill_env_arr(char	**ret, t_env *tmp)
 			tmp = tmp->next;
 			continue ;
 		}
-		if (empty_var)
+		if (empty_var(ret, &i, tmp))
 			continue ;
 		ttmp = ft_strjoin(tmp->key, "=");
 		if (!ttmp)
