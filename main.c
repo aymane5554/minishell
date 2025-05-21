@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 13:43:34 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:36:42 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ void	main_loop(t_env *envs, t_env *s_env)
 	{
 		cmds = get_cmds(envs, s_env);
 		if (!cmds)
+		{
+			chexitstatus(2, envs, s_env);
 			continue ;
+		}
 		all_cmds = malloc(sizeof(t_cmd) * (ft_dstrlen(cmds) + 1));
 		if (!all_cmds)
 			(freedbl((void **)cmds), exit(1));
