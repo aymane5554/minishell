@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/22 10:45:20 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 13:45:28 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static int	exit_with_signals(pid_t pid)
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGINT)
-			(ft_putstr_fd("\n", 2), exit(130));
+			exit(130);
 		else if (WTERMSIG(status) == SIGQUIT)
-			(ft_putstr_fd("Quit (core dumped)\n", 2), exit(131));
+			exit(131);
 	}
 	return (status);
 }

@@ -6,11 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:01:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 14:44:06 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 13:50:35 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	sig_msg(int sig, int last_sig);
 
 int	pre_execution(t_arg *arg, int *no_cmds, int p_fd[3])
 {
@@ -77,23 +79,42 @@ int	execute_builtins(t_arg *arg, int i, int *status, int p_fd[3])
 	return (0);
 }
 
-void	wait_processes(void)
+int	wait_processes(void)
 {
 	int	tmp;
+	int	sig;
 
+	sig = 0;
 	while (wait(&tmp) >= 0)
-		;
+	{
+		if (WEXITSTATUS(tmp) == 130)
+			sig = 1;
+		else if (WEXITSTATUS(tmp) == 131)
+			sig = 2;
+	}
+	return (sig);
 }
 
 int	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 {
+	int	last_sig;
+	int	sig;
+
+	last_sig = 0;
 	if (no_cmds != 1)
 		(close(p_fd[0]), close(p_fd[1]));
 	if (p_fd[2])
 		close(p_fd[2]);
 	if (*status > 0)
+	{
 		waitpid((pid_t)(*status), status, 0);
-	wait_processes();
+		if (WEXITSTATUS(*status) == 130)
+			last_sig = 1;
+		else if (WEXITSTATUS(*status) == 131)
+			last_sig = 2;
+	}
+	sig = wait_processes();
+	sig_msg(sig, last_sig);
 	if (*status <= 0)
 		return (*status * -1);
 	return (WEXITSTATUS(*status));

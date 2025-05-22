@@ -11,7 +11,7 @@ SRCS = main.c main_utils/main_utils.c main_utils/main_utils3.c main_utils/main_u
 		execution/execute_cmds/execute_cmds.c execution/execute_cmds/utils.c \
 		execution/execute_cmds/env_lst_to_arr.c execution/execute_cmds/check_cmds.c execution/execute.c \
 		execution/execute_builtins/execute_builtins.c execution/execute_builtins/execute_builtins2.c execution/execute_builtins/utils.c \
-		signal_handler.c insert.c \
+		signal_handler.c insert.c execution/sigmsg.c \
 		execution/built_ins/builtin_cd.c execution/built_ins/builtin_exit.c \
 		execution/built_ins/builtin_echo.c execution/built_ins/builtin_pwd.c
 OBJECTS = $(SRCS:%.c=%.o)
