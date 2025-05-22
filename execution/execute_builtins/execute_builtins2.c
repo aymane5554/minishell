@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:32:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 15:09:57 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:40:33 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ static pid_t	execute_pipe_cd(t_arg *arg, int no_cmds, int p_fd[3], int i)
 	return (pid);
 }
 
+static int	cd_norm(int tmp, int status)
+{
+	get_pwd(0);
+	if (dup2(tmp, 1) == -1)
+		return (close(tmp), -1);
+	close(tmp);
+	return (status * -1);
+}
+
 int	execute_cd(t_arg *arg, int i, int p_fd[3])
 {
 	int		tmp;
@@ -52,13 +61,14 @@ int	execute_cd(t_arg *arg, int i, int p_fd[3])
 		return (0);
 	}
 	tmp = dup(1);
+	if (!tmp)
+		return (perror("dup"), -1);
 	if (arg->all_cmds[i].fd)
 		(close(arg->all_cmds[i].fd), arg->all_cmds[i].fd = 0);
 	if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 		return (errno_to_estatus());
 	status = builtin_cd(arg->all_cmds[i].cmd, no_cmds, arg->env, arg->export);
-	(get_pwd(0), dup2(tmp, 1), close(tmp));
-	return (status * -1);
+	return (cd_norm(tmp, status));
 }
 
 int	execute_export(t_arg *arg, int i, int p_fd[3])

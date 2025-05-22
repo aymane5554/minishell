@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 14:50:48 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:45:20 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	exit_with_signals(pid_t pid)
 {
 	int		status;
 
+	if (pid == -1)
+		return (1);
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
@@ -80,13 +82,12 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 		pid = fork();
 		if (!pid)
 			execute_others(arg, i, no_cmds);
-		free_all_(arg, no_cmds);
-		status = exit_with_signals(pid);
+		(free_all_(arg, no_cmds), status = exit_with_signals(pid));
 		exit(WEXITSTATUS(status));
 	}
 	if (arg->all_cmds[i].fd)
 		close(arg->all_cmds[i].fd);
-	if (i == no_cmds - 1)
-		return (pid);
-	return (0);
+	if (pid == -1)
+		perror("fork");
+	return (pid);
 }
