@@ -48,7 +48,7 @@ static int	is_absolute(char **args, char **path, char *old_pwd)
 	return (0);
 }
 
-static int	change_dir(char *path, int cmds_size, t_env *env, t_env *exprt)
+static int	change_dir(char *path, t_env *env, t_env *exprt)
 {
 	struct stat	info;
 
@@ -84,7 +84,7 @@ int	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
 		if (is_absolute(args, &path, old_pwd) != 0)
 			return (1);
 	}
-	if (change_dir(path, cmds_size, env, exprt) != 0)
+	if (change_dir(path, env, exprt) != 0)
 		return (1);
 	return (0);
 }

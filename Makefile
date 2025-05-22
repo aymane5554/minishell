@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = #-Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra
 RFLAGS = -lreadline -lncurses
 SRCS = main.c main_utils/main_utils.c main_utils/main_utils3.c main_utils/main_utils2.c syntax/syntax_error.c syntax/utils.c \
 		syntax/check_quotes.c split_input/split_input.c split_input/utils.c \

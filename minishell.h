@@ -43,7 +43,6 @@ typedef struct s_redr
 	char	type;
 	char	expandable;
 	char	error;
-	char	quoted;
 }	t_redr;
 
 typedef struct s_cmd

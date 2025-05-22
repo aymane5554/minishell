@@ -49,7 +49,7 @@ static void	free_all_(t_arg *arg, int no_cmds)
 
 static int	exit_with_signals(pid_t pid)
 {
-	int		status;
+	int			status;
 
 	if (pid == -1)
 		return (1);
@@ -57,9 +57,9 @@ static int	exit_with_signals(pid_t pid)
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGINT)
-			(ft_putstr_fd("\n", 1), exit(130));
+			(ft_putstr_fd("\n", 2), exit(130));
 		else if (WTERMSIG(status) == SIGQUIT)
-			(ft_putstr_fd("Quit (core dumped)\n", 1), exit(131));
+			(ft_putstr_fd("Quit (core dumped)\n", 2), exit(131));
 	}
 	return (status);
 }

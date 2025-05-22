@@ -52,8 +52,7 @@ static int	file_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 	tmp = expand_parse(all_cmds[i].redirection[*z].file, envs);
 	if (!tmp)
 		return (all_cmds[i].redirection[*z].error = 1, 1);
-	if ((check_empty_string(tmp) || space_separated(tmp) && !quoted)
-		&& !all_cmds[i].redirection[*z].quoted)
+	if ((check_empty_string(tmp) || space_separated(tmp)) && !quoted)
 	{
 		all_cmds[i].redirection[*z].error = 1;
 		free(tmp);

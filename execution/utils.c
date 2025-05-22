@@ -77,39 +77,23 @@ int	execute_builtins(t_arg *arg, int i, int *status, int p_fd[3])
 	return (0);
 }
 
-void	wait_processes(int printed)
+void	wait_processes(void)
 {
 	int	tmp;
 
 	while (wait(&tmp) >= 0)
-	{
-		if (WIFSIGNALED(tmp) && !printed)
-		{
-			if (WTERMSIG(tmp) == SIGPIPE)
-				(printf("\n"), printed = 1);
-		}
-	}
+		;
 }
 
 int	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 {
-	int	printed;
-
-	printed = 0;
 	if (no_cmds != 1)
 		(close(p_fd[0]), close(p_fd[1]));
 	if (p_fd[2])
 		close(p_fd[2]);
 	if (*status > 0)
-	{
 		waitpid((pid_t)(*status), status, 0);
-		if (WIFSIGNALED(*status))
-		{
-			if (WTERMSIG(*status) == SIGPIPE)
-				(printf("\n"), printed = 1);
-		}
-	}
-	wait_processes(printed);
+	wait_processes();
 	if (*status <= 0)
 		return (*status * -1);
 	return (WEXITSTATUS(*status));
