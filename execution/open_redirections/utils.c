@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:22:53 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 16:25:22 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 09:37:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	open_outfile(char *filename, char error)
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (fd == -1)
 		return (perror("open"), -1);
-	dup2(fd, 1);
+	if (dup2(fd, 1) == -1)
+		return (perror("dup2"), close(fd), -1);
 	close(fd);
 	return (0);
 }
@@ -71,7 +72,8 @@ int	open_append_file(char *filename, char error)
 	fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0777);
 	if (fd == -1)
 		return (perror("open"), -1);
-	dup2(fd, 1);
+	if (dup2(fd, 1) == -1)
+		return (perror("dup2"), close(fd), -1);
 	close(fd);
 	return (0);
 }

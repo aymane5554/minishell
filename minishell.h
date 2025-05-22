@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/21 14:25:30 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:02:37 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_redr
 	char	type;
 	char	expandable;
 	char	error;
+	char	quoted;
 }	t_redr;
 
 typedef struct s_cmd

@@ -6,13 +6,14 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/22 09:13:11 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:18:59 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	rm_dollar(char	*str);
+int	is_quoted(char	*s);
 
 static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 {
@@ -45,11 +46,14 @@ static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 static int	file_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 {
 	char	*tmp;
+	int		quoted;
 
+	quoted = is_quoted(all_cmds[i].redirection[*z].file);
 	tmp = expand_parse(all_cmds[i].redirection[*z].file, envs);
 	if (!tmp)
 		return (all_cmds[i].redirection[*z].error = 1, 1);
-	if (check_empty_string(tmp) || space_separated(tmp))
+	if ((check_empty_string(tmp) || space_separated(tmp) && !quoted)
+		&& !all_cmds[i].redirection[*z].quoted)
 	{
 		all_cmds[i].redirection[*z].error = 1;
 		free(tmp);

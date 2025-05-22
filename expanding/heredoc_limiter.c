@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 09:11:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/22 09:13:02 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 10:16:23 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,26 @@ static int	shift_to_the_end(char	*s, int *i)
 	}
 	s[iter] = '\0';
 	(*i)--;
+	return (0);
+}
+
+int	is_quoted(char	*s)
+{
+	int		i;
+	char	quoted;
+
+	i = 0;
+	quoted = 0;
+	while (s[i])
+	{
+		if (is_quote(s[i]) && quoted == 0)
+			quoted = 1;
+		else if (is_quote(s[i]) && quoted == 1)
+			quoted = 0;
+		else if (s[i] == '$' && quoted)
+			return (1);
+		i++;
+	}
 	return (0);
 }
 

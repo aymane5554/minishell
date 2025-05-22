@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 11:43:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 15:18:15 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 09:43:00 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,14 @@ int	execute_unset(t_arg *arg, int i, int p_fd[3])
 	if (no_cmds == 1)
 	{
 		tmp = dup(1);
+		if (tmp == -1)
+			return (errno_to_estatus() * -1);
 		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
-			return (close(tmp), errno_to_estatus());
+			return (close(tmp), errno_to_estatus() * -1);
 		unset(arg->all_cmds[i].cmd, arg->env, arg->export);
-		dup2(tmp, 1);
-		close(tmp);
-		return (0);
+		if (dup2(tmp, 1) == -1)
+			return (close(tmp), errno_to_estatus() * -1);
+		return (close(tmp), 0);
 	}
 	pid = execute_unset_pipe(arg, i, p_fd, no_cmds);
 	if (arg->all_cmds[i].fd)
