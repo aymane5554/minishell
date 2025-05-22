@@ -4,7 +4,7 @@ RFLAGS = -lreadline -lncurses
 SRCS = main.c main_utils/main_utils.c main_utils/main_utils3.c main_utils/main_utils2.c syntax/syntax_error.c syntax/utils.c \
 		syntax/check_quotes.c split_input/split_input.c split_input/utils.c \
 		pipe_split/ft_split_pipe.c pipe_split/utils.c sep_redirection.c expanding/expanding.c \
-		expanding/expand_parse.c expanding/expand_utils.c expanding/extract_dollar.c \
+		expanding/expand_parse.c expanding/heredoc_limiter.c expanding/expand_utils.c expanding/extract_dollar.c \
 		export/export.c export/utils.c export/utils3.c remove_quotes/quotes_remover.c remove_quotes/utils.c \
 		export/chenv.c export/chenv2.c export/unset.c export/sortenv.c export/utils2.c execution/utils.c \
 		execution/open_redirections/open_redirections.c  execution/open_redirections/utils.c execution/open_redirections/utils2.c \

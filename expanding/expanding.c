@@ -6,11 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:12:31 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/20 20:23:31 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/22 09:13:11 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	rm_dollar(char	*str);
 
 static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 {
@@ -75,6 +77,9 @@ static int	file_dollar_loop(t_cmd *all_cmds, int *z, int i, t_env *envs)
 			else if (success == 1)
 				return (1);
 		}
+		else if (ft_strchr(all_cmds[i].redirection[*z].file, '$')
+			&& all_cmds[i].redirection[*z].type == 2)
+			rm_dollar(all_cmds[i].redirection[*z].file);
 		(*z)++;
 	}
 	return (0);
