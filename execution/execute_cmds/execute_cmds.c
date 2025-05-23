@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:44:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/22 13:45:28 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/23 09:01:49 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,10 @@ static void	free_all_(t_arg *arg, int no_cmds)
 	free_env(arg->export);
 }
 
-static int	exit_with_signals(pid_t pid)
-{
-	int			status;
-
-	if (pid == -1)
-		return (1);
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGINT)
-			exit(130);
-		else if (WTERMSIG(status) == SIGQUIT)
-			exit(131);
-	}
-	return (status);
-}
-
 int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 {
 	int		no_cmds;
 	pid_t	pid;
-	int		status;
 
 	no_cmds = count_cmds(arg->all_cmds);
 	g_herdoc_signal = 1;
@@ -79,11 +61,7 @@ int	execute_others_main(t_arg *arg, int i, int p_fd[3])
 		close_heredocs3(arg->all_cmds, i);
 		if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 			(free_all_(arg, no_cmds), exit(1));
-		pid = fork();
-		if (!pid)
-			execute_others(arg, i, no_cmds);
-		(free_all_(arg, no_cmds), status = exit_with_signals(pid));
-		exit(WEXITSTATUS(status));
+		execute_others(arg, i, no_cmds);
 	}
 	if (arg->all_cmds[i].fd)
 		close(arg->all_cmds[i].fd);

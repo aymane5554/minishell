@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:01:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/22 13:50:35 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/23 09:18:18 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	execute_builtins(t_arg *arg, int i, int *status, int p_fd[3])
 	return (0);
 }
 
-int	wait_processes(void)
+static void	wait_processes(int last_sig)
 {
 	int	tmp;
 	int	sig;
@@ -87,18 +87,21 @@ int	wait_processes(void)
 	sig = 0;
 	while (wait(&tmp) >= 0)
 	{
-		if (WEXITSTATUS(tmp) == 130)
-			sig = 1;
-		else if (WEXITSTATUS(tmp) == 131)
-			sig = 2;
+		if (WIFSIGNALED(tmp))
+		{
+			if (WTERMSIG(tmp) == SIGINT || WTERMSIG(tmp) == SIGPIPE)
+				sig = 1;
+			else if (WTERMSIG(tmp) == SIGQUIT)
+				sig = 2;
+		}
 	}
-	return (sig);
+	sig_msg(sig, last_sig);
+	return ;
 }
 
 int	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 {
 	int	last_sig;
-	int	sig;
 
 	last_sig = 0;
 	if (no_cmds != 1)
@@ -108,14 +111,18 @@ int	execution_epilogue(int no_cmds, int p_fd[3], int *status)
 	if (*status > 0)
 	{
 		waitpid((pid_t)(*status), status, 0);
-		if (WEXITSTATUS(*status) == 130)
-			last_sig = 1;
-		else if (WEXITSTATUS(*status) == 131)
-			last_sig = 2;
+		if (WIFSIGNALED(*status))
+		{
+			if (WTERMSIG(*status) == SIGINT || WTERMSIG(*status) == SIGPIPE)
+				last_sig = 1;
+			else if (WTERMSIG(*status) == SIGQUIT)
+				last_sig = 2;
+		}
 	}
-	sig = wait_processes();
-	sig_msg(sig, last_sig);
+	wait_processes(last_sig);
 	if (*status <= 0)
 		return (*status * -1);
+	if (last_sig)
+		return (129 + last_sig);
 	return (WEXITSTATUS(*status));
 }
