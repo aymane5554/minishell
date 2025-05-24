@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:26:23 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/21 15:16:37 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:59:41 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	builtin_exit_helper(char **args, int cmds_size)
 		ft_putstr_fd("exit\n", 2);
 	if (i >= 2)
 	{
-		ft_atol(args[1], &success);
+		ft_atol2(args[1], &success);
 		if (!success)
 		{
 			ft_putstr_fd("exit: numeric argument required\n", 2);
@@ -55,7 +55,7 @@ int	builtin_exit(t_arg *arg, int cmds_size, int n, int i)
 	builtin_exit_helper(args, cmds_size);
 	if (i > 2)
 		return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
-	exit_value = ft_atol(args[1], &success);
+	exit_value = ft_atol2(args[1], &success);
 	if (success == 0)
 		(ft_putstr_fd("exit: numeric argument required\n", 2), exit(2));
 	if (i == 1)

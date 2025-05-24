@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:29:19 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/21 09:29:21 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:50:56 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,25 @@ static	void	skip(char quote, int *i, char *str)
 	(*i)++;
 }
 
+static	char	check_redirections_child(char redire,
+		char *str, int *i, int count)
+{
+	redire = str[*i];
+	(*i)++;
+	count = 1;
+	while (str[*i] == redire)
+	{
+		count++;
+		(*i)++;
+	}
+	while (is_whitespace(str[*i]) && str[*i])
+		(*i)++;
+	if (count > 2 || str[*i] == '|' || str[*i] == '>'
+		|| str[*i] == '<' || !str[*i])
+		return (1);
+	return (0);
+}
+
 static bool	check_redirections(char *str, int i, int count, char redire)
 {
 	while (str[i])
@@ -31,15 +50,7 @@ static bool	check_redirections(char *str, int i, int count, char redire)
 		}
 		else if (str[i] == '>' || str[i] == '<')
 		{
-			redire = str[i];
-			i++;
-			count = 1;
-			while (str[i++] == redire)
-				count++;
-			while (is_whitespace(str[i]) && str[i])
-				i++;
-			if (count > 2 || str[i] == '|' || str[i] == '>'
-				|| str[i] == '<' || !str[i])
+			if (check_redirections_child(redire, str, &i, count))
 				return (false);
 		}
 		else

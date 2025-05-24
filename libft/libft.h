@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:31:27 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/04/26 11:53:14 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:59:10 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strnstr(const char *haystack,
 			const char *needle, size_t len);
 long	ft_atol(const char *ptr, int *success);
+long	ft_atol2(const char *ptr, int *success);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(char *src);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
