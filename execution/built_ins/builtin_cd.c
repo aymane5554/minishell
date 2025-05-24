@@ -52,13 +52,18 @@ static int	change_dir(char *path, t_env *env, t_env *exprt)
 {
 	struct stat	info;
 
-	if (stat(path, &info) != 0)
-		return (ft_putstr_fd("cd: No such file or directory\n", 2),
-			free(path), 1);
+	if (stat(path, &info))
+		return (perror("cd"), free(path), 1);
 	if (!S_ISDIR(info.st_mode))
-		return (ft_putstr_fd("cd: Not a directory\n", 2), free(path), 1);
+		return (perror("cd"), free(path), 1);
 	choldpwd(env, exprt, getcwd(NULL, 0));
-	chdir(path);
+	if (chdir(path) == -1)
+	{
+		free(path);
+		perror("cd");
+		chpwd(env, exprt, getcwd(NULL, 0));
+		return (1);
+	}
 	free(path);
 	chpwd(env, exprt, getcwd(NULL, 0));
 	return (0);

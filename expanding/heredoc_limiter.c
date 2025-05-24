@@ -30,6 +30,12 @@ static int	shift_to_the_end(char	*s, int *i)
 	return (0);
 }
 
+void	if_quoted(t_cmd *all_cmds, int *z, int i, char *tmp)
+{
+	free(all_cmds[i].cmd[*z]);
+	all_cmds[i].cmd[*z] = tmp;
+}
+
 int	is_quoted(char	*s)
 {
 	int		i;

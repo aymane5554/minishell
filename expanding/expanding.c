@@ -12,8 +12,9 @@
 
 #include "minishell.h"
 
-int	rm_dollar(char	*str);
-int	is_quoted(char	*s);
+int		rm_dollar(char	*str);
+int		is_quoted(char	*s);
+void	if_quoted(t_cmd *all_cmds, int *z, int i, char *tmp);
 
 static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 {
@@ -21,26 +22,27 @@ static int	prompt_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
 	char	*tmp;
 	char	**split;
 	int		len;
+	int		quoted;
 
+	quoted = is_quoted(all_cmds[i].cmd[*z]);
 	tmp = expand_parse(all_cmds[i].cmd[*z], envs);
 	if (!(tmp))
 		return (1);
+	if (quoted)
+		return (if_quoted(all_cmds, z, i, tmp), 0);
 	split = ft_split(tmp, ' ');
 	len = ft_dstrlen(split);
 	if (len == 1)
 	{
 		(free(all_cmds[i].cmd[*z]), all_cmds[i].cmd[*z] = split[0]);
 		(*z)++;
-		(free(tmp), free(split));
-		return (2);
+		return (free(tmp), free(split), 2);
 	}
 	ttmp = insert2darray(all_cmds[i].cmd, split, *z);
 	if (!ttmp)
 		return (free(split), free(tmp), 1);
-	(free(all_cmds[i].cmd), free(split), free(tmp));
-	all_cmds[i].cmd = ttmp;
-	*z += len - 1;
-	return (0);
+	(free(all_cmds[i].cmd), free(split), free(tmp), all_cmds[i].cmd = ttmp);
+	return (*z += len - 1, 0);
 }
 
 static int	file_dollar(t_cmd *all_cmds, int *z, int i, t_env *envs)
