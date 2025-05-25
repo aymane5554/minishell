@@ -6,11 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 10:00:50 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/25 14:30:39 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	redirection_type2(int *fd0, t_cmd all_cmds);
 
 int	write_in_file(int args[4], char *lim, int p_fd[3], t_arg *arg)
 {
@@ -73,21 +75,13 @@ static int	init(int nth, int no_cmds, int pfd[2], int *fd0)
 		(close(pfd[1]), close(pfd[0]));
 	}
 	else if (nth == no_cmds - 1 && no_cmds != 1)
-	{
-		if (*fd0 == 0)
-			*fd0 = pfd[0];
-		else
-			close(pfd[0]);
-	}
+		*fd0 = pfd[0];
 	else if (no_cmds != 1 && nth != no_cmds - 1)
 	{
 		if (dup2(pfd[1], 1) == -1)
 			return (close(pfd[1]), close(pfd[0]), 1);
 		(close(pfd[1]), close(pfd[0]));
-		if (*fd0 == 0)
-			*fd0 = pfd[2];
-		else
-			close(pfd[2]);
+		*fd0 = pfd[2];
 	}
 	return (0);
 }
@@ -106,10 +100,10 @@ int	call_red_functions(int red, t_cmd all_cmds, int *fd0)
 	{
 		if (open_outfile(all_cmds.redirection[red].file,
 				all_cmds.redirection[red].error) == -1)
-		{
 			return (check_0_fd(*fd0), -1);
-		}
 	}
+	else if (all_cmds.redirection[red].type == 2)
+		redirection_type2(fd0, all_cmds);
 	else if (all_cmds.redirection[red].type == 3)
 	{
 		if (open_append_file(all_cmds.redirection[red].file,
@@ -127,7 +121,7 @@ int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 	int	fd0;
 
 	red = 0;
-	fd0 = all_cmds.fd;
+	fd0 = 0;
 	if (init(nth, no_cmds, pfd, &fd0))
 		return (-1);
 	while (all_cmds.redirection[red].file != NULL)
