@@ -6,18 +6,19 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:26:18 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/21 15:04:48 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/25 13:23:20 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	init_oldpwd(char **old_pwd, int cmds_size, t_env *env, t_env *exprt)
+int	chdir_fail(char	*path);
+
+static int	init_oldpwd(char **old_pwd, t_env *env, t_env *exprt)
 {
-	*old_pwd = getcwd(NULL, 0);
-	if (*old_pwd == NULL && cmds_size == 1)
+	*old_pwd = ft_strdup(get_pwd(1));
+	if (*old_pwd == NULL)
 	{
-		choldpwd(env, exprt, getcwd(NULL, 0));
 		chdir("/");
 		chpwd(env, exprt, getcwd(NULL, 0));
 		return (0);
@@ -50,18 +51,12 @@ static int	is_absolute(char **args, char **path, char *old_pwd)
 
 static int	change_dir(char *path, t_env *env, t_env *exprt)
 {
-	struct stat	info;
-
-	if (stat(path, &info))
-		return (perror("cd"), free(path), 1);
-	if (!S_ISDIR(info.st_mode))
-		return (perror("cd"), free(path), 1);
 	choldpwd(env, exprt, getcwd(NULL, 0));
 	if (chdir(path) == -1)
 	{
-		free(path);
+		if (chdir_fail(path))
+			chdir("/");
 		perror("cd");
-		chpwd(env, exprt, getcwd(NULL, 0));
 		return (1);
 	}
 	free(path);
@@ -69,7 +64,7 @@ static int	change_dir(char *path, t_env *env, t_env *exprt)
 	return (0);
 }
 
-int	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
+int	builtin_cd(char **args, t_env *env, t_env *exprt)
 {
 	char		*old_pwd;
 	char		*path;
@@ -84,7 +79,7 @@ int	builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt)
 		return (ft_putstr_fd("cd: too many arguments\n", 2), 1);
 	else
 	{
-		if (init_oldpwd(&old_pwd, cmds_size, env, exprt) == 0)
+		if (init_oldpwd(&old_pwd, env, exprt) == 0)
 			return (0);
 		if (is_absolute(args, &path, old_pwd) != 0)
 			return (1);

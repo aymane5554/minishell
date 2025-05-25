@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 21:18:46 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/20 09:53:15 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/24 21:01:47 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ char	*get_pwd(char option)
 	{
 		free(pwd);
 		pwd = getcwd(NULL, 0);
+		if (!pwd)
+			perror("pwd");
 		return (pwd);
 	}
 	if (option == 1)

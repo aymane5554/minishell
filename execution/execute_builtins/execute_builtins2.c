@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:32:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/22 10:40:33 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/24 20:49:15 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static pid_t	execute_pipe_cd(t_arg *arg, int no_cmds, int p_fd[3], int i)
 			(free_env(arg->export), exit(errno_to_estatus()));
 		}
 		status = builtin_cd(arg->all_cmds[i].cmd,
-				no_cmds, arg->env, arg->export);
+				arg->env, arg->export);
 		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env));
 		(free_env(arg->export), exit(status));
 	}
@@ -67,7 +67,7 @@ int	execute_cd(t_arg *arg, int i, int p_fd[3])
 		(close(arg->all_cmds[i].fd), arg->all_cmds[i].fd = 0);
 	if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 		return (errno_to_estatus());
-	status = builtin_cd(arg->all_cmds[i].cmd, no_cmds, arg->env, arg->export);
+	status = builtin_cd(arg->all_cmds[i].cmd, arg->env, arg->export);
 	return (cd_norm(tmp, status));
 }
 

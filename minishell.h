@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/22 10:02:37 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/24 20:48:44 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*expand_parse(char *str, t_env *envs);
 char	*exctract_dollar(char *str, int *i, char *res, t_env *envs);
 void	push_char(char **s, char c);
 void	builtin_pwd(void);
-int		builtin_cd(char **args, int cmds_size, t_env *env, t_env *exprt);
+int		builtin_cd(char **args, t_env *env, t_env *exprt);
 void	builtin_echo(char **args);
 int		builtin_exit(t_arg *arg, int cmds_size, int n, int i);
 t_env	*new_env(char *env);
