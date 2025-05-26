@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 11:26:18 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/25 13:23:20 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:23:02 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,18 @@ static int	is_absolute(char **args, char **path, char *old_pwd)
 
 static int	change_dir(char *path, t_env *env, t_env *exprt)
 {
+	struct stat	info;
+
+	if (stat(path, &info))
+		return (perror("cd"), free(path), 1);
+	if (!S_ISDIR(info.st_mode))
+		return (perror("cd"), free(path), 1);
 	choldpwd(env, exprt, getcwd(NULL, 0));
 	if (chdir(path) == -1)
 	{
 		if (chdir_fail(path))
 			chdir("/");
+		chpwd(env, exprt, getcwd(NULL, 0));
 		perror("cd");
 		return (1);
 	}
