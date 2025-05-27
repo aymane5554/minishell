@@ -47,7 +47,7 @@ static int	expand_dollar(char *str, t_vars *vars, t_env *envs, char *tmp)
 			return (1);
 	}
 	else if ((str[vars->i] == '\"' && !vars->dquotes)
-		|| (str[vars->i] == '\'' && !vars->squotes))
+		|| (str[vars->i] == '\'' && !vars->squotes && !vars->dquotes))
 		return (0);
 	else if (!ft_isalpha(str[vars->i]) && str[vars->i] != '_')
 	{
