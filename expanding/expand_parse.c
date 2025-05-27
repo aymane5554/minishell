@@ -33,7 +33,6 @@ static int	pshandchng(char c, t_vars *vars, bool *flag, int ch)
 
 static int	expand_dollar(char *str, t_vars *vars, t_env *envs, char *tmp)
 {
-	vars->i++;
 	if (str[vars->i] == '?')
 	{
 		vars->res = question_mark(envs, vars->res, &vars->i);
@@ -47,7 +46,8 @@ static int	expand_dollar(char *str, t_vars *vars, t_env *envs, char *tmp)
 		if (!vars->res)
 			return (1);
 	}
-	else if (str[vars->i] == '\"' && !vars->dquotes)
+	else if ((str[vars->i] == '\"' && !vars->dquotes)
+		|| (str[vars->i] == '\'' && !vars->squotes))
 		return (0);
 	else if (!ft_isalpha(str[vars->i]) && str[vars->i] != '_')
 	{
@@ -76,6 +76,7 @@ static int	expandparse_loop(char *str, t_env *envs, t_vars *vars)
 		}
 		else if (str[vars->i] == '$' && !vars->squotes)
 		{
+			vars->i++;
 			if (expand_dollar(str, vars, envs, NULL) == 1)
 				return (1);
 		}

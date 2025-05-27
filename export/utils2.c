@@ -93,6 +93,8 @@ char	*get_pwd(char option)
 	{
 		free(pwd);
 		pwd = getcwd(NULL, 0);
+		if (!pwd)
+			perror("pwd");
 		return (pwd);
 	}
 	if (option == 1)
