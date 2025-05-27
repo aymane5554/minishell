@@ -15,7 +15,6 @@
 
 # include <sys/stat.h>
 # include <stdio.h>
-# include <limits.h>
 # include <stdlib.h>
 # include <stdbool.h>
 # include <readline/readline.h>

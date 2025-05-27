@@ -100,3 +100,4 @@ char	**ft_split_input(char *str)
 	}
 	return (ret[count] = NULL, ret);
 }
+	
