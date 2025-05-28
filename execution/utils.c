@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:01:36 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/23 09:18:18 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 09:01:38 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	pre_execution(t_arg *arg, int *no_cmds, int p_fd[3])
 	p_fd[2] = 0;
 	*no_cmds = count_cmds(arg->all_cmds);
 	if (*no_cmds != 1)
-		pipe(p_fd);
+	{
+		if (pipe(p_fd))
+			return (1);
+	}
 	i = here_doc(arg, p_fd, *no_cmds);
 	if (i < 0)
 	{
