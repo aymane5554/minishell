@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:32:58 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/22 10:40:33 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:13:05 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	execute_export(t_arg *arg, int i, int p_fd[3])
 	int		tmp;
 	int		no_cmds;
 	pid_t	pid;
+	int		status;
 
 	no_cmds = count_cmds(arg->all_cmds);
 	if (no_cmds != 1)
@@ -94,6 +95,6 @@ int	execute_export(t_arg *arg, int i, int p_fd[3])
 		(close(arg->all_cmds[i].fd), arg->all_cmds[i].fd = 0);
 	if (redirect(arg->all_cmds[i], p_fd, i, no_cmds) == -1)
 		return (close(tmp), errno_to_estatus());
-	export(arg->env, arg->export, arg->all_cmds[i].cmd);
-	return (dup2(tmp, 1), close(tmp), 0);
+	status = export(arg->env, arg->export, arg->all_cmds[i].cmd);
+	return (dup2(tmp, 1), close(tmp), status * -1);
 }

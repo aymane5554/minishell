@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:07:54 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 09:53:30 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:13:45 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	execute_unset_pipe(t_arg *arg, int i, int p_fd[3], int no_cmds)
 int	execute_export_pipe(t_arg *arg, int i, int p_fd[3], int no_cmds)
 {
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (!pid)
@@ -70,9 +71,9 @@ int	execute_export_pipe(t_arg *arg, int i, int p_fd[3], int no_cmds)
 			(freencmds(arg->all_cmds, no_cmds), free_env(arg->env));
 			(free_env(arg->export), exit(errno_to_estatus()));
 		}
-		export(arg->env, arg->export, arg->all_cmds[i].cmd);
+		status = export(arg->env, arg->export, arg->all_cmds[i].cmd);
 		(freencmds(arg->all_cmds, no_cmds), free_env(arg->env));
-		(free_env(arg->export), exit(0));
+		(free_env(arg->export), exit(status));
 	}
 	return ((int)pid);
 }

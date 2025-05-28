@@ -86,9 +86,7 @@ char	*exctract_dollar(char *str, int *i, char *res, t_env *envs)
 {
 	char	*var;
 
-	var = NULL;
-	if (ft_isalpha(str[*i]) || str[*i] == '_')
-		var = normal_var(str, i, res, envs);
+	var = normal_var(str, i, res, envs);
 	if (!var)
 		return (free(res), NULL);
 	free(res);

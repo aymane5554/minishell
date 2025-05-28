@@ -20,9 +20,11 @@ static int	execute_others(t_arg *arg, int i, int no_cmds)
 	dblenv = envlst_to_array(arg->env);
 	if (!arg->all_cmds[i].cmd[0] || !dblenv)
 	{
-		(freencmds(arg->all_cmds, no_cmds),
+		(freencmds(arg->all_cmds, no_cmds), freedbl((void **)dblenv),
 			free_env(arg->env), free_env(arg->export));
-		(freedbl((void **)dblenv), exit(1));
+		if (!dblenv)
+			exit(1);
+		exit(0);
 	}
 	cmd_path = check_commands(arg->env, arg->all_cmds[i].cmd[0]);
 	if (!cmd_path)
@@ -36,8 +38,7 @@ static int	execute_others(t_arg *arg, int i, int no_cmds)
 	(freencmds(arg->all_cmds, no_cmds), freedbl((void **)dblenv));
 	if (access(cmd_path, X_OK))
 		(perror("execve"), free(cmd_path), exit(errno_to_estatus()));
-	free(cmd_path);
-	exit(0);
+	(free(cmd_path), exit(0));
 }
 
 static void	free_all_(t_arg *arg, int no_cmds)

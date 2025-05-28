@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:35:48 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/20 09:57:59 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 10:11:10 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ static void	append_env(t_env *head, t_env *new)
 	last->next = new;
 }
 
-static int	check_export_syntax(char	**cmd, int *j, int *i)
+static int	check_export_syntax(char	**cmd, int *j, int *i, int	*ret)
 {
+	*i = 1;
 	if (cmd[*j][0] == '\0')
 	{
 		(*j)++;
@@ -68,7 +69,7 @@ static int	check_export_syntax(char	**cmd, int *j, int *i)
 	}
 	if (!isalpha(cmd[*j][0]) && cmd[*j][0] != '_')
 	{
-		perror("syntax error");
+		(perror("syntax error"), *ret = 1);
 		(*j)++;
 		return (1);
 	}
@@ -76,7 +77,7 @@ static int	check_export_syntax(char	**cmd, int *j, int *i)
 	{
 		if (!isalnum(cmd[*j][*i]) && cmd[*j][*i] != '_')
 		{
-			perror("syntax error");
+			(perror("syntax error"), *ret = 1);
 			(*j)++;
 			return (1);
 		}
@@ -98,14 +99,15 @@ int	export(t_env *env, t_env *exprt, char **cmd)
 {
 	int	i;
 	int	j;
+	int	ret;
 
 	j = 1;
+	ret = 0;
 	if (ft_dstrlen(cmd) == 1)
 		return (display_export(exprt), 0);
 	while (cmd[j])
 	{
-		i = 1;
-		if (check_export_syntax(cmd, &j, &i))
+		if (check_export_syntax(cmd, &j, &i, &ret))
 			continue ;
 		if (!ft_strcmp(cmd[j], "PATH") && env->i)
 			push_path(env, exprt);
@@ -116,8 +118,8 @@ int	export(t_env *env, t_env *exprt, char **cmd)
 			(append_env(env, new_env(cmd[j])),
 				append_export(exprt, new_env(cmd[j])));
 		else
-			perror("syntax error");
+			(perror("syntax error"), ret = 1);
 		j++;
 	}
-	return (0);
+	return (ret);
 }
