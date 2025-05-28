@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 15:23:44 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/20 14:53:11 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:48:44 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*check_commands(t_env *env, char *cmd)
 	if (ft_strchr(cmd, '/') && (access(cmd, X_OK) || check_dir(cmd)))
 		return (perror(cmd), NULL);
 	tmp = ft_getenv(env, "PATH");
-	if (!tmp)
+	if (!tmp || !tmp[0])
 	{
 		if (env->i)
 			tmp = ft_strdup("/usr/local/sbin:/usr/local/bin"
