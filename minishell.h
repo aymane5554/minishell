@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:12:13 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/22 10:02:37 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:38:54 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		redirections_len(char **cmd);
 void	extract_exe_arg_from_cmd(char **cmd, char **dst);
 char	get_redirection_type(char *str);
 int		valid_quotes(char	*str);
-bool	validate_input(char *input);
+bool	validate_input(char *input, t_env *envs, t_env *s_env);
 char	**ft_split_input(char *str);
 char	**ft_split_pipe(char const *s, char c);
 char	*seperate_redirections(char *s, int i, int j, char c);

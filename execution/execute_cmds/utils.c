@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 15:25:56 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/18 15:26:43 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:41:29 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	errno_to_estatus(void)
 		return (126);
 	else if (errno == ENOENT)
 		return (127);
+	else if (errno == ENOTDIR)
+		return (126);
 	return (1);
 }
 

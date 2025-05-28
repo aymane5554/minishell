@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:14 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/21 15:36:42 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:38:13 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**get_cmds(t_env *envs, t_env *s_env)
 		(free_env(envs), free_env(s_env));
 		(printf("exit\n"), get_pwd(2), exit(status));
 	}
-	if (!validate_input(line))
+	if (!validate_input(line, envs, s_env))
 		return (free(line), NULL);
 	cmds = ft_split_pipe(line, '|');
 	if (!cmds)
@@ -94,10 +94,7 @@ void	main_loop(t_env *envs, t_env *s_env)
 	{
 		cmds = get_cmds(envs, s_env);
 		if (!cmds)
-		{
-			chexitstatus(2, envs, s_env);
 			continue ;
-		}
 		all_cmds = malloc(sizeof(t_cmd) * (ft_dstrlen(cmds) + 1));
 		if (!all_cmds)
 			(freedbl((void **)cmds), exit(1));

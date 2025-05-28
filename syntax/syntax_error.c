@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:29:19 by tibarike          #+#    #+#             */
-/*   Updated: 2025/05/26 16:41:06 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:38:41 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static bool	check_pipes(char *str, int i, int seen_command)
 	return (true);
 }
 
-bool	validate_input(char *input)
+bool	validate_input(char *input, t_env *envs, t_env *s_env)
 {
 	if (!input[0])
 		return (false);
@@ -95,6 +95,7 @@ bool	validate_input(char *input)
 	if (!valid_quotes(input) || !check_pipes(input, 0, 0)
 		|| !check_redirections(input, 0, 0, 0))
 	{
+		chexitstatus(2, envs, s_env);
 		fprintf(stderr, "syntax error\n");
 		return (false);
 	}
