@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 10:03:08 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/20 10:41:11 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:23:01 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ void	new_head(t_env *ret)
 
 int	chshlvl(t_env *env, char *val)
 {
-	if (!ft_strcmp(env->value, "999"))
+	int	success;
+
+	if (ft_atol(val, &success) >= 999)
 	{
 		ft_putstr_fd("warning: shell level (1000)"
 			" too high, resetting to 1\n", 2);

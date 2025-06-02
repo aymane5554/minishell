@@ -6,13 +6,13 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 13:21:50 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/27 15:56:43 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:48:44 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redirection_type2(int *fd0, t_cmd all_cmds);
+int	redirection_type2(int fd0, t_cmd all_cmds);
 
 int	write_in_file(int args[4], char *lim, int p_fd[3], t_arg *arg)
 {
@@ -66,7 +66,7 @@ int	open_heredoc(char *lim, int p_fd[3], int args[2], t_arg *arg)
 	return (fd[1]);
 }
 
-static int	init(int nth, int no_cmds, int pfd[2], int *fd0)
+static int	init(int nth, int no_cmds, int pfd[2])
 {
 	if (nth == 0 && no_cmds != 1)
 	{
@@ -75,41 +75,55 @@ static int	init(int nth, int no_cmds, int pfd[2], int *fd0)
 		(close(pfd[1]), close(pfd[0]));
 	}
 	else if (nth == no_cmds - 1 && no_cmds != 1)
-		*fd0 = pfd[0];
+	{
+		if (dup2(pfd[0], 0) == -1)
+			return (close(pfd[0]), 1);
+		close(pfd[0]);
+	}
 	else if (no_cmds != 1 && nth != no_cmds - 1)
 	{
 		if (dup2(pfd[1], 1) == -1)
 			return (close(pfd[1]), close(pfd[0]), 1);
 		(close(pfd[1]), close(pfd[0]));
-		*fd0 = pfd[2];
+		if (dup2(pfd[2], 0) == -1)
+			return (close(pfd[2]), 1);
+		close(pfd[2]);
 	}
 	return (0);
 }
 
-int	call_red_functions(int red, t_cmd all_cmds, int *fd0)
+int	call_red_functions(int red, t_cmd all_cmds)
 {
+	int	fd0;
+
+	fd0 = 0;
 	if (all_cmds.redirection[red].type == 0)
 	{
-		check_0_fd(*fd0);
-		*fd0 = open_infile(all_cmds.redirection[red].file,
+		fd0 = open_infile(all_cmds.redirection[red].file,
 				all_cmds.redirection[red].error);
-		if (*fd0 == -1)
+		if (fd0 == -1)
 			return (check_0_fd(all_cmds.fd), -1);
+		if (dup2(fd0, 0) == -1)
+			return (close(fd0), check_0_fd(all_cmds.fd), -1);
+		close(fd0);
 	}
 	else if (all_cmds.redirection[red].type == 1)
 	{
 		if (open_outfile(all_cmds.redirection[red].file,
 				all_cmds.redirection[red].error) == -1)
-			return (check_0_fd(*fd0), check_0_fd(all_cmds.fd), -1);
+			return (check_0_fd(all_cmds.fd), -1);
 	}
 	else if (all_cmds.redirection[red].type == 2)
-		redirection_type2(fd0, all_cmds);
+	{
+		if (redirection_type2(fd0, all_cmds) == -1)
+			return (-1);
+	}
 	else if (all_cmds.redirection[red].type == 3)
 	{
 		if (open_append_file(all_cmds.redirection[red].file,
 				all_cmds.redirection[red].error) == -1)
 		{
-			return (check_0_fd(*fd0), check_0_fd(all_cmds.fd), -1);
+			return (check_0_fd(all_cmds.fd), -1);
 		}
 	}
 	return (0);
@@ -118,23 +132,15 @@ int	call_red_functions(int red, t_cmd all_cmds, int *fd0)
 int	redirect(t_cmd all_cmds, int pfd[2], int nth, int no_cmds)
 {
 	int	red;
-	int	fd0;
 
 	red = 0;
-	fd0 = 0;
-	if (init(nth, no_cmds, pfd, &fd0))
-		return (-1);
+	if (init(nth, no_cmds, pfd))
+		return (check_0_fd(all_cmds.fd), -1);
 	while (all_cmds.redirection[red].file != NULL)
 	{
-		if (call_red_functions(red, all_cmds, &fd0))
+		if (call_red_functions(red, all_cmds))
 			return (-1);
 		red++;
-	}
-	if (fd0 != 0)
-	{
-		if (dup2(fd0, 0) == -1)
-			return (close(fd0), -1);
-		close(fd0);
 	}
 	return (1);
 }

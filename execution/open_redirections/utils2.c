@@ -6,19 +6,19 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 16:26:17 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/25 14:21:05 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:48:59 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redirection_type2(int *fd0, t_cmd all_cmds)
+int	redirection_type2(int fd0, t_cmd all_cmds)
 {
-	if (*fd0 != all_cmds.fd)
-	{
-		check_0_fd(*fd0);
-		*fd0 = all_cmds.fd;
-	}
+	fd0 = all_cmds.fd;
+	if (dup2(fd0, 0) == -1)
+		return (close(fd0), -1);
+	close(fd0);
+	return (0);
 }
 
 char	*get_filename(int fd[2], int n)

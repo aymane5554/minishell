@@ -6,7 +6,7 @@
 /*   By: ayel-arr <ayel-arr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:57:49 by ayel-arr          #+#    #+#             */
-/*   Updated: 2025/05/20 10:51:59 by ayel-arr         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:26:37 by ayel-arr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,11 @@ int	update_shlvl(t_env *env)
 
 	val = ft_getenv(env, "SHLVL");
 	if (!val)
-		return (1);
+	{
+		if (!push_env(env, new_env("SHLVL=1")))
+			return (1);
+		return (0);
+	}
 	num = (int)ft_atol(val, &ss);
 	num++;
 	free(val);
