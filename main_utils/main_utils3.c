@@ -14,7 +14,6 @@
 
 static void	fail(char	**cmds, char **cmd, int i, t_cmd *all_cmds)
 {
-	free(cmd);
 	freencmds(all_cmds, i);
 	freedbl((void **)cmds);
 	freedbl((void **)cmd);
